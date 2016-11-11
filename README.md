@@ -7,7 +7,12 @@
 
 Pollistics will make it easy to hold trusted polls.
 
+## Run Locally
+`./gradlew bootRun`
+The website is available at localhost:8080.
+
 # Info
 
 Made in November - December 2016 in the "Advanced Programming" course at Odisee Hogeschool Gent (Belgium) by
 Elias Meire, Maliek Meersschaert, Haroen Viaene, Hanne Goossens and Ruben Thys.
+

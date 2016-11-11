@@ -21,8 +21,6 @@
     <bytecodeTargetLevel>
       <module name="backend_main" target="1.5" />
       <module name="backend_test" target="1.5" />
-      <module name="blah_main" target="1.5" />
-      <module name="blah_test" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

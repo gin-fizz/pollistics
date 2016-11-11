@@ -5,8 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/backend.iml" filepath="$PROJECT_DIR$/.idea/modules/backend.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/backend_main.iml" filepath="$PROJECT_DIR$/.idea/modules/backend_main.iml" group="backend" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/backend_test.iml" filepath="$PROJECT_DIR$/.idea/modules/backend_test.iml" group="backend" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/blah/blah_main.iml" filepath="$PROJECT_DIR$/.idea/modules/blah/blah_main.iml" group="blah" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/blah/blah_test.iml" filepath="$PROJECT_DIR$/.idea/modules/blah/blah_test.iml" group="blah" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/project.iml" filepath="$PROJECT_DIR$/.idea/project.iml" />
     </modules>
   </component>
 </project>

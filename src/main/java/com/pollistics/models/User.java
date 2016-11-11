@@ -16,7 +16,7 @@ public class User {
         this.name = name;
         this.password = password;
     }
-    
+
     public String getId() {
 		return id;
 	}
@@ -24,7 +24,7 @@ public class User {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+
 	public String getName() {
 		return name;
 	}

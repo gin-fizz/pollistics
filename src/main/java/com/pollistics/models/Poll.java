@@ -16,7 +16,7 @@ public class Poll {
         this.name = name;
         this.options = options;
     }
-    
+
     public Poll(String name, HashMap<String,Integer> options, User user) {
         this.name = name;
         this.options = options;

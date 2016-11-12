@@ -6,5 +6,8 @@
 </head>
 <body>
     <p th:text="${greeting}"></p>
+    <ul th:each="polls : ${polls_List}">
+        <li th:text="${polls.name} + ${polls.options}"></li>
+    </ul>
 </body>
 </html>

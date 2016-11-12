@@ -2,9 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title th:text="'Poll ' + ${pollId}"></title>
+    <title th:text="${poll.name}"></title>
 </head>
 <body>
-    <p th:text="' Welcome to poll with id: ' + ${pollId}"></p>
+    <p th:text="' Welcome to poll with id: ' + ${poll.id}"></p>
+    <p th:text="${poll.options} + 'These are the options'"></p>
 </body>
 </html>

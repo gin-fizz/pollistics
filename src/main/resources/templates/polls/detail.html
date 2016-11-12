@@ -5,7 +5,12 @@
     <title th:text="${poll.name}"></title>
 </head>
 <body>
-    <p th:text="' Welcome to poll with id: ' + ${poll.id}"></p>
-    <p th:text="${poll.options} + 'These are the options'"></p>
+    <h1 th:text="${poll.name} + ' (id: ' +  ${poll.id} + ')'"></h1>
+    
+    <ul>
+        <li th:each="option : ${poll.options}">
+            <span th:text="${option.key} + ' votes: ' + ${option.value}"></span>
+        </li>
+    </ul>
 </body>
 </html>

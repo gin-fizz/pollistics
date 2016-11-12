@@ -7,7 +7,7 @@
 <body>
     <p th:text="${greeting}"></p>
     <ul>
-        <li th:each="poll : ${polls_List}">
+        <li th:each="poll : ${polls}">
             <a th:href="@{'/polls/' + ${poll.id}}" th:text="${poll.name} + ${poll.options}"></a>
         </li>
     </ul>

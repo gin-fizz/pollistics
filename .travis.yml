@@ -4,5 +4,6 @@ jdk:
 services:
   - mongodb
 before_script:
+  - mongo pollistics --eval 'db.createCollection("polls")'
   - mongo pollistics --eval 'db.polls.insertOne({"name":"Amerikaanse verkiezingen","options":{"trump":206,"clinton":2}})'
   - mongo pollistics --eval 'db.polls.insertOne({"name":"Favoriet kleur","options":{"root":1,"blauw":80}})'

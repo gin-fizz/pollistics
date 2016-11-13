@@ -2,15 +2,18 @@ package com.pollistics.models;
 
 import java.util.HashMap;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(collection="polls")
 public class Poll {
 	@Id
-    public String id;
+    private ObjectId id;
 
-    public String name;
-    public HashMap<String,Integer> options;
-    public User user;
+	private String name;
+    private HashMap<String,Integer> options;
+    private User user;
 
     public Poll(String name, HashMap<String,Integer> options) {
         this.name = name;
@@ -22,4 +25,39 @@ public class Poll {
         this.options = options;
         this.user = user;
     }
+
+    public Poll() {
+    }
+    
+    public ObjectId getId() {
+		return id;
+	}
+
+	public void setId(ObjectId id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public HashMap<String, Integer> getOptions() {
+		return options;
+	}
+
+	public void setOptions(HashMap<String, Integer> options) {
+		this.options = options;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 }

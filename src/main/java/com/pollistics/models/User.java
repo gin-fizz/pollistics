@@ -3,7 +3,9 @@ package com.pollistics.models;
 import java.util.HashMap;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(collection="users")
 public class User {
 	@Id
     private String id;
@@ -39,5 +41,13 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public HashMap<Integer,String> getPolls() {
+		return polls;
+	}
+
+	public void setPolls(HashMap<Integer,String> polls) {
+		this.polls = polls;
 	}
 }

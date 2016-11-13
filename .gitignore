@@ -2,6 +2,12 @@ bin
 build
 .gradle
 
+# Eclipse
+
+.classpath
+.project
+.settings
+
 # Created by https://www.gitignore.io/api/intellij
 
 ### Intellij ###
@@ -11,6 +17,9 @@ build
 # User-specific stuff:
 .idea/workspace.xml
 .idea/tasks.xml
+.idea/compiler.xml
+.idea/misc.xml
+.idea/vcs.xml
 
 # Sensitive or high-churn files:
 .idea/dataSources/
@@ -55,3 +64,4 @@ fabric.properties
 # modules.xml
 # .idea/misc.xml
 # *.ipr
+

@@ -1,8 +1,8 @@
 # Pollistics.com
 
-[![Build Status](https://travis-ci.org/gin-fizz/project.svg?branch=master)](https://travis-ci.org/gin-fizz/project)
-[![Test Coverage](https://codeclimate.com/github/gin-fizz/project/badges/coverage.svg)](https://codeclimate.com/github/gin-fizz/project/coverage)
-[![Code Climate](https://codeclimate.com/github/gin-fizz/project/badges/gpa.svg)](https://codeclimate.com/github/gin-fizz/project)
+[![Build Status](https://travis-ci.org/gin-fizz/pollistics.svg?branch=master)](https://travis-ci.org/gin-fizz/pollistics)
+[![Test Coverage](https://codeclimate.com/github/gin-fizz/pollistics/badges/coverage.svg)](https://codeclimate.com/github/gin-fizz/pollistics/coverage)
+[![Code Climate](https://codeclimate.com/github/gin-fizz/pollistics/badges/gpa.svg)](https://codeclimate.com/github/gin-fizz/pollistics)
 
 
 Pollistics will make it easy to hold trusted polls.

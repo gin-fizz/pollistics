@@ -1,6 +1,7 @@
 package com.pollistics.models;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -60,4 +61,20 @@ public class Poll {
 	public void setUser(User user) {
 		this.user = user;
 	}
+	
+	@Override
+    public int hashCode() {
+		 return Objects.hash(id);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+    	if(this == obj)
+    		return true;
+    	if((obj == null) || (obj.getClass() != this.getClass()))
+    		return false;
+
+		Poll poll = (Poll) obj;
+		return this.getId().equals(poll.getId());
+    }
 }

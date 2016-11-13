@@ -1,0 +1,43 @@
+sourceSets {
+    integTest {
+        java.srcDir 'src/integTest/java'
+        // resources.srcDir 'src/integTest/resources'
+    }
+}
+
+task integTest(type: Test) {
+    group = LifecycleBasePlugin.VERIFICATION_GROUP
+    description = 'Runs the integration tests.' 
+
+    maxHeapSize = '1024m' 
+
+    testClassesDir = sourceSets.integTest.output.classesDir
+    classpath = sourceSets.integTest.runtimeClasspath 
+
+    binResultsDir = file("$buildDir/integration-test-results/binary/integTest")
+
+    reports { 
+        html.destination = "$buildDir/reports/integration-test"
+        junitXml.destination = "$buildDir/integration-test-results"
+    }
+    
+    testLogging {
+		events "PASSED", "FAILED", "SKIPPED"
+        exceptionFormat = 'full'
+    }
+    
+    mustRunAfter tasks.test
+}
+
+check.dependsOn integTest
+
+dependencies {
+    integTestCompile sourceSets.main.output
+    integTestCompile sourceSets.test.output 
+
+    integTestCompile configurations.compile
+    integTestCompile configurations.testCompile 
+
+    integTestRuntime configurations.runtime
+    integTestRuntime configurations.testRuntime 
+}

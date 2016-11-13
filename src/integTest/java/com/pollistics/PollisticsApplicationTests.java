@@ -9,6 +9,9 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.pollistics.models.Poll;
+import com.pollistics.services.PollService;
+
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
 
@@ -18,6 +21,8 @@ public class PollisticsApplicationTests {
 
 	@Autowired
 	private TestRestTemplate restTemplate;
+	@Autowired
+	PollService pollService;
 
     /**
      * Test that the poll "Amerikaanse verkiezingen" is available on the homepage
@@ -30,12 +35,22 @@ public class PollisticsApplicationTests {
 
     /**
      * This tests that /polls/ isn't reached
-     * todo: this should test that a specific id works
      */
 	@Test
-	public void pollNameTest() {
+	public void pollsTest() {
 		String body = this.restTemplate.getForObject("/polls/", String.class);
 		assertThat(body, containsString("404"));
+	}
+	
+	/**
+     * Test that /polls/{id} fetches the right poll
+     */
+	@Test
+	public void pollByIdTest() {
+		Poll poll = pollService.getAllPolls().get(0);
+		
+		String body = this.restTemplate.getForObject("/polls/" + poll.getId(), String.class);
+		assertThat(body, containsString(poll.getName()));
 	}
 
 }

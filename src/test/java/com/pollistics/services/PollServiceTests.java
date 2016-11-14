@@ -19,22 +19,22 @@ import com.pollistics.repositories.PollRepository;
 public class PollServiceTests {
 	@Autowired
 	private PollRepository pollRepo;
-	
+
 	@Autowired
 	private PollService pollService;
-	
+
 	@Test
 	public void getPollByIdTest() {
 		Poll poll = pollRepo.findAll().get(0);
 		Poll pollById = pollService.getPoll(poll.getId().toString());
-		
+
 		assertThat(poll.equals(pollById));
 	}
-	
+
 	@Test
 	public void getAllPollsTest() {
-		assertThat(pollService.getAllPolls() instanceof List);
-		assertThat(pollService.getAllPolls().get(0) instanceof Poll);
+		assertThat(pollService.getAllPolls() != null);
+		assertThat(pollService.getAllPolls().get(0) != null);
 		assertThat(pollService.getAllPolls().equals(pollRepo.findAll()));
 	}
 }

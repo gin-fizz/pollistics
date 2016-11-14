@@ -29,13 +29,9 @@ public class Poll {
 
     public Poll() {
     }
-    
+
     public ObjectId getId() {
 		return id;
-	}
-
-	public void setId(ObjectId id) {
-		this.id = id;
 	}
 
 	public String getName() {
@@ -61,7 +57,7 @@ public class Poll {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+
 	@Override
     public int hashCode() {
 		 return Objects.hash(id);

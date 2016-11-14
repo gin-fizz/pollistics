@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.junit.Assert.*;
 
 import java.util.HashMap;
 
@@ -26,21 +27,26 @@ import com.pollistics.services.PollService;
 public class PollControllerTests {
 	@MockBean
 	private PollService pollService;
-	
+
 	@Autowired
 	private MockMvc mockMvc;
-	
+
 	@Test
 	public void getPollByIdTest() throws Exception {
-		HashMap<String, Integer> options = new HashMap<>();
-		options.put("Blauw", 1);
-		options.put("Rood", 12);
-		when(pollService.getPoll("someId123")).thenReturn(new Poll("Mooi kleur", options));
-		
-		this.mockMvc.perform(get("/polls/someId123")).andDo(print())
-			.andExpect(status().isOk())
-			.andExpect(content().string(containsString("Mooi kleur")))
-			.andExpect(content().string(containsString("Blauw")))
-			.andExpect(content().string(containsString("Rood")));
-	}	
+		try {
+			HashMap<String, Integer> options = new HashMap<>();
+			options.put("Blauw", 1);
+			options.put("Rood", 12);
+			when(pollService.getPoll("someId123")).thenReturn(new Poll("Mooi kleur", options));
+
+			this.mockMvc.perform(get("/polls/someId123")).andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(content().string(containsString("Mooi kleur")))
+				.andExpect(content().string(containsString("Blauw")))
+				.andExpect(content().string(containsString("Rood")));
+		} catch (Exception e) {
+			fail(e.getMessage());
+		}
+
+	}
 }

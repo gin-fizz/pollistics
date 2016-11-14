@@ -9,9 +9,9 @@ import com.pollistics.services.PollService;
 
 @Controller
 public class HomeController {
-	@Autowired 
-	PollService pollService;
-	
+	@Autowired
+	private PollService pollService;
+
     @GetMapping(value = "/")
     public String greeting(Model model) {
         model.addAttribute("greeting", "Hello World!");

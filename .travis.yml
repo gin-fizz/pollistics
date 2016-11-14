@@ -4,7 +4,7 @@ jdk:
 services:
   - mongodb
 before_install:
-  - curl https://www.jpm4j.org/install/script | sh
+  - curl http://www.jpm4j.org/install/script | sh
   - jpm install com.codacy:codacy-coverage-reporter:assembly
 before_script:
   - mongo pollistics --eval 'db.polls.insert({"name":"Amerikaanse verkiezingen","options":{"trump":206,"clinton":2}})'

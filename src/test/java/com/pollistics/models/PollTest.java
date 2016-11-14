@@ -18,6 +18,12 @@ public class PollTest {
 		assertThat(p.getName().equals("andere naam"));
 		assertThat(p.getOptions().keySet().contains("Blauw"));
 		assertThat(p.getOptions().entrySet().contains(1));
+		HashMap<String, Integer> newOptions = new HashMap<>();
+		newOptions.put("Rood", 5);
+		p.setOptions(newOptions);
+		assertThat(p.getOptions().keySet().contains("Rood"));
+		assertThat(p.getOptions().entrySet().contains(4));
+		assertThat(p.getOptions().equals(newOptions));
 	}
 
 	@Test

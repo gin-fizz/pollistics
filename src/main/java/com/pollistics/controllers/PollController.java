@@ -11,8 +11,8 @@ import com.pollistics.services.PollService;
 @Controller
 public class PollController {
 	@Autowired
-	PollService pollService;
-	
+	private PollService pollService;
+
     @GetMapping(value = "/polls/{pollId}")
     public String greeting(@PathVariable String pollId, Model model) {
         model.addAttribute("poll", pollService.getPoll(pollId));

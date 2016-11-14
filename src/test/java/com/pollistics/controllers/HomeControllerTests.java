@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.junit.Assert.*;
 
 import java.util.List;
 import java.util.Arrays;
@@ -28,27 +29,31 @@ import com.pollistics.services.PollService;
 public class HomeControllerTests {
 	@MockBean
 	private PollService pollService;
-	
+
 	@Autowired
 	private MockMvc mockMvc;
-	
+
 	@Test
 	public void getAllPollsTest() throws Exception {
-		HashMap<String, Integer> options = new HashMap<>();
-		options.put("Blauw", 1);
-		options.put("Rood", 12);
-		Poll poll1 = new Poll("Mooi kleur", options);
-		Poll poll2 = new Poll("Vies kleur", options);
-		Poll poll3 = new Poll("Raar kleur", options);
-		List<Poll> polls =  Arrays.asList(poll1, poll2, poll3);
-		when(pollService.getAllPolls()).thenReturn(polls);
-		
-		this.mockMvc.perform(get("/")).andDo(print())
+		try {
+			HashMap<String, Integer> options = new HashMap<>();
+			options.put("Blauw", 1);
+			options.put("Rood", 12);
+			Poll poll1 = new Poll("Mooi kleur", options);
+			Poll poll2 = new Poll("Vies kleur", options);
+			Poll poll3 = new Poll("Raar kleur", options);
+			List<Poll> polls =  Arrays.asList(poll1, poll2, poll3);
+			when(pollService.getAllPolls()).thenReturn(polls);
+
+			this.mockMvc.perform(get("/")).andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(content().string(containsString("Mooi kleur")))
 			.andExpect(content().string(containsString("Blauw")))
 			.andExpect(content().string(containsString("Rood")))
 			.andExpect(content().string(containsString("Vies kleur")))
 			.andExpect(content().string(containsString("Raar kleur")));
-	}	
+		} catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
 }

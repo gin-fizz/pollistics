@@ -24,18 +24,18 @@ public class PollisticsApplicationTests {
 	@Autowired
 	private PollService pollService;
 
-    /**
-     * Test that the poll "Amerikaanse verkiezingen" is available on the homepage
-     */
+	/**
+	 * Test that the poll "Amerikaanse verkiezingen" is available on the homepage
+	 */
 	@Test
 	public void homeTest() {
 		String body = this.restTemplate.getForObject("/", String.class);
 		assertThat(body, containsString("Amerikaanse verkiezingen"));
 	}
 
-    /**
-     * This tests that /polls/ isn't reached
-     */
+	/**
+	 * This tests that /polls/ isn't reached
+	 */
 	@Test
 	public void pollsTest() {
 		String body = this.restTemplate.getForObject("/polls/", String.class);
@@ -43,8 +43,8 @@ public class PollisticsApplicationTests {
 	}
 
 	/**
-     * Test that /polls/{id} fetches the right poll
-     */
+	 * Test that /polls/{id} fetches the right poll
+	 */
 	@Test
 	public void pollByIdTest() {
 		Poll poll = pollService.getAllPolls().get(0);

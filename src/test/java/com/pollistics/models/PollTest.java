@@ -19,4 +19,16 @@ public class PollTest {
 		assertThat(p.getOptions().keySet().contains("Blauw"));
 		assertThat(p.getOptions().entrySet().contains(1));
 	}
+
+	@Test
+	public void userTest() {
+		HashMap<String, Integer> options = new HashMap<>();
+		options.put("Blauw", 1);
+		User user = new User("someone", "somepass");
+		Poll p = new Poll("Kleuren", options, user);
+		assertThat(p.getUser().equals(user));
+		User newUser = new User("other person", "pass");
+		p.setUser(newUser);
+		assertThat(p.getUser().equals(newUser));
+	}
 }

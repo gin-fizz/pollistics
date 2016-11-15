@@ -1,5 +1,7 @@
 package com.pollistics.models;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,5 +22,13 @@ public class UserTest {
 		Poll p = new Poll();
 		u.addPoll(p);
 		assertThat(u.getPolls().contains(p));
+	}
+
+	@Test
+	public void equalsContract() {
+		EqualsVerifier.forClass(User.class)
+			.withPrefabValues(Poll.class, new Poll(), new Poll())
+			.usingGetClass()
+			.verify();
 	}
 }

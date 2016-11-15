@@ -24,6 +24,9 @@ public class User {
 		this.polls = new ArrayList<>();
 	}
 
+	public User() {
+	}
+
 	public ObjectId getId() {
 		return id;
 	}

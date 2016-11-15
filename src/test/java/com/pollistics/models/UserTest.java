@@ -3,6 +3,8 @@ package com.pollistics.models;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 
+import java.util.HashMap;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 
@@ -27,8 +29,14 @@ public class UserTest {
 	@Test
 	public void equalsContract() {
 		try {
+			HashMap<String, Integer> options = new HashMap<>();
+			options.put("Blauw", 1);
+			Poll p = new Poll("Kleuren", options);
+			HashMap<String, Integer> optionsTwo = new HashMap<>();
+			options.put("Obama", 1);
+			Poll q = new Poll("Verkiezingen", options);
 			EqualsVerifier.forClass(User.class)
-				.withPrefabValues(Poll.class, new Poll(), new Poll())
+				.withPrefabValues(Poll.class, p, q)
 				.usingGetClass()
 				.verify();
 		} catch (Exception e) {

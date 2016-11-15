@@ -10,5 +10,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 @Repository
 public interface PollRepository extends MongoRepository<Poll,String> {
-    // Insert custom querying methods here
+		// Insert custom querying methods here
 }

@@ -42,7 +42,7 @@ public class HomeControllerTests {
 			Poll poll1 = new Poll("Mooi kleur", options);
 			Poll poll2 = new Poll("Vies kleur", options);
 			Poll poll3 = new Poll("Raar kleur", options);
-			List<Poll> polls =  Arrays.asList(poll1, poll2, poll3);
+			List<Poll> polls = Arrays.asList(poll1, poll2, poll3);
 			when(pollService.getAllPolls()).thenReturn(polls);
 
 			this.mockMvc.perform(get("/")).andDo(print())

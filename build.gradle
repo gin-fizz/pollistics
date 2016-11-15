@@ -1,10 +1,10 @@
 buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.2.RELEASE")
-    }
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.2.RELEASE")
+	}
 }
 
 apply plugin: 'java'
@@ -15,38 +15,38 @@ apply plugin: 'jacoco'
 apply from: "$rootDir/gradle/integTest.gradle"
 
 jar {
-    baseName = 'pollistics'
-    version =  '0.0.1'
+	baseName = 'pollistics'
+	version =  '0.0.1'
 }
 
 repositories {
-    mavenCentral()
+	mavenCentral()
 }
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
-    compile("org.springframework.boot:spring-boot-starter-data-mongodb")
-    compile("org.springframework.boot:spring-boot-devtools")
-    compile("org.springframework:spring-core")
-    testCompile("org.springframework.boot:spring-boot-starter-test")
-    testCompile("junit:junit")
+	compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+	compile("org.springframework.boot:spring-boot-starter-data-mongodb")
+	compile("org.springframework.boot:spring-boot-devtools")
+	compile("org.springframework:spring-core")
+	testCompile("org.springframework.boot:spring-boot-starter-test")
+	testCompile("junit:junit")
 }
 
 test {
-    testLogging {
+	testLogging {
 		events "PASSED", "FAILED", "SKIPPED"
-        exceptionFormat = 'full'
-    }
+		exceptionFormat = 'full'
+	}
 }
 
 jacocoTestReport {
-    reports {
-        xml.enabled = true
-        html.enabled = true
-    }
+	reports {
+		xml.enabled = true
+		html.enabled = true
+	}
 }
 
 check.dependsOn jacocoTestReport

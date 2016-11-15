@@ -12,10 +12,10 @@ public class HomeController {
 	@Autowired
 	private PollService pollService;
 
-    @GetMapping(value = "/")
-    public String greeting(Model model) {
-        model.addAttribute("greeting", "Hello World!");
-        model.addAttribute("polls", pollService.getAllPolls());
-        return "index";
-    }
+	@GetMapping(value = "/")
+	public String greeting(Model model) {
+		model.addAttribute("greeting", "Hello World!");
+		model.addAttribute("polls", pollService.getAllPolls());
+		return "index";
+	}
 }

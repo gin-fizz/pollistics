@@ -1,10 +1,10 @@
 package com.pollistics.models;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
 
 public class UserTest {
 
@@ -26,9 +26,13 @@ public class UserTest {
 
 	@Test
 	public void equalsContract() {
-		EqualsVerifier.forClass(User.class)
-			.withPrefabValues(Poll.class, new Poll(), new Poll())
-			.usingGetClass()
-			.verify();
+		try {
+			EqualsVerifier.forClass(User.class)
+				.withPrefabValues(Poll.class, new Poll(), new Poll())
+				.usingGetClass()
+				.verify();
+		} catch (Exception e) {
+			fail(e.getMessage());
+		}
 	}
 }

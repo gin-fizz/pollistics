@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.util.HashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
 
 public class PollTest {
 
@@ -41,9 +42,13 @@ public class PollTest {
 
 	@Test
 	public void equalsContract() {
-		EqualsVerifier.forClass(Poll.class)
-			.withPrefabValues(User.class, new User("user", "pass"), new User("bla", "bla"))
-			.usingGetClass()
-			.verify();
+		try {
+			EqualsVerifier.forClass(Poll.class)
+				.withPrefabValues(User.class, new User("user", "pass"), new User("bla", "bla"))
+				.usingGetClass()
+				.verify();
+		} catch (Exception e) {
+			fail(e.getMessage());
+		}
 	}
 }

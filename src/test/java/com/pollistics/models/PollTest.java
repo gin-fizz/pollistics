@@ -1,5 +1,6 @@
 package com.pollistics.models;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -36,5 +37,13 @@ public class PollTest {
 		User newUser = new User("other person", "pass");
 		p.setUser(newUser);
 		assertThat(p.getUser().equals(newUser));
+	}
+
+	@Test
+	public void equalsContract() {
+		EqualsVerifier.forClass(Poll.class)
+			.withPrefabValues(User.class, new User("user", "pass"), new User("bla", "bla"))
+			.usingGetClass()
+			.verify();
 	}
 }

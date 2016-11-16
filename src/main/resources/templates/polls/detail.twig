@@ -1,6 +1,7 @@
 {% extends "../layouts/main.twig" %}
 
-{% set pageTitle = poll.name %}
+{% block pageTitle %}{{ poll.name }}{% endblock %}
+{% block description %}{{ poll.name }} {{ poll.options }}{% endblock %}
 
 {% block content %}
 <h1>{{ poll.name }} (id: {{ poll.id }})</h1>
@@ -12,4 +13,4 @@
     </li>
     {% endfor %}
 </ul>
-{% endblock content %}
+{% endblock %}

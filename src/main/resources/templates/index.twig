@@ -1,6 +1,6 @@
-{% extends layouts/main.twig %}
+{% extends "layouts/main.twig" %}
 
-{% set pageTitle = "Pollistics | Home" %}
+{% block pageTitle %}Pollistics Home{% endblock %}
 
 {% block content %}
 <p>{{ greeting }}</p>

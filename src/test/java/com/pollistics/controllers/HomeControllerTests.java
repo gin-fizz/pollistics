@@ -1,17 +1,19 @@
 package com.pollistics.controllers;
 
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,11 +49,11 @@ public class HomeControllerTests {
 
 			this.mockMvc.perform(get("/")).andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(content().string(containsString("Mooi kleur")))
-			.andExpect(content().string(containsString("Blauw")))
-			.andExpect(content().string(containsString("Rood")))
-			.andExpect(content().string(containsString("Vies kleur")))
-			.andExpect(content().string(containsString("Raar kleur")));
+			.andExpect(model().attribute("polls", hasItem(Matchers.<Poll>hasProperty("name", equalTo("Mooi kleur")))))
+			.andExpect(model().attribute("polls", hasItem(Matchers.<Poll>hasProperty("name", equalTo("Vies kleur")))))
+			.andExpect(model().attribute("polls", hasItem(Matchers.<Poll>hasProperty("name", equalTo("Raar kleur")))))
+			.andExpect(model().attribute("polls", hasItem(Matchers.<Poll>hasProperty("options", Matchers.<String,Integer>hasEntry("Blauw", 1)))))
+			.andExpect(model().attribute("polls", hasItem(Matchers.<Poll>hasProperty("options", Matchers.<String,Integer>hasEntry("Rood", 12)))));
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}

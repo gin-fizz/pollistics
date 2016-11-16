@@ -1,16 +1,15 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <title th:text="${poll.name}"></title>
-</head>
-<body>
-    <h1 th:text="${poll.name} + ' (id: ' +  ${poll.id} + ')'"></h1>
-    
-    <ul>
-        <li th:each="option : ${poll.options}">
-            <span th:text="${option.key} + ' votes: ' + ${option.value}"></span>
-        </li>
-    </ul>
-</body>
-</html>
+{% extends "../layouts/main.twig" %}
+
+{% set pageTitle = poll.name %}
+
+{% block content %}
+<h1>{{ poll.name }} (id: {{ poll.id }})</h1>
+
+<ul>
+    {% for option, nVotes in poll.options %}
+    <li>
+        <span>{{ option }} ({{ nVotes }} votes)</span>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock content %}

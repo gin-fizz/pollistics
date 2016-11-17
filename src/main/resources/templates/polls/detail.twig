@@ -1,0 +1,16 @@
+{% extends "../layouts/main.twig" %}
+
+{% block pageTitle %}{{ poll.name }}{% endblock %}
+{% block description %}{{ poll.name }} {{ poll.options }}{% endblock %}
+
+{% block content %}
+<h1>{{ poll.name }} (id: {{ poll.id }})</h1>
+
+<ul>
+    {% for option, nVotes in poll.options %}
+    <li>
+        <span>{{ option }} ({{ nVotes }} votes)</span>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -25,7 +25,6 @@ public class PollServiceTests {
 	public void getPollByIdTest() {
 		Poll poll = pollRepo.findAll().get(0);
 		Poll pollById = pollService.getPoll(poll.getId().toString());
-
 		assertThat(poll.equals(pollById));
 	}
 
@@ -34,5 +33,15 @@ public class PollServiceTests {
 		assertThat(pollService.getAllPolls() != null);
 		assertThat(pollService.getAllPolls().get(0) != null);
 		assertThat(pollService.getAllPolls().equals(pollRepo.findAll()));
+	}
+	
+	@Test
+	public void createPollTest() {
+		Poll poll = pollRepo.findAll().get(0);
+		String id = pollService.createPoll(poll.getName(), poll.getOptions());
+		assertThat(id instanceof String);
+		
+		Poll pollById = pollService.getPoll(id);
+		assertThat(id.equals(pollById.getId()));		
 	}
 }

@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.pollistics.services.PollService;
 
 @Controller
-@RequestMapping("/polls")
+@RequestMapping({"/polls", "/"})
 public class PollController {
 	@Autowired
 	private PollService pollService;
@@ -38,6 +38,6 @@ public class PollController {
 		options.put(option2, 0);
 		options.put(option3, 0);
 		String id = pollService.createPoll(title, options);
-		return new ModelAndView("redirect:/polls/" + id);
+		return new ModelAndView("redirect:/" + id);
 	}
 }

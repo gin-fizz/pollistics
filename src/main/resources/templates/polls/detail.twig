@@ -7,10 +7,10 @@
 <h1>{{ poll.name }} (id: {{ poll.id }})</h1>
 
 <ul>
-    {% for option, nVotes in poll.options %}
-    <li>
-        <span>{{ option }} ({{ nVotes }} votes)</span>
-    </li>
-    {% endfor %}
+	{% for option, nVotes in poll.options %}
+	<li>
+		<span>{{ option }} ({{ nVotes }} votes)</span>
+	</li>
+	{% endfor %}
 </ul>
 {% endblock %}

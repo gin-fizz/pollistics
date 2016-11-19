@@ -73,7 +73,7 @@ public class PollControllerTests {
 					.param("option3", option3))					
 			.andDo(print())
 			.andExpect(status().is3xxRedirection())
-			.andExpect(redirectedUrl("/polls/someId123"));
+			.andExpect(redirectedUrl("/someId123"));
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}

@@ -6,16 +6,30 @@
 <p>{{ greeting }}</p>
 <ul>
 	{% for poll in polls %}
-    <li>
-        <a href="/polls/{{ poll.id }}">{{ poll.name }} {{ poll.options }}</a>
-    </li>
-    {% endfor %}
+		<li>
+			<a href="/polls/{{ poll.id }}">{{ poll.name }} {{ poll.options }}</a>
+		</li>
+	{% endfor %}
 </ul>
 <form method="post" action="/polls/create">
-	<input type="text" name="title"></input>
-	<input type="text" name="option1"></input>
-	<input type="text" name="option2"></input>
-	<input type="text" name="option3"></input>
-	<input type="submit" value="create"></input>
+	<div>
+		<label for="title">Title</label>
+		<input type="text" name="title" id="title"></input>
+	</div>
+	<div>
+		<label for="option1">Option 1</label>
+		<input type="text" name="option1" id="option1"></input>
+	</div>
+	<div>
+		<label for="option1">Option 2</label>
+		<input type="text" name="option2" id="option2"></input>
+	</div>
+	<div>
+		<label for="option1">Option 3</label>
+		<input type="text" name="option3" id="option3"></input>
+	</div>
+	<div>
+		<input type="submit" value="create"></input>
+	</div>
 </form>
 {% endblock %}

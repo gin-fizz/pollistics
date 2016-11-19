@@ -4,8 +4,10 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.HashMap;
@@ -49,6 +51,31 @@ public class PollControllerTests {
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}
+	}
+	
+	@Test
+	public void createPollTest() {
+		try {
+			HashMap<String, Integer> options = new HashMap<>();
+			String title = "Poll title";
+			String option1 = "option1";
+			String option2 = "option2";
+			String option3 = "option3";
+			options.put(option1, 0);
+			options.put(option2, 0);
+			options.put(option3, 0);
+			when(pollService.createPoll(title, options)).thenReturn("someId123");
 
+			this.mockMvc.perform(post("/polls/create")
+					.param("title", title)
+					.param("option1",option1)
+					.param("option2", option2)
+					.param("option3", option3))					
+			.andDo(print())
+			.andExpect(status().is3xxRedirection())
+			.andExpect(redirectedUrl("/polls/someId123"));
+		} catch (Exception e) {
+			fail(e.getMessage());
+		}
 	}
 }

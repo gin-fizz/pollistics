@@ -60,30 +60,4 @@ public class HomeControllerTests {
 			fail(e.getMessage());
 		}
 	}
-	
-	@Test
-	public void createPollTest() {
-		try {
-			HashMap<String, Integer> options = new HashMap<>();
-			String title = "Poll title";
-			String option1 = "option1";
-			String option2 = "option2";
-			String option3 = "option3";
-			options.put(option1, 0);
-			options.put(option2, 0);
-			options.put(option3, 0);
-			when(pollService.createPoll(title, options)).thenReturn("someId123");
-
-			this.mockMvc.perform(post("/")
-					.param("title", title)
-					.param("option1",option1)
-					.param("option2", option2)
-					.param("option3", option3))					
-			.andDo(print())
-			.andExpect(status().is3xxRedirection())
-			.andExpect(redirectedUrl("/polls/someId123"));
-		} catch (Exception e) {
-			fail(e.getMessage());
-		}
-	}
 }

@@ -10,24 +10,22 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.pollistics.services.PollService;
 
 @Controller
-@RequestMapping("/polls")
 public class PollController {
 	@Autowired
 	private PollService pollService;
 
-	@GetMapping(value = "/{pollId}")
+	@GetMapping(value = {"/polls/{pollId}", "/{pollId}"})
 	public String greeting(@PathVariable String pollId, Model model) {
 		model.addAttribute("poll", pollService.getPoll(pollId));
 		return "polls/detail";
 	}
 	
-	@PostMapping(value = "/create")
+	@PostMapping(value = "/polls/create")
 	public ModelAndView createPoll(HttpServletRequest request, Model model) {
 		String title = request.getParameter("title");
 		String option1 = request.getParameter("option1");
@@ -38,6 +36,6 @@ public class PollController {
 		options.put(option2, 0);
 		options.put(option3, 0);
 		String id = pollService.createPoll(title, options);
-		return new ModelAndView("redirect:/polls/" + id);
+		return new ModelAndView("redirect:/" + id);
 	}
 }

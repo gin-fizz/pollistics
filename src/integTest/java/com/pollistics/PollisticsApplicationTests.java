@@ -34,15 +34,6 @@ public class PollisticsApplicationTests {
 	}
 
 	/**
-	 * This tests that /polls/ isn't reached
-	 */
-	@Test
-	public void pollsTest() {
-		String body = this.restTemplate.getForObject("/polls/", String.class);
-		assertThat(body, containsString("404"));
-	}
-
-	/**
 	 * Test that /polls/{id} fetches the right poll
 	 */
 	@Test

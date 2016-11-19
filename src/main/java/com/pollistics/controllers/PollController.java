@@ -5,8 +5,6 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,11 +23,6 @@ public class PollController {
 	public String greeting(@PathVariable String pollId, Model model) {
 		model.addAttribute("poll", pollService.getPoll(pollId));
 		return "polls/detail";
-	}
-	
-	@GetMapping(value = "/polls")
-	public ResponseEntity<String> polls() {
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("404");
 	}
 	
 	@PostMapping(value = "/polls/create")

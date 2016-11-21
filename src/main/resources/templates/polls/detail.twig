@@ -19,10 +19,7 @@
 
 {% block scripts %}
 <script>
-	var options = [];
-	{% for option, nVotes in poll.options %}
-		options.push({label: "{{option}}", value: {{ nVotes }}});
-	{% endfor %}
+	var options = {{ poll.options|json_encode() }};
 </script>
 <script src="{{ asset('js/build.js') }}"></script>
 {% endblock %}

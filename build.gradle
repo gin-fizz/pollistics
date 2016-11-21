@@ -30,6 +30,7 @@ targetCompatibility = 1.8
 dependencies {
 	compile("org.jtwig:jtwig-spring-boot-starter:5.63")
 	compile("org.jtwig:jtwig-hot-reloading-extension:1.+")
+	compile("org.jtwig:jtwig-spring-asset-extension:1.+")
 	compile("org.springframework.boot:spring-boot-starter-data-mongodb")
 	compile("org.springframework.boot:spring-boot-devtools")
 	compile("org.springframework:spring-core")

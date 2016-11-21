@@ -78,4 +78,23 @@ public class PollControllerTests {
 			fail(e.getMessage());
 		}
 	}
+	@Test
+	public void voteTest() {
+		try {
+			HashMap<String, Integer> options = new HashMap<>();
+			options.put("Blauw", 1);
+			options.put("Rood", 12);
+			Poll p = new Poll("Welk kleur?", options);
+			when(pollService.voteOption(p, "Rood")).thenReturn(true);
+
+			this.mockMvc.perform(post("/polls/vote/someId123")
+				.param("option", "Rood"))
+				.andDo(print())
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/someId123"));
+		} catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
+
 }

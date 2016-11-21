@@ -26,8 +26,12 @@ public class PollService {
 		return poll.getId().toString();
 	}
 
-	public void voteOption(Poll p, String option) {
-		p.vote(option);
+	public boolean voteOption(Poll p, String option) {
+		boolean result = p.vote(option);
+		if (!result) {
+			return false;
+		}
 		pollRepo.save(p);
+		return true;
 	}
 }

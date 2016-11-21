@@ -3,16 +3,16 @@ package com.pollistics.config;
 import org.jtwig.environment.EnvironmentConfigurationBuilder;
 import org.jtwig.hot.reloading.HotReloadingExtension;
 import org.jtwig.spring.JtwigViewResolver;
+import org.jtwig.spring.asset.SpringAssetExtension;
+import org.jtwig.spring.asset.resolver.AssetResolver;
+import org.jtwig.spring.asset.resolver.BaseAssetResolver;
 import org.jtwig.spring.boot.config.JtwigViewResolverConfigurer;
 import org.jtwig.web.servlet.JtwigRenderer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.jtwig.spring.asset.SpringAssetExtension;
-import org.jtwig.spring.asset.resolver.AssetResolver;
-import org.jtwig.spring.asset.resolver.BaseAssetResolver;
 
 @EnableWebMvc
 @Configuration
@@ -29,7 +29,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements JtwigViewResol
 				.build()
 		));
 	}
-	
+
 	@Bean
     public AssetResolver assetResolver () {
         BaseAssetResolver assetResolver = new BaseAssetResolver();

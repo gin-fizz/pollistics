@@ -40,6 +40,16 @@ public class PollTest {
 		assertThat(p.getUser().equals(newUser));
 	}
 
+	@Test
+	public void voteTest() {
+		HashMap<String, Integer> options = new HashMap<>();
+		options.put("Blauw", 1);
+		Poll p = new Poll("Kleuren", options);
+		boolean worked = p.vote("Blauw");
+		assert worked;
+		assertThat(p.getOptions().get("Blauw").equals(2));
+	}
+
 	/*
 	@Test
 	public void equalsContract() {

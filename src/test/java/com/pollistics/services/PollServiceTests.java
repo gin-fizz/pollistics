@@ -62,5 +62,8 @@ public class PollServiceTests {
 		assert result;
 
 		assertThat(opts.get(first).equals(firstVal + 1));
+
+		boolean res = pollService.voteOption(poll, "somerandomstring");
+		assert !res;
 	}
 }

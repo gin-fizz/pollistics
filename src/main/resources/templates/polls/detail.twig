@@ -15,5 +15,10 @@
 </ul>
 {% endblock %}
 
-{ % block scripts %}
+{% block scripts %}
+<script src="../../node_modules/d3/build/d3.min.js"></script>
+<script>
+	var options = {{poll.options}};
+</script>
+<script src="../../js/main.js"></script>
 {% endblock %}

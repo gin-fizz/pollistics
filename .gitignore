@@ -68,3 +68,5 @@ fabric.properties
 # .idea/misc.xml
 # *.ipr
 
+.idea/dictionaries
+bundle.js

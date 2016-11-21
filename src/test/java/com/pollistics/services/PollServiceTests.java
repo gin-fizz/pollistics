@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.mongodb.core.mapping.TextScore;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.pollistics.PollisticsApplication;
@@ -14,7 +13,6 @@ import com.pollistics.models.Poll;
 import com.pollistics.repositories.PollRepository;
 
 import java.util.HashMap;
-import java.util.Set;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = PollisticsApplication.class)

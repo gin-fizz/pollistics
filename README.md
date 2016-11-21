@@ -8,6 +8,8 @@
 Pollistics will make it easy to hold trusted polls.
 
 ## Run Locally
+`npm install`
+In the map /src/main/resources/
 `./gradlew bootRun`
 The website is available at localhost:8080.
 

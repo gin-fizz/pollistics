@@ -18,6 +18,8 @@
   "homepage": "https://github.com/gin-fizz/pollistics#readme",
   "dependencies": {
     "d3": "^3.4.4",
-    "d3pie": "^0.1.9"
+    "d3pie": "^0.1.9",
+    "rollup": "^0.36.3",
+    "rollup-plugin-babel": "^2.6.1"
   }
 }

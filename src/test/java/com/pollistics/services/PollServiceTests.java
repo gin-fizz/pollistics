@@ -6,11 +6,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.mongodb.core.mapping.TextScore;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.pollistics.PollisticsApplication;
 import com.pollistics.models.Poll;
 import com.pollistics.repositories.PollRepository;
+
+import java.util.HashMap;
+import java.util.Set;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = PollisticsApplication.class)
@@ -34,14 +38,29 @@ public class PollServiceTests {
 		assertThat(pollService.getAllPolls().get(0) != null);
 		assertThat(pollService.getAllPolls().equals(pollRepo.findAll()));
 	}
-	
+
 	@Test
 	public void createPollTest() {
 		Poll poll = pollRepo.findAll().get(0);
 		String id = pollService.createPoll(poll.getName(), poll.getOptions());
 		assertThat(id instanceof String);
-		
+
 		Poll pollById = pollService.getPoll(id);
-		assertThat(id.equals(pollById.getId()));		
+		assertThat(id.equals(pollById.getId()));
+	}
+
+	@Test
+	public void voteOptionTest() {
+		Poll poll = pollRepo.findAll().get(0);
+		HashMap<String, Integer> opts = poll.getOptions();
+		String[] keys = opts.keySet().toArray(new String[0]);
+		String first = keys[0];
+
+		int firstVal = opts.get(first);
+
+		boolean result = pollService.voteOption(poll, first);
+		assert result;
+
+		assertThat(opts.get(first).equals(firstVal + 1));
 	}
 }

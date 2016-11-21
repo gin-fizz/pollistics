@@ -8,6 +8,9 @@ build
 .project
 .settings
 
+# D3 npm
+node_modules/
+
 # Created by https://www.gitignore.io/api/intellij
 
 ### Intellij ###

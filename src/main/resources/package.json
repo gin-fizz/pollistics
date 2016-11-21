@@ -1,0 +1,22 @@
+{
+  "name": "pollistics",
+  "version": "1.0.0",
+  "description": "Project polls",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gin-fizz/pollistics.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gin-fizz/pollistics/issues"
+  },
+  "homepage": "https://github.com/gin-fizz/pollistics#readme",
+  "dependencies": {
+    "d3": "^4.3.0"
+  }
+}

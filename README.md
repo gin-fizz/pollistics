@@ -8,7 +8,15 @@
 Pollistics will make it easy to hold trusted polls.
 
 ## Run Locally
+
+### Install frontend dependencies
+`npm install` in the `/src/main/resources/` folder
+
+This also needs to be bundled all together. You can do that with `npm run build`.
+
+### Run
 `./gradlew bootRun`
+
 The website is available at localhost:8080.
 
 # Info

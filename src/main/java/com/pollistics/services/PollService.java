@@ -1,13 +1,12 @@
 package com.pollistics.services;
 
-import java.util.HashMap;
-import java.util.List;
-
+import com.pollistics.models.Poll;
+import com.pollistics.repositories.PollRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.pollistics.models.Poll;
-import com.pollistics.repositories.PollRepository;
+import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class PollService {
@@ -25,5 +24,10 @@ public class PollService {
 	public String createPoll(String name, HashMap<String, Integer> options) {
 		Poll poll = pollRepo.insert(new Poll(name, options));
 		return poll.getId().toString();
+	}
+
+	public void voteOption(Poll p, String option) {
+		p.vote(option);
+		pollRepo.save(p);
 	}
 }

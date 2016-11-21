@@ -1,12 +1,12 @@
 import babel from 'rollup-plugin-babel';
 import nodeResolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
-
+import uglify from 'rollup-plugin-uglify';
 
 export default {
 	entry: 'js/main.js',
 	dest: 'js/bundle.js',
-	format: 'iife',
+	format: 'umd',
 	moduleName: 'pollistics',
 	plugins: [
 		babel(),
@@ -35,6 +35,8 @@ export default {
 			// explicitly specify unresolvable named exports
 			// (see below for more details)
 			namedExports: { './module.js': ['foo', 'bar' ] }  // Default: undefined
-		})
+		}),
+
+		uglify()
 	]
 };

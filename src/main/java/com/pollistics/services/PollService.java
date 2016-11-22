@@ -31,7 +31,7 @@ public class PollService {
 		if (!result) {
 			return false;
 		}
-		pollRepo.save(p);
+		pollRepo.save(p); // todo false when not works
 		return true;
 	}
 }

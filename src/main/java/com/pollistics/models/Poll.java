@@ -1,11 +1,11 @@
 package com.pollistics.models;
 
-import java.util.HashMap;
-import java.util.Objects;
-
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.HashMap;
+import java.util.Objects;
 
 @Document(collection="polls")
 public class Poll {
@@ -56,6 +56,17 @@ public class Poll {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public boolean vote(String option) {
+		if(!options.containsKey(option)) {
+			return false;
+		} else {
+			int val = options.get(option);
+			val++;
+			options.put(option,val);
+			return true;
+		}
 	}
 
 	@Override

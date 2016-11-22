@@ -6,13 +6,15 @@
 {% block content %}
 	<h1>{{ poll.name }} (id: {{ poll.id }})</h1>
 
-	<ul>
+	<form method="post" action="/polls/vote/{{ poll.id }}">
 		{%- for option, nVotes in poll.options %}
-		<li>
-			<span>{{ option }} ({{ nVotes }} votes)</span>
-		</li>
+		<div class="poll--vote">
+			<label for="{{ option }}">{{ option }}: {{ nVotes }}</label>
+			<input type="radio" name="option" id="{{ option }}" value="{{ option }}">
+		</div>
 		{%- endfor %}
-	</ul>
+		<button type="submit">Vote</button>
+	</form>
 
 	<div id="results"></div>
 {% endblock %}

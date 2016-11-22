@@ -19,6 +19,14 @@
 	<link rel="stylesheet" href="https://gin-fizz.github.io/styleguide/src/main.css">
 </head>
 <body>
+	<header>
+		<a href="/"><img src="/src/img/logo.svg" alt="home"></a>
+		<div class="user">
+			{# <a href="/me"><img src="/src/img/user.svg" alt="me"></a> #}
+			<a href="/login" class="cta">login</a>
+			<a href="/register" class="cta">register</a>
+		</div>
+	</header>
 	{% block content %}{% endblock %}
 	{% block scripts %}{% endblock %}
 </body>

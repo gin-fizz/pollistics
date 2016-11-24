@@ -28,6 +28,12 @@ public class Poll {
 		this.user = user;
 	}
 
+	public Poll(ObjectId id, String name, HashMap<String, Integer> options) {
+		this.id = id;
+		this.name = name;
+		this.options = options;
+	}
+
 	public Poll() {
 	}
 

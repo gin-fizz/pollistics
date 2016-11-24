@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import org.bson.types.ObjectId;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,14 +38,14 @@ public class APIControllerTests {
 			HashMap<String, Integer> options = new HashMap<>();
 			options.put("Blauw", 1);
 			options.put("Rood", 12);
-			Poll poll1 = new Poll("Mooi kleur", options);
-			Poll poll2 = new Poll("Vies kleur", options);
+			Poll poll1 = new Poll(new ObjectId("5830364e1c27ea512eea301c"), "Mooi kleur", options);
+			Poll poll2 = new Poll(new ObjectId("5830364e1c27ea512eea301a"), "Vies kleur", options);
 			List<Poll> polls = Arrays.asList(poll1, poll2);
 			when(pollService.getAllPolls()).thenReturn(polls);
 
 			this.mockMvc.perform(get("/api/1/polls")).andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(content().json("[{\"name\":\"Mooi kleur\",\"options\":{\"Rood\":12,\"Blauw\":1}},{\"name\":\"Vies kleur\",\"options\":{\"Rood\":12,\"Blauw\":1}}]"));
+				.andExpect(content().json("[{\"id\": \"5830364e1c27ea512eea301c\", \"name\":\"Mooi kleur\",\"options\":{\"Rood\":12,\"Blauw\":1}},{\"id\": \"5830364e1c27ea512eea301a\", \"name\":\"Vies kleur\",\"options\":{\"Rood\":12,\"Blauw\":1}}]"));
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}
@@ -56,13 +57,13 @@ public class APIControllerTests {
 			HashMap<String, Integer> options = new HashMap<>();
 			options.put("Blauw", 1);
 			options.put("Rood", 12);
-			Poll poll = new Poll("Mooi kleur", options);
-			when(pollService.getPoll("someId")).thenReturn(poll);
+			Poll poll = new Poll(new ObjectId("5830364e1c27ea512eea301a"), "Mooi kleur", options);
+			when(pollService.getPoll("5830364e1c27ea512eea301a")).thenReturn(poll);
 
-			this.mockMvc.perform(get("/api/1/polls/someId"))
+			this.mockMvc.perform(get("/api/1/polls/5830364e1c27ea512eea301a"))
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(content().json("{\"name\":\"Mooi kleur\",\"options\":{\"Rood\":12,\"Blauw\":1}}"));
+				.andExpect(content().json("{\"id\": \"5830364e1c27ea512eea301a\", \"name\":\"Mooi kleur\",\"options\":{\"Rood\":12,\"Blauw\":1}}"));
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}

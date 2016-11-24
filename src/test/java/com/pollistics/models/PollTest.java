@@ -54,12 +54,15 @@ public class PollTest {
 
 	@Test
 	public void equalsTest() {
-		// not equal to meme
+		// not equal to empty object
 		Object o = new Object();
 		HashMap<String, Integer> options = new HashMap<>();
 		options.put("Blauw", 1);
 		Poll p = new Poll("Kleuren", options);
 		assertNotEquals(p, o);
+
+		// not equal to null
+		assertNotEquals(p, null);
 	}
 
 	/*

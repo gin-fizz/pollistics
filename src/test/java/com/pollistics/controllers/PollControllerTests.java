@@ -48,6 +48,8 @@ public class PollControllerTests {
 				.andExpect(model().attribute("poll", Matchers.<Poll>hasProperty("options", Matchers.<String,Integer>hasEntry("Blauw", 1))))
 				.andExpect(model().attribute("poll", Matchers.<Poll>hasProperty("options", Matchers.<String,Integer>hasEntry("Rood", 12))));
 
+			this.mockMvc.perform(get("/polls/someImpossibleId"))
+				.andExpect(status().isNotFound());
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}
@@ -67,17 +69,18 @@ public class PollControllerTests {
 			when(pollService.createPoll(title, options)).thenReturn("someId123");
 
 			this.mockMvc.perform(post("/polls/create")
-					.param("title", title)
-					.param("option1",option1)
-					.param("option2", option2)
-					.param("option3", option3))
-			.andDo(print())
-			.andExpect(status().is3xxRedirection())
-			.andExpect(redirectedUrl("/someId123"));
+				.param("title", title)
+				.param("option1",option1)
+				.param("option2", option2)
+				.param("option3", option3))
+				.andDo(print())
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/someId123"));
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}
 	}
+
 	@Test
 	public void voteTest() {
 		try {

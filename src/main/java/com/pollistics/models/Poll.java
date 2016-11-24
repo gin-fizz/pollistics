@@ -30,9 +30,9 @@ public class Poll {
 
 	public Poll() {
 	}
-	@JsonIgnore
-	public ObjectId getId() {
-		return id;
+
+	public String getId() {
+		return id.toHexString();
 	}
 
 	public String getName() {

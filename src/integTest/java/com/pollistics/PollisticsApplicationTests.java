@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.pollistics.models.Poll;
@@ -14,6 +15,7 @@ import com.pollistics.services.PollService;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -29,8 +31,9 @@ public class PollisticsApplicationTests {
 	 */
 	@Test
 	public void homeTest() {
-		String body = this.restTemplate.getForObject("/", String.class);
-		assertThat(body, containsString("Amerikaanse verkiezingen"));
+		ResponseEntity<String> response = restTemplate.getForEntity("/", String.class);
+		assertEquals(response.getStatusCodeValue(), 200);
+		assertThat(response.getBody(), containsString("Amerikaanse verkiezingen"));
 	}
 
 	/**
@@ -40,8 +43,25 @@ public class PollisticsApplicationTests {
 	public void pollByIdTest() {
 		Poll poll = pollService.getAllPolls().get(0);
 
-		String body = this.restTemplate.getForObject("/polls/" + poll.getId(), String.class);
-		assertThat(body, containsString(poll.getName()));
+		ResponseEntity<String> response = restTemplate.getForEntity("/polls/" + poll.getId(), String.class);
+		assertEquals(response.getStatusCodeValue(), 200);
+		assertThat(response.getBody(), containsString(poll.getName()));
 	}
-
+	
+	/**
+	 * Test that /polls/{notavalidid} returns an error page
+	 */
+	@Test
+	public void errorPollByIdTest() {
+		String uri = "/polls/notavalidid123";
+		String uri2 = "/notavalidid123";
+		
+		ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
+		ResponseEntity<String> responseRoot = restTemplate.getForEntity(uri2, String.class);
+		
+		assertEquals(response.getStatusCodeValue(), 404);
+		assertThat(response.getBody(), containsString("404"));
+		assertEquals(responseRoot.getStatusCodeValue(), 404);
+		assertThat(responseRoot.getBody(), containsString("404"));
+	}
 }

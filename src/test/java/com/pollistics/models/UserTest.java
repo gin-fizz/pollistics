@@ -5,7 +5,9 @@ import org.junit.Test;
 
 //import java.util.HashMap;
 
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertNotEquals;
 //import static org.junit.Assert.fail;
 
 public class UserTest {
@@ -24,6 +26,17 @@ public class UserTest {
 		Poll p = new Poll();
 		u.addPoll(p);
 		assertThat(u.getPolls().contains(p));
+	}
+
+	@Test
+	public void equalsTest() {
+		// not equal to empty object
+		Object o = new Object();
+		User u = new User("testuser", "testpass");
+		assertNotEquals(u, o);
+
+		// not equal to null
+		assertNotEquals(u, null);
 	}
 
 	/*

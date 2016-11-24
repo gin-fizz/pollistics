@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.util.HashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertNotEquals;
 //import static org.junit.Assert.fail;
 
 public class PollTest {
@@ -37,6 +38,7 @@ public class PollTest {
 		assertThat(p.getUser().equals(user));
 		User newUser = new User("other person", "pass");
 		p.setUser(newUser);
+
 		assertThat(p.getUser().equals(newUser));
 	}
 
@@ -48,6 +50,19 @@ public class PollTest {
 		boolean worked = p.vote("Blauw");
 		assert worked;
 		assertThat(p.getOptions().get("Blauw").equals(2));
+	}
+
+	@Test
+	public void equalsTest() {
+		// not equal to empty object
+		Object o = new Object();
+		HashMap<String, Integer> options = new HashMap<>();
+		options.put("Blauw", 1);
+		Poll p = new Poll("Kleuren", options);
+		assertNotEquals(p, o);
+
+		// not equal to null
+		assertNotEquals(p, null);
 	}
 
 	/*

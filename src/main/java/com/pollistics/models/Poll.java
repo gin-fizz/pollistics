@@ -1,5 +1,6 @@
 package com.pollistics.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -27,11 +28,17 @@ public class Poll {
 		this.user = user;
 	}
 
+	public Poll(ObjectId id, String name, HashMap<String, Integer> options) {
+		this.id = id;
+		this.name = name;
+		this.options = options;
+	}
+
 	public Poll() {
 	}
 
-	public ObjectId getId() {
-		return id;
+	public String getId() {
+		return id.toHexString();
 	}
 
 	public String getName() {
@@ -50,6 +57,7 @@ public class Poll {
 		this.options = options;
 	}
 
+	@JsonIgnore
 	public User getUser() {
 		return user;
 	}

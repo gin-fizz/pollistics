@@ -1,45 +1,29 @@
 package com.pollistics.controllers;
 
-import com.pollistics.models.Poll;
-import com.pollistics.services.PollService;
-import org.hamcrest.Matchers;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.HashMap;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.junit.Assert.fail;
+
+import java.util.List;
+import java.util.Arrays;
+import java.util.HashMap;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Arrays;
-import java.util.List;
+import com.pollistics.models.Poll;
+import com.pollistics.services.PollService;
 
-import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-/**
- * Created by Maliek on 24/11/2016.
- */
+@RunWith(SpringRunner.class)
+@WebMvcTest(APIController.class)
 public class APIControllerTests {
 	@MockBean
 	private PollService pollService;
@@ -59,7 +43,8 @@ public class APIControllerTests {
 			when(pollService.getAllPolls()).thenReturn(polls);
 
 			this.mockMvc.perform(get("/api/1/polls")).andDo(print())
-				.andExpect(status().isOk());
+				.andExpect(status().isOk())
+				.andExpect(content().json("[{\"name\":\"Mooi kleur\",\"options\":{\"Rood\":12,\"Blauw\":1}},{\"name\":\"Vies kleur\",\"options\":{\"Rood\":12,\"Blauw\":1}}]"));
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}
@@ -68,7 +53,16 @@ public class APIControllerTests {
 	@Test
 	public void findById() throws Exception {
 		try {
+			HashMap<String, Integer> options = new HashMap<>();
+			options.put("Blauw", 1);
+			options.put("Rood", 12);
+			Poll poll = new Poll("Mooi kleur", options);
+			when(pollService.getPoll("someId")).thenReturn(poll);
 
+			this.mockMvc.perform(get("/api/1/polls/someId"))
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(content().json("{\"name\":\"Mooi kleur\",\"options\":{\"Rood\":12,\"Blauw\":1}}"));
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}

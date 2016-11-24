@@ -12,7 +12,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api/1/polls")
+@RequestMapping("/api/1/polls") // todo: this should have a subclass or something for all poll-things
 public class APIController {
 	@Autowired
 	private PollService pollService;

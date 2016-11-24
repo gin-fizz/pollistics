@@ -17,12 +17,12 @@ public class APIController {
 	@Autowired
 	private PollService pollService;
 
-	@RequestMapping(method = RequestMethod.GET)
+	public @RequestMapping(method = RequestMethod.GET)
 	List<Poll> findAll() {
 		return pollService.getAllPolls();
 	}
 
-	@RequestMapping(value = "{id}", method = RequestMethod.GET)
+	public @RequestMapping(value = "{id}", method = RequestMethod.GET)
 	Poll findById(@PathVariable("id") String id) {
 		return pollService.getPoll(id);
 	}

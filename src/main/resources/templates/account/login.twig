@@ -1,0 +1,28 @@
+{% extends "../layouts/main.twig" %}
+
+{% block pageTitle %}Login - Pollistics{% endblock %}
+{% block description %}Login on Pollistics{% endblock %}
+
+{% block content %}
+<h1>Login</h1>
+
+<form method="post" action="/login">
+	<div>
+		<label for="username">Username</label>
+		<input type="text" name="username" id="username" placeholder="Username" required />
+		<p>{{ errors.getFieldError("username").getDefaultMessage() }}</p>
+	</div>
+	<div>
+		<label for="password">Password</label>
+		<input type="password" name="password" id="password" placeholder="Password" required />
+		<p>{{ errors.getFieldError("password").getDefaultMessage() }}</p>
+	</div>
+	<div>
+		<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}" />
+	</div>
+	<div>
+		<input type="submit" value="Login" />
+	</div>
+	<p>{% if request.getParameter('error') %}username or password is not correct{% endif %}</p>
+</form>
+{% endblock %}

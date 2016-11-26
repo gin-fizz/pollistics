@@ -1,0 +1,13 @@
+{% extends "../layouts/main.twig" %}
+
+{% block pageTitle %}Login - Pollistics{% endblock %}
+{% block description %}Login on Pollistics{% endblock %}
+
+{% block content %}
+<h1>Account</h1>
+<p>Username: {{ user.getUsername() }}</p>
+<p>Email: {{ user.getEmail() }}</p>
+<p>Name: {% if user.getName() %}{{ user.getName() }}{% else %}No name set{% endif %}</p>
+
+<a href="/account/polls">Show my polls</a>
+{% endblock %}

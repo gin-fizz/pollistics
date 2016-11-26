@@ -34,6 +34,7 @@ dependencies {
 	compile("org.springframework.boot:spring-boot-starter-data-mongodb")
 	compile("org.springframework.boot:spring-boot-devtools")
 	compile("org.springframework:spring-core")
+	compile("org.springframework.boot:spring-boot-starter-security")
 	testCompile("org.springframework.boot:spring-boot-starter-test")
 	testCompile("junit:junit")
 	testCompile(group: 'nl.jqno.equalsverifier', name: 'equalsverifier', version: '2.1.6')

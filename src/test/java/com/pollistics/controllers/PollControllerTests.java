@@ -45,8 +45,8 @@ public class PollControllerTests {
 			this.mockMvc.perform(get("/polls/someId123")).andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(model().attribute("poll", Matchers.<Poll>hasProperty("name", equalTo("Mooi kleur"))))
-				.andExpect(model().attribute("poll", Matchers.<Poll>hasProperty("options", Matchers.<String,Integer>hasEntry("Blauw", 1))))
-				.andExpect(model().attribute("poll", Matchers.<Poll>hasProperty("options", Matchers.<String,Integer>hasEntry("Rood", 12))));
+				.andExpect(model().attribute("poll", Matchers.<Poll>hasProperty("options", Matchers.hasEntry("Blauw", 1))))
+				.andExpect(model().attribute("poll", Matchers.<Poll>hasProperty("options", Matchers.hasEntry("Rood", 12))));
 
 		} catch (Exception e) {
 			fail(e.getMessage());

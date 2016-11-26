@@ -29,12 +29,12 @@
 			{% else %}
 			<a href="/login" class="cta">login</a>
 			<a href="/register" class="cta">register</a>
-			{% endif %}			
+			{% endif %}
 		</div>
 	</header>
 	{% block content %}{% endblock %}
 	{% block scripts %}
-	<script src="js/bundle.js"></script>
 	{% endblock %}
+	<script src="{{ asset('js/bundle.js') }}"></script>
 </body>
 </html>

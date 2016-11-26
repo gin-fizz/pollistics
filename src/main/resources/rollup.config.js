@@ -6,7 +6,7 @@ import uglify from 'rollup-plugin-uglify';
 export default {
 	entry: 'js/main.js',
 	dest: 'js/bundle.js',
-	format: 'umd',
+	format: 'iife',
 	moduleName: 'pollistics',
 	plugins: [
 		babel(),

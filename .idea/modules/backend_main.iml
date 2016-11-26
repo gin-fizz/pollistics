@@ -73,5 +73,6 @@
     <orderEntry type="library" name="Gradle: org.slf4j:jul-to-slf4j:1.7.21" level="project" />
     <orderEntry type="library" name="Gradle: org.slf4j:log4j-over-slf4j:1.7.21" level="project" />
     <orderEntry type="library" name="Gradle: ch.qos.logback:logback-core:1.1.7" level="project" />
+    <orderEntry type="library" name="Spring Security-3.2.5" level="project" />
   </component>
 </module>

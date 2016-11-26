@@ -1,6 +1,11 @@
 /* global options, d3pie */
+var pie = new d3pie('results', { // eslint-disable-line new-cap
+	data: {
+		content: options
+	}
+});
+
 var logout = document.getElementById('logout');
-console.log(logout);
 logout.onclick = (e) => {
 	httpPost('/logout')
 		.then((response) => {

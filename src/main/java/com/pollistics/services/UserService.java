@@ -14,30 +14,30 @@ import com.pollistics.repositories.UserRepository;
 @Service
 public class UserService implements UserDetailsService{
 
-    @Autowired
-    private UserRepository userRepository;
-    
-    private BCryptPasswordEncoder passwordEncoder;
-    
-    public boolean userExists(String username) {
-    	return userRepository.findByUsername(username) != null;
-    }
-    
-    public void createUser(User user) {
-    	passwordEncoder = new BCryptPasswordEncoder();
-    	String hashedPassword = passwordEncoder.encode(user.getPassword());
-    	user.setPassword(hashedPassword);
-    	userRepository.insert(user);
-    }
+	@Autowired
+	private UserRepository userRepository;
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
-        if(user == null){
-            throw new UsernameNotFoundException(username);
-        } else{
-            UserDetails details = new SecUserDetails(user);
-            return details;
-        }
-    }
+	private BCryptPasswordEncoder passwordEncoder;
+
+	public boolean userExists(String username) {
+		return userRepository.findByUsername(username) != null;
+	}
+
+	public void createUser(User user) {
+		passwordEncoder = new BCryptPasswordEncoder();
+		String hashedPassword = passwordEncoder.encode(user.getPassword());
+		user.setPassword(hashedPassword);
+		userRepository.insert(user);
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		User user = userRepository.findByUsername(username);
+		if(user == null){
+			throw new UsernameNotFoundException(username);
+		} else{
+			UserDetails details = new SecUserDetails(user);
+			return details;
+		}
+	}
 }

@@ -11,14 +11,14 @@ import com.pollistics.models.SecUserDetails;
 
 public class AuthHandlerInterceptor extends HandlerInterceptorAdapter {
 	@Override
-    public void postHandle(final HttpServletRequest request,
-            final HttpServletResponse response, final Object handler,
-            final ModelAndView modelAndView) throws Exception {
-		
-		Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();		
-        if (modelAndView != null && user instanceof SecUserDetails) {
-            modelAndView.getModelMap().addAttribute("user", ((SecUserDetails) user).getUser());
-        }
-    }
+	public void postHandle(final HttpServletRequest request,
+						   final HttpServletResponse response, final Object handler,
+						   final ModelAndView modelAndView) throws Exception {
+
+		Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (modelAndView != null && user instanceof SecUserDetails) {
+			modelAndView.getModelMap().addAttribute("user", ((SecUserDetails) user).getUser());
+		}
+	}
 }
 

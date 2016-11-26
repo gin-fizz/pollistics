@@ -11,13 +11,16 @@ import org.jtwig.web.servlet.JtwigRenderer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+import com.pollistics.utils.AuthHandlerInterceptor;
 
 @EnableWebMvc
 @Configuration
 public class WebConfig extends WebMvcConfigurerAdapter implements JtwigViewResolverConfigurer {
-
+	
 	@Override
 	public void configure(JtwigViewResolver viewResolver) {
 		viewResolver.setRenderer(new JtwigRenderer(
@@ -29,6 +32,11 @@ public class WebConfig extends WebMvcConfigurerAdapter implements JtwigViewResol
 				.build()
 		));
 	}
+	
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+			registry.addInterceptor(authInterceptor());
+	}
 
 	@Bean
     public AssetResolver assetResolver () {
@@ -36,6 +44,11 @@ public class WebConfig extends WebMvcConfigurerAdapter implements JtwigViewResol
         assetResolver.setPrefix("");
         return assetResolver;
     }
+	
+	@Bean
+	public AuthHandlerInterceptor authInterceptor() {
+	    return new AuthHandlerInterceptor();
+	}
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

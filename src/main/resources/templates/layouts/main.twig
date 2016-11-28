@@ -25,7 +25,7 @@
 			{# <a href="/me"><img src="/src/img/user.svg" alt="me"></a> #}
 			{% if user %}
 			<a href="/account" class="cta">{{ user.getUsername() }}</a>
-			<button id="logout" class="cta">logout</button>
+			<a href="/logout" class="cta">logout</a>
 			{% else %}
 			<a href="/login" class="cta">login</a>
 			<a href="/register" class="cta">register</a>

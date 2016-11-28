@@ -17,7 +17,6 @@ public class User {
 
 	@Length(max=100, message="Name can't be more than 100 characters long")
 	private String name;
-	@Length(min=8, max=120, message="Username has to be 8 to 20 characters long")
 	private String username;
 	@Email(message="Email is invalid")
 	private String email;

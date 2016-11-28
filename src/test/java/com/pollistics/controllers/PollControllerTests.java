@@ -43,13 +43,16 @@ public class PollControllerTests {
 			options.put("Blauw", 1);
 			options.put("Rood", 12);
 			when(pollService.getPoll("someId123")).thenReturn(new Poll("Mooi kleur", options));
+			when(pollService.getPoll("NotARealId")).thenReturn(null);
 
 			this.mockMvc.perform(get("/polls/someId123")).andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(model().attribute("poll", Matchers.<Poll>hasProperty("name", equalTo("Mooi kleur"))))
 				.andExpect(model().attribute("poll", Matchers.<Poll>hasProperty("options", Matchers.hasEntry("Blauw", 1))))
 				.andExpect(model().attribute("poll", Matchers.<Poll>hasProperty("options", Matchers.hasEntry("Rood", 12))));
-
+			
+			this.mockMvc.perform(get("/polls/NotARealId")).andDo(print())
+				.andExpect(status().isNotFound());
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}

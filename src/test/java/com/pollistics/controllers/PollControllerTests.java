@@ -3,6 +3,7 @@ package com.pollistics.controllers;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -16,17 +17,18 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-
 import com.pollistics.models.Poll;
 import com.pollistics.services.PollService;
 
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(PollController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class PollControllerTests {
 	@MockBean
 	private PollService pollService;
@@ -66,7 +68,7 @@ public class PollControllerTests {
 			options.put(option3, 0);
 			when(pollService.createPoll(title, options)).thenReturn("someId123");
 
-			this.mockMvc.perform(post("/polls/create")
+			this.mockMvc.perform(post("/polls/create").with(csrf())
 					.param("title", title)
 					.param("option1",option1)
 					.param("option2", option2)
@@ -87,8 +89,8 @@ public class PollControllerTests {
 			Poll p = new Poll("Welk kleur?", options);
 			when(pollService.voteOption(p, "Rood")).thenReturn(true);
 
-			this.mockMvc.perform(post("/polls/vote/someId123")
-				.param("option", "Rood"))
+			this.mockMvc.perform(post("/polls/vote/someId123").with(csrf())
+				.param("option", "Rood"))			
 				.andDo(print())
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/someId123"));

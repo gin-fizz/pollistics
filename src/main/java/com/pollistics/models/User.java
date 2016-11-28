@@ -27,12 +27,14 @@ public class User {
 		this.username = username;
 		this.email = email;
 		this.password = password;
+		id = ObjectId.get();
 		this.polls = new ArrayList<>();
 	}
 
-	public User(String name, String password) {
-		this.name = name;
+	public User(String username, String password) {
+		this.username = username;
 		this.password = password;
+		id = ObjectId.get();
 		this.polls = new ArrayList<>();
 	}
 

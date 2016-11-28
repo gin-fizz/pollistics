@@ -22,7 +22,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
 import com.pollistics.services.UserService;
 
 @RunWith(SpringRunner.class)
@@ -46,7 +45,7 @@ public class AccountControllerTests {
 			fail(e.getMessage());
 		}
 	}
-	
+
 	@Test
 	@WithMockUser
 	public void getAccountAuthTest() {
@@ -58,7 +57,7 @@ public class AccountControllerTests {
 			fail(e.getMessage());
 		}
 	}
-	
+
 	@Test
 	public void getRegisterTest() {
 		try {
@@ -66,13 +65,13 @@ public class AccountControllerTests {
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andReturn();
-			
+
 			assertThat(result.getResponse().getContentAsString().contains("Register"));
 		} catch(Exception e) {
 			fail(e.getMessage());
 		}
 	}
-	
+
 	@Test
 	public void postValidRegisterTest() {
 		try {
@@ -90,7 +89,7 @@ public class AccountControllerTests {
 			fail(e.getMessage());
 		}
 	}
-	
+
 	@Test
 	public void postNonMatchingPasswordsRegisterTest() {
 		try {
@@ -108,7 +107,7 @@ public class AccountControllerTests {
 			fail(e.getMessage());
 		}
 	}
-	
+
 	@Test
 	public void postTakenUsernameRegisterTest() {
 		try {

@@ -17,14 +17,12 @@ public class UserService implements UserDetailsService{
 	@Autowired
 	private UserRepository userRepository;
 
-	private BCryptPasswordEncoder passwordEncoder;
-
 	public boolean userExists(String username) {
 		return userRepository.findByUsername(username) != null;
 	}
 
 	public void createUser(User user) {
-		passwordEncoder = new BCryptPasswordEncoder();
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		String hashedPassword = passwordEncoder.encode(user.getPassword());
 		user.setPassword(hashedPassword);
 		userRepository.insert(user);

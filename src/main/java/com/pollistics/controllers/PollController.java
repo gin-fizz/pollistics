@@ -52,7 +52,7 @@ public class PollController {
 	public String voteOptions(@CookieValue(value = "id", defaultValue = "") String cookieIdValue, @PathVariable String pollId, HttpServletRequest request, HttpServletResponse response, Model model) {
 		if (cookie.getValue().contains(pollId)) {
 			Poll p = pollService.getPoll(pollId);
-			model.addAttribute("msg","You already voted for poll: " + p.getName());
+			model.addAttribute("msg", MessageFormat.format("You already voted for poll: {0}", p.getName()));
 			model.addAttribute("pollId", pollId);
 			response.setStatus(400);
 			return "error/400";

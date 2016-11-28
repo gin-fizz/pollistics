@@ -52,10 +52,6 @@ public class UserServiceTests {
 
 	@Test(expected = UsernameNotFoundException.class)
 	public void loadUserByUsernameTestFailing() {
-		try {
-			userService.loadUserByUsername("stupid fake username that doesn't exist");
-		} catch (Exception e) {
-			fail(e.getMessage());
-		}
+		userService.loadUserByUsername("stupid fake username that doesn't exist");
 	}
 }

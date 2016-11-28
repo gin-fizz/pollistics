@@ -39,8 +39,8 @@ public class User {
 	public User() {
 	}
 
-	public ObjectId getId() {
-		return id;
+	public String getId() {
+		return id.toHexString();
 	}
 
 	public String getName() {

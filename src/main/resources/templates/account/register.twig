@@ -1,0 +1,37 @@
+{% extends "../layouts/main.twig" %}
+
+{% block pageTitle %}Register - Pollistics{% endblock %}
+{% block description %}Register an account{% endblock %}
+
+{% block content %}
+<h1>Register</h1>
+
+<form method="post" action="/register">
+	<div>
+		<label for="username">Username</label>
+		<input type="text" name="username" id="username" placeholder="Username" required />
+		<p>{{ errors.getFieldError("username").getDefaultMessage() }}</p>
+	</div>
+	<div>
+		<label for="email">Email</label>
+		<input type="email" name="email" id="email" placeholder="Email" required />
+		<p>{{ errors.getFieldError("email").getDefaultMessage() }}</p>
+	</div>
+	<div>
+		<label for="password">Password</label>
+		<input type="password" name="password" id="password" placeholder="Password" required />
+		<p>{{ errors.getFieldError("password").getDefaultMessage() }}</p>
+	</div>
+	<div>
+		<label for="password1">Confirm password</label>
+		<input type="password" name="password1" id="password1" placeholder="Confirm password" required />
+		<p>{{ errors.getFieldError("password1").getDefaultMessage() }}</p>
+	</div>
+	<div>
+		<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}"/>
+	</div>
+	<div>
+		<input type="submit" value="Register" />
+	</div>
+</form>
+{% endblock %}

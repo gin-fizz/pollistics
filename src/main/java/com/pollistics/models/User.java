@@ -1,26 +1,40 @@
 package com.pollistics.models;
 
+import org.bson.types.ObjectId;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection="users")
 public class User {
 	@Id
 	private ObjectId id;
 
+	@Length(max=100, message="Name can't be more than 100 characters long")
 	private String name;
+	private String username;
+	@Email(message="Email is invalid")
+	private String email;
 	private String password;
 	private List<Poll> polls;
 
-	// todo: hash password 🍃
-	public User(String name, String password) {
-		this.name = name;
+	public User(String username, String email, String password) {
+		this.username = username;
+		this.email = email;
 		this.password = password;
+		id = ObjectId.get();
+		this.polls = new ArrayList<>();
+	}
+
+	public User(String username, String password) {
+		this.username = username;
+		this.password = password;
+		id = ObjectId.get();
 		this.polls = new ArrayList<>();
 	}
 
@@ -39,6 +53,14 @@ public class User {
 		this.name = name;
 	}
 
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 	public String getPassword() {
 		return password;
 	}
@@ -49,6 +71,14 @@ public class User {
 
 	public List<Poll> getPolls() {
 		return polls;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public void addPoll(Poll e) {

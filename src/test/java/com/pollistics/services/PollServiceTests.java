@@ -1,18 +1,17 @@
 package com.pollistics.services;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+import com.pollistics.PollisticsApplication;
+import com.pollistics.models.Poll;
+import com.pollistics.repositories.PollRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.pollistics.PollisticsApplication;
-import com.pollistics.models.Poll;
-import com.pollistics.repositories.PollRepository;
-
 import java.util.HashMap;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = PollisticsApplication.class)
@@ -26,7 +25,7 @@ public class PollServiceTests {
 	@Test
 	public void getPollByIdTest() {
 		Poll poll = pollRepo.findAll().get(0);
-		Poll pollById = pollService.getPoll(poll.getId().toString());
+		Poll pollById = pollService.getPoll(poll.getId());
 		assertThat(poll.equals(pollById));
 	}
 

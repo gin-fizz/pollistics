@@ -23,11 +23,18 @@
 		<a href="/"><img src="/src/img/logo.svg" alt="home"></a>
 		<div class="user">
 			{# <a href="/me"><img src="/src/img/user.svg" alt="me"></a> #}
+			{% if user %}
+			<a href="/account" class="cta">{{ user.getUsername() }}</a>
+			<a href="/logout" class="cta">logout</a>
+			{% else %}
 			<a href="/login" class="cta">login</a>
 			<a href="/register" class="cta">register</a>
+			{% endif %}
 		</div>
 	</header>
 	{% block content %}{% endblock %}
-	{% block scripts %}{% endblock %}
+	{% block scripts %}
+	{% endblock %}
+	<script src="{{ asset('js/bundle.js') }}"></script>
 </body>
 </html>

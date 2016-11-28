@@ -10,5 +10,6 @@ before_install:
 before_script:
   - mongo pollistics --eval 'db.polls.insert({"name":"Amerikaanse verkiezingen","options":{"trump":206,"clinton":2}})'
   - mongo pollistics --eval 'db.polls.insert({"name":"Favoriet kleur","options":{"root":1,"blauw":80}})'
+  - mongo pollistics --eval 'db.users.insert({"name":"some-user","password":"$2a$10$rAzmBTawjivQDfTDzZFaQOoGwFhnA4mt7VuWpkWhdLKQFlY/0m3bm"})'
 after_success:
   - codacy-coverage-reporter -l Java -r build/reports/jacoco/test/jacocoTestReport.xml

@@ -11,8 +11,11 @@ import org.jtwig.web.servlet.JtwigRenderer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+import com.pollistics.utils.AuthHandlerInterceptor;
 
 @EnableWebMvc
 @Configuration
@@ -30,15 +33,25 @@ public class WebConfig extends WebMvcConfigurerAdapter implements JtwigViewResol
 		));
 	}
 
-	@Bean
-    public AssetResolver assetResolver () {
-        BaseAssetResolver assetResolver = new BaseAssetResolver();
-        assetResolver.setPrefix("");
-        return assetResolver;
-    }
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(authInterceptor());
+	}
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**").addResourceLocations("classpath:/");
-    }
+	@Bean
+	public AssetResolver assetResolver () {
+		BaseAssetResolver assetResolver = new BaseAssetResolver();
+		assetResolver.setPrefix("");
+		return assetResolver;
+	}
+
+	@Bean
+	public AuthHandlerInterceptor authInterceptor() {
+		return new AuthHandlerInterceptor();
+	}
+
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/**").addResourceLocations("classpath:/");
+	}
 }

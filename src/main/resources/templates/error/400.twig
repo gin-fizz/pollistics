@@ -1,0 +1,11 @@
+{% extends "../layouts/main.twig" %}
+
+{% block pageTitle %}Already voted - Pollistics{% endblock %}
+{% block description %}Pollistics encountered an error: 400 Already Voted{% endblock %}
+
+{% block content %}
+	<h1>Already Voted</h1>
+	<p>{{ msg }}</p>
+	<a href="/polls/{{ pollId }}">Go back to the Poll</a>
+
+{% endblock %}

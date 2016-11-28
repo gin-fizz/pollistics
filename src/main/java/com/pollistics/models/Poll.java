@@ -84,10 +84,12 @@ public class Poll {
 
 	@Override
 	public boolean equals(Object obj) {
-		if(this == obj)
+		if(this == obj) {
 			return true;
-		if((obj == null) || (obj.getClass() != this.getClass()))
+		}
+		if((obj == null) || (obj.getClass() != this.getClass())) {
 			return false;
+		}
 
 		Poll poll = (Poll) obj;
 		return this.getId().equals(poll.getId());

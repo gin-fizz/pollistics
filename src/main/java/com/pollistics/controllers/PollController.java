@@ -63,7 +63,7 @@ public class PollController {
 			} else {
 				value = MessageFormat.format("{0}-{1}", pollId, cookieIdValue);
 			}
-			final int expiryTimeCookie = 60 * 60 * 24;
+			final int expiryTimeCookie = 2147483647; // maximum of int
 			final String cookiePath = "/";
 			cookie.setValue(value);
 			cookie.setMaxAge(expiryTimeCookie);

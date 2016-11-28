@@ -36,6 +36,7 @@ dependencies {
 	compile("org.springframework:spring-core")
 	compile("org.springframework.boot:spring-boot-starter-security")
 	testCompile("org.springframework.boot:spring-boot-starter-test")
+	testCompile("org.springframework.security:spring-security-test")
 	testCompile("junit:junit")
 	testCompile(group: 'nl.jqno.equalsverifier', name: 'equalsverifier', version: '2.1.6')
 }

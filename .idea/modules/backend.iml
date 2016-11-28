@@ -23,9 +23,5 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Jersey-2.2" level="project" />
-    <orderEntry type="library" name="Gradle: org.springframework:spring-core:4.3.4.RELEASE" level="project" />
-    <orderEntry type="library" name="Gradle: org.springframework:spring-webmvc:4.3.4.RELEASE" level="project" />
-    <orderEntry type="library" name="Spring Security-3.2.5" level="project" />
   </component>
 </module>

@@ -1,6 +1,17 @@
 package com.pollistics.controllers;
 
-import com.pollistics.services.UserService;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,16 +22,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.when;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import com.pollistics.services.UserService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -120,6 +122,36 @@ public class AccountControllerTests {
 				.andExpect(status().isOk())
 				.andReturn();
 			assertThat(result.getResponse().getContentAsString().contains("Username is already taken"));
+		} catch(Exception e) {
+			fail(e.getMessage());
+		}
+	}
+	
+	@Test
+	public void getLoginTest() {
+		try {
+			MvcResult result = this.mockMvc.perform(get("/login"))
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andReturn();
+			assertThat(result.getResponse().getContentAsString().contains("Login"));
+		} catch(Exception e) {
+			fail(e.getMessage());
+		}
+	}
+	
+	@Test
+	@WithMockUser
+	public void logoutTest() {
+		
+		try {
+			this.mockMvc.perform(get("/"))
+				.andExpect(authenticated());
+			MvcResult result = this.mockMvc.perform(get("/logout"))
+				.andExpect(unauthenticated())
+				.andExpect(status().is3xxRedirection())
+				.andReturn();
+			assertThat(result.getResponse().getRedirectedUrl().equals("/login?logout"));
 		} catch(Exception e) {
 			fail(e.getMessage());
 		}

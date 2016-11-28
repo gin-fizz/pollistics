@@ -49,7 +49,7 @@ public class PollController {
 	}
 
 	@PostMapping(value = "/polls/vote/{pollId}")
-	public String voteOptions(@CookieValue(value = "id", defaultValue = "") String cookieIdValue,@PathVariable String pollId, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String voteOptions(@CookieValue(value = "id", defaultValue = "") String cookieIdValue, @PathVariable String pollId, HttpServletRequest request, HttpServletResponse response, Model model) {
 		if (cookie.getValue().contains(pollId)) {
 			Poll p = pollService.getPoll(pollId);
 			model.addAttribute("msg","You already voted for poll: " + p.getName());
@@ -57,14 +57,15 @@ public class PollController {
 			response.setStatus(400);
 			return "error/400";
 		} else {
+			String value;
 			if (cookie.getValue().equals("")) {
-				cookieIdValue = pollId;
+				value = pollId;
 			} else {
-				cookieIdValue = MessageFormat.format("{0}-{1}", pollId, cookieIdValue);
+				value = MessageFormat.format("{0}-{1}", pollId, cookieIdValue);
 			}
 			final int expiryTimeCookie = 60 * 60 * 24;
 			final String cookiePath = "/";
-			cookie.setValue(cookieIdValue);
+			cookie.setValue(value);
 			cookie.setMaxAge(expiryTimeCookie);
 			cookie.setPath(cookiePath);
 			response.addCookie(cookie);

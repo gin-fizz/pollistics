@@ -44,4 +44,31 @@ public class UserValidatorTest {
 		userValidator.validate(user, errors);
 		assertTrue(errors.hasFieldErrors("username"));
 	}
+	
+	@Test
+	public void validatePasswordTest() {		
+		User user = new User();
+		DirectFieldBindingResult errors = new DirectFieldBindingResult(user, "user");
+		UserValidator userValidator = new UserValidator();
+		user.setUsername("valid_user"); 
+		
+		user.setPassword("Testje1"); // too short	
+		userValidator.validate(user, errors);
+		assertTrue(errors.hasFieldErrors("password"));
+		
+		errors =  new DirectFieldBindingResult(user, "user");
+		user.setPassword("TestTestTest"); // no number
+		userValidator.validate(user, errors);
+		assertTrue(errors.hasFieldErrors("password"));
+		
+		errors =  new DirectFieldBindingResult(user, "user");
+		user.setPassword("testtest123"); // no uppercase letter
+		userValidator.validate(user, errors);
+		assertTrue(errors.hasFieldErrors("password"));  
+		
+		errors =  new DirectFieldBindingResult(user, "user");
+		user.setPassword("TESTTEST123"); // no lowercase character
+		userValidator.validate(user, errors);
+		assertTrue(errors.hasFieldErrors("password"));
+	}
 }

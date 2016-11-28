@@ -9,23 +9,19 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-
-import java.util.ArrayList;
+import java.text.MessageFormat;
 import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Stream;
 
 @Controller
 public class PollController {
+
 	@Autowired
 	private PollService pollService;
-	private Cookie myCookie = new Cookie("id", "");
+	private Cookie cookie = new Cookie("id", "");
 
 	@GetMapping(value = {"/polls/{pollId}", "/{pollId}"})
 	public String pollDetail(@PathVariable String pollId, Model model, HttpServletResponse response) {
@@ -54,24 +50,24 @@ public class PollController {
 
 	@PostMapping(value = "/polls/vote/{pollId}")
 	public String voteOptions(@CookieValue(value = "id", defaultValue = "") String cookieIdValue,@PathVariable String pollId, HttpServletRequest request, HttpServletResponse response, Model model) {
-		if (myCookie.getValue().contains(pollId)) {
+		if (cookie.getValue().contains(pollId)) {
 			Poll p = pollService.getPoll(pollId);
 			model.addAttribute("msg","You already voted for poll: " + p.getName());
 			model.addAttribute("pollId", pollId);
 			response.setStatus(400);
 			return "error/400";
 		} else {
-			if (myCookie.getValue() == "") {
+			if (cookie.getValue().equals("")) {
 				cookieIdValue = pollId;
 			} else {
-				cookieIdValue = pollId + "-" + cookieIdValue;
+				cookieIdValue = MessageFormat.format("{0}-{1}", pollId, cookieIdValue);
 			}
 			final int expiryTimeCookie = 60 * 60 * 24;
 			final String cookiePath = "/";
-			myCookie.setValue(cookieIdValue);
-			myCookie.setMaxAge(expiryTimeCookie);
-			myCookie.setPath(cookiePath);
-			response.addCookie(myCookie);
+			cookie.setValue(cookieIdValue);
+			cookie.setMaxAge(expiryTimeCookie);
+			cookie.setPath(cookiePath);
+			response.addCookie(cookie);
 			String option = request.getParameter("option");
 			Poll p = pollService.getPoll(pollId);
 			pollService.voteOption(p, option);

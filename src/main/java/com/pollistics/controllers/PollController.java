@@ -20,7 +20,7 @@ public class PollController {
 	private PollService pollService;
 
 	@GetMapping(value = {"/polls/{pollId}", "/{pollId}"})
-	public String greeting(@PathVariable String pollId, Model model, HttpServletResponse response) {
+	public String pollDetail(@PathVariable String pollId, Model model, HttpServletResponse response) {
 		Poll poll = pollService.getPoll(pollId);
 		if(poll == null) {
 			response.setStatus(404);

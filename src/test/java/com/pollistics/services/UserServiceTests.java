@@ -34,6 +34,7 @@ public class UserServiceTests {
 		User u = userRepo.findAll().get(0);
 		boolean result = userService.userExists(u.getUsername());
 		assert(result);
+		assert(!userService.userExists("stupid fake username"));
 	}
 
 	@Test

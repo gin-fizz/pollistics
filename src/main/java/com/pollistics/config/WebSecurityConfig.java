@@ -20,40 +20,40 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserService userService;
-	
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-	        .csrf()
-	        	.csrfTokenRepository(csrfTokenRepository())
-	        	.and()
-            .authorizeRequests()
-            	.antMatchers("/account/**").authenticated()            
-            	.anyRequest().permitAll()                    
-                .and()
-            .formLogin()
-                .loginPage("/login")
-                .permitAll()
-                .and()
-            .logout()
-                .permitAll();
-    }
-   
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
-    }
-    
-    @Bean
+
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http
+			.csrf()
+			.csrfTokenRepository(csrfTokenRepository())
+			.and()
+			.authorizeRequests()
+			.antMatchers("/account/**").authenticated()
+			.anyRequest().permitAll()
+			.and()
+			.formLogin()
+			.loginPage("/login")
+			.permitAll()
+			.and()
+			.logout()
+			.permitAll();
+	}
+
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
+	}
+
+	@Bean
 	public PasswordEncoder passwordEncoder(){
 		PasswordEncoder encoder = new BCryptPasswordEncoder();
 		return encoder;
 	}
-    
-    private CsrfTokenRepository csrfTokenRepository() 
-    { 
-        HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository(); 
-        repository.setSessionAttributeName("_csrf");
-        return repository; 
-    }
+
+	private CsrfTokenRepository csrfTokenRepository()
+	{
+		HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
+		repository.setSessionAttributeName("_csrf");
+		return repository;
+	}
 }

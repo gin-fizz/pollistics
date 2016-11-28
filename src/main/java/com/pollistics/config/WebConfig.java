@@ -20,7 +20,7 @@ import com.pollistics.utils.AuthHandlerInterceptor;
 @EnableWebMvc
 @Configuration
 public class WebConfig extends WebMvcConfigurerAdapter implements JtwigViewResolverConfigurer {
-	
+
 	@Override
 	public void configure(JtwigViewResolver viewResolver) {
 		viewResolver.setRenderer(new JtwigRenderer(
@@ -32,26 +32,26 @@ public class WebConfig extends WebMvcConfigurerAdapter implements JtwigViewResol
 				.build()
 		));
 	}
-	
+
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-			registry.addInterceptor(authInterceptor());
+		registry.addInterceptor(authInterceptor());
 	}
 
 	@Bean
-    public AssetResolver assetResolver () {
-        BaseAssetResolver assetResolver = new BaseAssetResolver();
-        assetResolver.setPrefix("");
-        return assetResolver;
-    }
-	
+	public AssetResolver assetResolver () {
+		BaseAssetResolver assetResolver = new BaseAssetResolver();
+		assetResolver.setPrefix("");
+		return assetResolver;
+	}
+
 	@Bean
 	public AuthHandlerInterceptor authInterceptor() {
-	    return new AuthHandlerInterceptor();
+		return new AuthHandlerInterceptor();
 	}
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**").addResourceLocations("classpath:/");
-    }
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/**").addResourceLocations("classpath:/");
+	}
 }

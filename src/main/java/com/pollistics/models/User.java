@@ -1,14 +1,14 @@
 package com.pollistics.models;
 
+import org.bson.types.ObjectId;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.Length;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection="users")
 public class User {
@@ -22,7 +22,7 @@ public class User {
 	private String email;
 	private String password;
 	private List<Poll> polls;
-	
+
 	public User(String username, String email, String password) {
 		this.username = username;
 		this.email = email;

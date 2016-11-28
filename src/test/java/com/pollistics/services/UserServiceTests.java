@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = PollisticsApplication.class)
@@ -25,8 +26,12 @@ public class UserServiceTests {
 
 	@Test
 	public void createUserTest() {
-		User u = new User("gebruikersnaam", "Azerty123");
-		userService.createUser(u);
+		try {
+			User u = new User("gebruikersnaam", "Azerty123");
+			userService.createUser(u);
+		} catch (Exception e) {
+			fail(e.getMessage());
+		}
 	}
 
 	@Test
@@ -47,6 +52,10 @@ public class UserServiceTests {
 
 	@Test(expected = UsernameNotFoundException.class)
 	public void loadUserByUsernameTestFailing() {
-		userService.loadUserByUsername("stupid fake username that doesn't exist");
+		try {
+			userService.loadUserByUsername("stupid fake username that doesn't exist");
+		} catch (Exception e) {
+			fail(e.getMessage());
+		}
 	}
 }

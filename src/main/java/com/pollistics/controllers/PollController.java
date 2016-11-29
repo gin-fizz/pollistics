@@ -42,7 +42,7 @@ public class PollController {
 
 	//Multiple options
 	@PostMapping(value = "/polls/create")
-	public String createPoll(HttpServletRequest request, Model model) {
+	public String createPoll(HttpServletRequest request) {
 		String title = request.getParameter("title");
 		String option1 = request.getParameter("option1");
 		String option2 = request.getParameter("option2");

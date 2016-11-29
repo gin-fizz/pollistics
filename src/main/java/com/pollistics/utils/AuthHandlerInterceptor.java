@@ -1,6 +1,7 @@
 package com.pollistics.utils;
 
-import com.pollistics.models.SecUserDetails;
+import com.pollistics.models.User;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.ModelAndView;
@@ -18,8 +19,8 @@ public class AuthHandlerInterceptor extends HandlerInterceptorAdapter {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth != null) {
 			Object user = auth.getPrincipal();
-			if (modelAndView != null && user instanceof SecUserDetails) {
-				modelAndView.getModelMap().addAttribute("user", ((SecUserDetails) user).getUser());
+			if (modelAndView != null && user instanceof User) {
+				modelAndView.getModelMap().addAttribute("user", (User) user);
 			}
 		}
 	}

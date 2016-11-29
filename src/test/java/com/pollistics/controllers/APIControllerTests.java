@@ -82,13 +82,11 @@ public class APIControllerTests {
 			String option2 = "Rood";
 			options.put(option1, 0);
 			options.put(option2, 0);
-			Poll poll = new Poll(new ObjectId("5830364e1c27ea512eea301b"), title, options);
 			when(pollService.createPoll(title, options)).thenReturn("5830364e1c27ea512eea301b");
 
 			this.mockMvc.perform(post("/api/1/polls/create")
-				.param("title", title)
-				.param("option1", option1)
-				.param("option2", option2))
+				.contentType("application/json")
+				.content("{ \"id\": \"583c9f56dc797b53378cd09b\", \"name\": \"hahah\", \"options\": { \"hha\": 0, \"hahahahahah\": 0 } }"))
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(content().json("{\"id\": \"5830364e1c27ea512eea301b\", \"name\":\"Mooi kleur\",\"options\":{\"Rood\":0,\"Blauw\":0}}"));

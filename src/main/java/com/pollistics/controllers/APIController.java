@@ -3,8 +3,9 @@ package com.pollistics.controllers;
 import com.pollistics.models.Poll;
 import com.pollistics.services.PollService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpServletRequest;
 
 import java.util.List;
 import java.util.HashMap;
@@ -30,14 +31,10 @@ public class APIController {
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public Poll createPoll(HttpServletRequest request) {
-		String title = request.getParameter("title");
-		String option1 = request.getParameter("option1");
-		String option2 = request.getParameter("option2");
-		HashMap<String, Integer> options = new HashMap<>();
-		options.put(option1, 0);
-		options.put(option2, 0);
+	public @ResponseBody ResponseEntity<Poll> createPoll(@RequestBody Poll poll) {
+		String title = poll.getName();
+		HashMap<String, Integer> options = poll.getOptions();
 		String id = pollService.createPoll(title, options);
-		return pollService.getPoll(id);
+		return new ResponseEntity<Poll>(pollService.getPoll(id), HttpStatus.OK);
 	}
 }

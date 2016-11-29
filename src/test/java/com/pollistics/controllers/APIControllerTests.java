@@ -89,7 +89,7 @@ public class APIControllerTests {
 				.content("{ \"id\": \"583c9f56dc797b53378cd09b\", \"name\": \"hahah\", \"options\": { \"hha\": 0, \"hahahahahah\": 0 } }"))
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(content().json("{\"id\": \"5830364e1c27ea512eea301b\", \"name\":\"Mooi kleur\",\"options\":{\"Rood\":0,\"Blauw\":0}}"));
+				.andExpect(content().json("{ \"id\": \"583c9f56dc797b53378cd09b\", \"name\": \"hahah\", \"options\": { \"hha\": 0, \"hahahahahah\": 0 } }"));
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}

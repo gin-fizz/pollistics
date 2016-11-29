@@ -32,9 +32,8 @@
 			{% endif %}
 		</div>
 	</header>
-	{% block content %}{% endblock %}
-	{% block scripts %}
-	{% endblock %}
+	<main>{% block content %}{% endblock %}</main>
+	{% block scripts %}{% endblock %}
 	<script src="{{ asset('js/bundle.js') }}"></script>
 </body>
 </html>

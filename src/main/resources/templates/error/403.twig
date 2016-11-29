@@ -1,0 +1,10 @@
+{% extends "../layouts/main.twig" %}
+
+{% block pageTitle %}Not Allowed - Pollistics{% endblock %}
+{% block description %}Pollistics encountered an error: 403 Not allowed{% endblock %}
+
+{% block content %}
+	<h1>403 Not Allowed</h1>
+	<p>{{ msg }}</p>
+	<a href="{{ previous }}">Go back to the previous page</a>
+{% endblock %}

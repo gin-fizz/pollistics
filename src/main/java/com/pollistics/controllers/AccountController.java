@@ -1,5 +1,6 @@
 package com.pollistics.controllers;
 
+import com.pollistics.models.SecUserDetails;
 import com.pollistics.models.User;
 import com.pollistics.models.validators.UserValidator;
 import com.pollistics.services.UserService;
@@ -69,5 +70,12 @@ public class AccountController {
 			userService.createUser(user);
 			return "redirect:/";
 		}
+	}
+	
+	@GetMapping(value = "/account/polls")
+	public String polls(Model model) {
+		SecUserDetails user = (SecUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		model.addAttribute("polls", user.getUser().getPolls());
+		return "account/polls";
 	}
 }

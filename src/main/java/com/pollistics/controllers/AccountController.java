@@ -70,4 +70,9 @@ public class AccountController {
 			return "redirect:/";
 		}
 	}
+	
+	@GetMapping(value = "/account/polls")
+	public String polls() {
+		return "account/polls";
+	}
 }

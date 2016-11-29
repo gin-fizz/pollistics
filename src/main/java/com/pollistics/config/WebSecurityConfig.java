@@ -26,6 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 			.csrf()
 			.csrfTokenRepository(csrfTokenRepository())
+			.ignoringAntMatchers("/api/**")
 			.and()
 			.authorizeRequests()
 			.antMatchers("/account/**").authenticated()

@@ -14,7 +14,6 @@ public class HomeController {
 
 	@GetMapping(value = "/")
 	public String greeting(Model model) {
-		model.addAttribute("greeting", "Hello World!");
 		return "index";
 	}
 }

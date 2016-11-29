@@ -1,7 +1,6 @@
 package com.pollistics.services;
 
 import com.pollistics.PollisticsApplication;
-import com.pollistics.models.SecUserDetails;
 import com.pollistics.models.User;
 import com.pollistics.repositories.UserRepository;
 import org.junit.Test;
@@ -46,8 +45,7 @@ public class UserServiceTests {
 	public void loadUserByUsernameTest() {
 		User u = userRepo.findAll().get(0);
 		UserDetails det = userService.loadUserByUsername(u.getUsername());
-		SecUserDetails secUser = new SecUserDetails(u);
-		assertThat(det.equals(secUser));
+		assertThat(det.equals(u));
 	}
 
 	@Test(expected = UsernameNotFoundException.class)

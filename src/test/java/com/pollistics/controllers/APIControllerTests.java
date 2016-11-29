@@ -2,6 +2,7 @@ package com.pollistics.controllers;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -45,7 +46,8 @@ public class APIControllerTests {
 			List<Poll> polls = Arrays.asList(poll1, poll2);
 			when(pollService.getAllPolls()).thenReturn(polls);
 
-			this.mockMvc.perform(get("/api/1/polls")).andDo(print())
+			this.mockMvc.perform(get("/api/1/polls"))
+				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(content().json("[{\"id\": \"5830364e1c27ea512eea301c\", \"name\":\"Mooi kleur\",\"options\":{\"Rood\":12,\"Blauw\":1}},{\"id\": \"5830364e1c27ea512eea301a\", \"name\":\"Vies kleur\",\"options\":{\"Rood\":12,\"Blauw\":1}}]"));
 		} catch (Exception e) {
@@ -71,4 +73,27 @@ public class APIControllerTests {
 		}
 	}
 
+	@Test
+	public void createPollTest() throws Exception {
+		try {
+			HashMap<String, Integer> options = new HashMap<>();
+			String title = "Mooi kleur";
+			String option1 = "Blauw";
+			String option2 = "Rood";
+			options.put(option1, 0);
+			options.put(option2, 0);
+			Poll poll = new Poll(new ObjectId("5830364e1c27ea512eea301b"), title, options);
+			when(pollService.createPoll(title, options)).thenReturn("5830364e1c27ea512eea301b");
+
+			this.mockMvc.perform(post("/api/1/polls/create")
+				.param("title", title)
+				.param("option1", option1)
+				.param("option2", option2))
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(content().json("{\"id\": \"5830364e1c27ea512eea301b\", \"name\":\"Mooi kleur\",\"options\":{\"Rood\":0,\"Blauw\":0}}"));
+		} catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
 }

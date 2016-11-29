@@ -86,7 +86,7 @@ public class APIControllerTests {
 
 			this.mockMvc.perform(post("/api/1/polls/create")
 				.contentType(APPLICATION_JSON_UTF8)
-				.content("{ \"id\": \"583c9f56dc797b53378cd09b\", \"name\": \"hahah\", \"options\": { \"hha\": 0, \"hahahahahah\": 0 } }"))
+				.content("{ \"name\": \"Welk kleur kies je?\", \"options\": { \"Blauw\": 0, \"Rood\": 0 } }"))
 				.andDo(print())
 				.andExpect(status().isOk());
 		} catch (Exception e) {

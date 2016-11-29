@@ -10,10 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.HashMap;
 
-/**
- * Created by Maliek on 24/11/2016.
- */
-
 @RestController
 @RequestMapping("/api/1/polls") // todo: this should have a subclass or something for all poll-things
 public class APIController {
@@ -35,6 +31,6 @@ public class APIController {
 		String title = poll.getName();
 		HashMap<String, Integer> options = poll.getOptions();
 		String id = pollService.createPoll(title, options);
-		return new ResponseEntity<Poll>(pollService.getPoll(id), HttpStatus.OK);
+		return new ResponseEntity<>(pollService.getPoll(id), HttpStatus.OK);
 	}
 }

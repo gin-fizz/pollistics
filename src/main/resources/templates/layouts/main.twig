@@ -20,7 +20,7 @@
 </head>
 <body>
 	<header>
-		<a href="/"><img src="/src/img/logo.svg" alt="home"></a>
+		<a href="/"><img src="/img/logo.svg" alt="home"></a>
 		<div class="user">
 			{# <a href="/me"><img src="/src/img/user.svg" alt="me"></a> #}
 			{% if user %}
@@ -32,9 +32,8 @@
 			{% endif %}
 		</div>
 	</header>
-	{% block content %}{% endblock %}
-	{% block scripts %}
-	{% endblock %}
+	<main>{% block content %}{% endblock %}</main>
+	{% block scripts %}{% endblock %}
 	<script src="{{ asset('js/bundle.js') }}"></script>
 </body>
 </html>

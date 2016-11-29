@@ -23,6 +23,12 @@ public class PollController {
 	private PollService pollService;
 	private Cookie cookie = new Cookie("id", "");
 
+	@GetMapping(value = "/polls")
+	public String allPolls(Model model) {
+		model.addAttribute("polls", pollService.getAllPolls());
+		return "polls/overview";
+	}
+
 	@GetMapping(value = {"/polls/{pollId}", "/{pollId}"})
 	public String pollDetail(@PathVariable String pollId, Model model, HttpServletResponse response) {
 		Poll poll = pollService.getPoll(pollId);
@@ -53,9 +59,9 @@ public class PollController {
 		if (cookie.getValue().contains(pollId)) {
 			Poll p = pollService.getPoll(pollId);
 			model.addAttribute("msg", MessageFormat.format("You already voted for poll: {0}", p.getName()));
-			model.addAttribute("pollId", pollId);
-			response.setStatus(400);
-			return "error/400";
+			model.addAttribute("previous", MessageFormat.format("/{0}/", pollId));
+			response.setStatus(403);
+			return "error/403";
 		} else {
 			String value;
 			if (cookie.getValue().equals("")) {

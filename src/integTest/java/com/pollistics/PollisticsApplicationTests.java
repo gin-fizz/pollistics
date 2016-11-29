@@ -33,7 +33,7 @@ public class PollisticsApplicationTests {
 	public void homeTest() {
 		ResponseEntity<String> response = restTemplate.getForEntity("/", String.class);
 		assertEquals(response.getStatusCodeValue(), 200);
-		assertThat(response.getBody(), containsString("Amerikaanse verkiezingen"));
+		assertThat(response.getBody(), containsString("Pollistics"));
 	}
 
 	/**
@@ -47,7 +47,7 @@ public class PollisticsApplicationTests {
 		assertEquals(response.getStatusCodeValue(), 200);
 		assertThat(response.getBody(), containsString(poll.getName()));
 	}
-	
+
 	/**
 	 * Test that /polls/{notavalidid} returns an error page
 	 */
@@ -55,10 +55,10 @@ public class PollisticsApplicationTests {
 	public void errorPollByIdTest() {
 		String uri = "/polls/notavalidid123";
 		String uri2 = "/notavalidid123";
-		
+
 		ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
 		ResponseEntity<String> responseRoot = restTemplate.getForEntity(uri2, String.class);
-		
+
 		assertEquals(response.getStatusCodeValue(), 404);
 		assertThat(response.getBody(), containsString("404"));
 		assertEquals(responseRoot.getStatusCodeValue(), 404);

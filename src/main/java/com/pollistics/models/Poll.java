@@ -16,22 +16,45 @@ public class Poll {
 	private String name;
 	private HashMap<String,Integer> options;
 	private User user;
+	private String slug;
+
+	// todo: orden these constructors with `this(...arg)`
 
 	public Poll(String name, HashMap<String,Integer> options) {
 		this.name = name;
 		this.options = options;
+		this.slug = createSlug();
 	}
 
-	public Poll(String name, HashMap<String,Integer> options, User user) {
-		this.name = name;
-		this.options = options;
-		this.user = user;
+	private String createSlug() {
+		return this.getId(); // todo: short slug
 	}
 
 	public Poll(ObjectId id, String name, HashMap<String, Integer> options) {
 		this.id = id;
 		this.name = name;
 		this.options = options;
+		this.slug = createSlug();
+	}
+
+	public Poll(String name, HashMap<String,Integer> options, String slug) {
+		this.name = name;
+		this.options = options;
+		this.slug = slug;
+	}
+
+	public Poll(String name, HashMap<String,Integer> options, User user, String slug) {
+		this.name = name;
+		this.options = options;
+		this.user = user;
+		this.slug = slug;
+	}
+
+	public Poll(String name, HashMap<String,Integer> options, User user) {
+		this.name = name;
+		this.options = options;
+		this.user = user;
+		this.slug = createSlug();
 	}
 
 	public Poll() {
@@ -64,6 +87,10 @@ public class Poll {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public String getSlug() {
+		return slug;
 	}
 
 	public boolean vote(String option) {

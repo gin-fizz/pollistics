@@ -30,7 +30,8 @@ public class APIController {
 	public @ResponseBody ResponseEntity<Poll> createPoll(@RequestBody Poll poll) {
 		String title = poll.getName();
 		HashMap<String, Integer> options = poll.getOptions();
-		String id = pollService.createPoll(title, options);
+		String slug = poll.getSlug();
+		String id = pollService.createPoll(title, options, slug);
 		return new ResponseEntity<>(pollService.getPoll(id), HttpStatus.OK);
 	}
 }

@@ -50,8 +50,14 @@ public class PollController {
 		options.put(option1, 0);
 		options.put(option2, 0);
 		options.put(option3, 0);
-		String id = pollService.createPoll(title, options);
-		return "redirect:/" + id;
+		String slugParam = request.getParameter("slug");
+		String slug;
+		if (slugParam.length() > 0) {
+			slug = pollService.createPoll(title, options, slugParam);
+		} else {
+			slug = pollService.createPoll(title, options);
+		}
+		return "redirect:/" + slug;
 	}
 
 	@PostMapping(value = "/polls/vote/{pollId}")

@@ -23,8 +23,15 @@
 	<div class="poll--option">
 		<input type="submit" value="create" />
 	</div>
-	<div>
-		<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}"/>
-	</div>
+	<details class="poll--advanced">
+		<summary>advanced options</summary>
+		<div class="poll--option">
+			<label for="slug">Short link</label>
+			<div>
+				<span>https://pollistics.com/</span><input type="text" name="slug" id="slug" />
+			</div>
+		</div>
+	</details>
+	<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}"/>
 </form>
 {% endblock %}

@@ -3,7 +3,7 @@
 {% block pageTitle %}Pollistics Home{% endblock %}
 
 {% block content %}
-<form method="post" action="/polls/create" class="poll">
+<form method="post" action="/polls/create" class="poll" id="createPollForm">
 	<div class="poll--option poll--title">
 		<label for="title">Title</label>
 		<input type="text" name="title" id="title" />
@@ -25,6 +25,28 @@
 	</div>
 	<div>
 		<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}"/>
+	</div>
+</form>
+<form enctype="application/json">
+	<div class="poll--option poll--title">
+		<label for="title">Title</label>
+		<input type="text" name="title" id="title" />
+	</div>
+	<div class="poll--option">
+		<label for="option1">Option 1</label>
+		<input type="text" name="options[option1]" id="option1" />
+	</div>
+	<div class="poll--option">
+		<label for="option1">Option 2</label>
+		<input type="text" name="options[option2]" id="option2" />
+	</div>
+	<div class="poll--option">
+		<label for="option1">Option 3</label>
+		<input type="text" name="options[option3]" id="option3" />
+	</div>
+	<div class="poll--option">
+		<label for="option1">Option 4</label>
+		<input type="text" name="options[option4]" id="option4" />
 	</div>
 </form>
 {% endblock %}

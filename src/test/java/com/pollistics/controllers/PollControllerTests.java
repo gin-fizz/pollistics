@@ -63,19 +63,20 @@ public class PollControllerTests {
 		try {
 			HashMap<String, Integer> options = new HashMap<>();
 			String title = "Poll title";
+			String option0 = "option0";
 			String option1 = "option1";
 			String option2 = "option2";
-			String option3 = "option3";
+			options.put(option0, 0);
 			options.put(option1, 0);
 			options.put(option2, 0);
-			options.put(option3, 0);
 			when(pollService.createPoll(title, options)).thenReturn("someId123");
 
 			this.mockMvc.perform(post("/polls/create").with(csrf())
 				.param("title", title)
-				.param("option1",option1)
+				.param("option0",option0)
+				.param("option1", option1)
 				.param("option2", option2)
-				.param("option3", option3))
+				.param("option3", ""))
 				.andDo(print())
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/someId123"));

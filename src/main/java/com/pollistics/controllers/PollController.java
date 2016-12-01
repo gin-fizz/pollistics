@@ -40,13 +40,12 @@ public class PollController {
 		return "polls/detail";
 	}
 
-	//Multiple options
 	@PostMapping(value = "/polls/create")
 	public String createPoll(HttpServletRequest request) {
 		String title = request.getParameter("title");
 		HashMap<String, Integer> options = new HashMap<>();
 		int i = 0;
-		while (request.getParameter("option" + i) != "") {
+		while (!request.getParameter("option" + i).equals("")) {
 			String option = request.getParameter("option" + i);
 			options.put(option, 0);
 			i++;

@@ -44,13 +44,13 @@ public class PollController {
 	@PostMapping(value = "/polls/create")
 	public String createPoll(HttpServletRequest request) {
 		String title = request.getParameter("title");
-		String option1 = request.getParameter("option1");
-		String option2 = request.getParameter("option2");
-		String option3 = request.getParameter("option3");
 		HashMap<String, Integer> options = new HashMap<>();
-		options.put(option1, 0);
-		options.put(option2, 0);
-		options.put(option3, 0);
+		int i = 0;
+		while (request.getParameter("option" + i) != "") {
+			String option = request.getParameter("option" + i);
+			options.put(option, 0);
+			i++;
+		}
 		String id = pollService.createPoll(title, options);
 		return "redirect:/" + id;
 	}

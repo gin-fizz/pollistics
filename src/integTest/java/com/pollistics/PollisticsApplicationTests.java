@@ -45,7 +45,7 @@ public class PollisticsApplicationTests {
 
 		ResponseEntity<String> response = restTemplate.getForEntity("/polls/" + poll.getId(), String.class);
 		assertEquals(response.getStatusCodeValue(), 200);
-		assertThat(response.getBody(), containsString(poll.getName()));
+		assertThat(response.getBody(), containsString(poll.getTitle()));
 	}
 
 	/**

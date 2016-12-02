@@ -8,11 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.HashMap;
 
-/**
- * Created by Maliek on 24/11/2016.
- */
+import javax.validation.Valid;
+
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/1/polls") // todo: this should have a subclass or something for all poll-things
@@ -31,8 +30,8 @@ public class APIController {
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public @ResponseBody ResponseEntity<Poll> createPoll(@RequestBody Poll poll) {
-		String title = poll.getName();
+	public @ResponseBody ResponseEntity<Poll> createPoll(@Valid @RequestBody Poll poll) {
+		String title = poll.getTitle();
 		HashMap<String, Integer> options = poll.getOptions();
 		String id = pollService.createPoll(title, options);
 		return new ResponseEntity<Poll>(pollService.getPoll(id), HttpStatus.OK);

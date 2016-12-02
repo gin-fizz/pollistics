@@ -39,7 +39,7 @@ public class PollServiceTests {
 	@Test
 	public void createPollTest() {
 		Poll poll = pollRepo.findAll().get(0);
-		String id = pollService.createPoll(poll.getName(), poll.getOptions());
+		String id = pollService.createPoll(poll.getTitle(), poll.getOptions());
 		assertThat(id instanceof String);
 
 		Poll pollById = pollService.getPoll(id);

@@ -18,7 +18,10 @@
 		{%- endfor %}
 		<button type="submit">Vote</button>
 	</form>
-
+	<form method="post" action="/polls/delete/{{ poll.id }}">
+		<input type="submit" value="delete">
+		<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}"/>
+	</form>
 	<div id="results"></div>
 {% endblock %}
 

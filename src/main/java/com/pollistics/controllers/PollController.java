@@ -54,6 +54,17 @@ public class PollController {
 		return "redirect:/" + id;
 	}
 
+	@PostMapping(value = "/polls/delete/{pollId}")
+	public String deletePoll(@PathVariable String pollId, HttpServletResponse response) {
+		boolean result = pollService.deletePoll(pollId);
+		if (result) {
+			return "redirect:/";
+		} else {
+			response.setStatus(404);
+			return "error/404";
+		}
+	}
+
 	@PostMapping(value = "/polls/vote/{pollId}")
 	public String voteOptions(@CookieValue(value = "id", defaultValue = "") String cookieIdValue, @PathVariable String pollId, HttpServletRequest request, HttpServletResponse response, Model model) {
 		if (cookie.getValue().contains(pollId)) {

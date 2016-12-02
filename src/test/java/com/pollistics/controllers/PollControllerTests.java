@@ -85,6 +85,26 @@ public class PollControllerTests {
 	}
 
 	@Test
+	public void deletePollTest() {
+		try {
+			HashMap<String, Integer> options = new HashMap<>();
+			String title = "Poll title";
+			String option1 = "option1";
+			String option2 = "option2";
+			String option3 = "option3";
+			options.put(option1, 0);
+			options.put(option2, 0);
+			options.put(option3, 0);
+			when(pollService.createPoll(title, options)).thenReturn("someId123");
+
+			this.mockMvc.perform(post("/polls/delete/someId123").with(csrf()))
+				.andExpect(redirectedUrl("/"));
+		} catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
+
+	@Test
 	public void voteTest() {
 		try {
 			HashMap<String, Integer> options = new HashMap<>();

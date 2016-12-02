@@ -47,6 +47,16 @@ public class PollServiceTests {
 	}
 
 	@Test
+	public void deletePollTest() {
+		Poll first = pollRepo.findAll().get(0);
+		pollService.deletePoll(first.getId());
+		Poll second = pollRepo.findAll().get(0);
+		assertThat(!first.equals(second));
+		boolean result = pollService.deletePoll("stomme id die niet bestaat");
+		assertThat(!result);
+	}
+
+	@Test
 	public void voteOptionTest() {
 		Poll poll = pollRepo.findAll().get(0);
 		HashMap<String, Integer> opts = poll.getOptions();

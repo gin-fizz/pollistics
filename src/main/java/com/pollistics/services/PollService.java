@@ -31,6 +31,15 @@ public class PollService {
 		return poll.getSlug();
 	}
 
+	public boolean deletePoll(String id) {
+		try {
+			pollRepo.delete(id);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
 	public boolean voteOption(Poll p, String option) {
 		boolean result = p.vote(option);
 		if (!result) {

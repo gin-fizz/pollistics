@@ -47,6 +47,14 @@ public class PollServiceTests {
 	}
 
 	@Test
+	public void deleteTest() {
+		Poll first = pollRepo.findAll().get(0);
+		pollService.deletePoll(first.getId());
+		Poll second = pollRepo.findAll().get(0);
+		assertThat(!first.equals(second));
+	}
+
+	@Test
 	public void voteOptionTest() {
 		Poll poll = pollRepo.findAll().get(0);
 		HashMap<String, Integer> opts = poll.getOptions();

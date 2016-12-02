@@ -32,6 +32,9 @@
 			{% endif %}
 		</div>
 	</header>
+	{% if message %}
+		<div class="message">{{ message }}</div>
+	{% endif %}
 	<main>{% block content %}{% endblock %}</main>
 	{% block scripts %}{% endblock %}
 	<script src="{{ asset('js/bundle.js') }}"></script>

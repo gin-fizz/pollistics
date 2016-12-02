@@ -88,10 +88,14 @@ public class PollControllerTests {
 	public void deletePollTest() {
 		try {
 			when(pollService.deletePoll("someId123")).thenReturn(true);
+			when(pollService.deletePoll("someFakeId")).thenReturn(false);
 
 			this.mockMvc.perform(post("/polls/delete/someId123").with(csrf()))
 				.andExpect(flash().attribute("message", "The poll has deleted successfully!"))
 				.andExpect(redirectedUrl("/"));
+
+			this.mockMvc.perform(post("/polls/delete/someFakeId").with(csrf()))
+				.andExpect(status().is4xxClientError());
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}

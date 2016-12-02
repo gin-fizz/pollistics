@@ -47,7 +47,7 @@ public class PollServiceTests {
 	}
 
 	@Test
-	public void deleteTest() {
+	public void deletePollTest() {
 		Poll first = pollRepo.findAll().get(0);
 		pollService.deletePoll(first.getId());
 		Poll second = pollRepo.findAll().get(0);

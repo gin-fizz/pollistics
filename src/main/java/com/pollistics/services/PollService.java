@@ -33,7 +33,6 @@ public class PollService {
 		} catch (Exception e) {
 			return false;
 		}
-
 	}
 
 	public boolean voteOption(Poll p, String option) {

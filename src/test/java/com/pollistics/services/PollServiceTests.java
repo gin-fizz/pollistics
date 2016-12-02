@@ -52,6 +52,8 @@ public class PollServiceTests {
 		pollService.deletePoll(first.getId());
 		Poll second = pollRepo.findAll().get(0);
 		assertThat(!first.equals(second));
+		boolean result = pollService.deletePoll("stomme id die niet bestaat");
+		assertThat(!result);
 	}
 
 	@Test

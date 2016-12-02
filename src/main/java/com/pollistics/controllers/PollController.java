@@ -59,8 +59,8 @@ public class PollController {
 	public String deletePoll(@PathVariable String pollId, HttpServletResponse response, RedirectAttributes redirectAttrs) {
 		boolean result = pollService.deletePoll(pollId);
 		if (result) {
+			redirectAttrs.addFlashAttribute("delete", "The poll has deleted successfully!");
 			return "redirect:/";
-			RedirectAttributes delete = redirectAttrs.addFlashAttribute("delete", "The poll has deleted successfully!");
 		} else {
 			response.setStatus(404);
 			return "error/404";

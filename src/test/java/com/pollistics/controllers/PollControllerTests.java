@@ -2,6 +2,7 @@ package com.pollistics.controllers;
 
 import com.pollistics.models.Poll;
 import com.pollistics.services.PollService;
+import org.bson.types.ObjectId;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,10 +44,12 @@ public class PollControllerTests {
 			HashMap<String, Integer> options = new HashMap<>();
 			options.put("Blauw", 1);
 			options.put("Rood", 12);
-			when(pollService.getPoll("someId123")).thenReturn(new Poll("Mooi kleur", options));
+			Poll poll = new Poll(new ObjectId("5830364e1c27ea512eea301c"), "Mooi kleur", options);
+			when(pollService.getPoll("5830364e1c27ea512eea301c")).thenReturn(poll);
 			when(pollService.getPoll("NotARealId")).thenReturn(null);
 
-			this.mockMvc.perform(get("/polls/someId123")).andDo(print())
+			this.mockMvc.perform(get("/polls/5830364e1c27ea512eea301c"))
+				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(model().attribute("poll", Matchers.<Poll>hasProperty("name", equalTo("Mooi kleur"))))
 				.andExpect(model().attribute("poll", Matchers.<Poll>hasProperty("options", Matchers.hasEntry("Blauw", 1))))
@@ -69,16 +72,17 @@ public class PollControllerTests {
 			options.put(option1, 0);
 			options.put(option2, 0);
 			options.put(option3, 0);
-			when(pollService.createPoll(title, options)).thenReturn("someId123");
+			when(pollService.createPoll(title, options)).thenReturn("5830364e1c27ea512eea301a");
 
-			this.mockMvc.perform(post("/polls/create").with(csrf())
+			this.mockMvc.perform(post("/polls/create")
+				.with(csrf())
 				.param("title", title)
 				.param("option1",option1)
 				.param("option2", option2)
 				.param("option3", option3))
 				.andDo(print())
 				.andExpect(status().is3xxRedirection())
-				.andExpect(redirectedUrl("/someId123"));
+				.andExpect(redirectedUrl("/5830364e1c27ea512eea301a"));
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}
@@ -107,14 +111,14 @@ public class PollControllerTests {
 			HashMap<String, Integer> options = new HashMap<>();
 			options.put("Blauw", 1);
 			options.put("Rood", 12);
-			Poll p = new Poll("Welk kleur?", options);
+			Poll p = new Poll(new ObjectId("5830364e1c27ea512eea301a"), "Welk kleur?", options);
 			when(pollService.voteOption(p, "Rood")).thenReturn(true);
 
-			this.mockMvc.perform(post("/polls/vote/someId123").with(csrf())
+			this.mockMvc.perform(post("/polls/vote/5830364e1c27ea512eea301a").with(csrf())
 				.param("option", "Rood"))
 				.andDo(print())
 				.andExpect(status().is3xxRedirection())
-				.andExpect(redirectedUrl("/someId123"))
+				.andExpect(redirectedUrl("/5830364e1c27ea512eea301a"))
 				.andExpect(cookie().exists("id"));
 		} catch (Exception e) {
 			fail(e.getMessage());
@@ -127,9 +131,9 @@ public class PollControllerTests {
 			HashMap<String, Integer> options = new HashMap<>();
 			options.put("Blauw", 1);
 			options.put("Rood", 12);
-			Poll poll1 = new Poll("Mooi kleur", options);
-			Poll poll2 = new Poll("Vies kleur", options);
-			Poll poll3 = new Poll("Raar kleur", options);
+			Poll poll1 = new Poll(new ObjectId("5830364e1c27ea512eea301a"), "Mooi kleur", options);
+			Poll poll2 = new Poll(new ObjectId("5830364e1c27ea512eea301b"), "Vies kleur", options);
+			Poll poll3 = new Poll(new ObjectId("5830364e1c27ea512eea301c"), "Raar kleur", options);
 			List<Poll> polls = Arrays.asList(poll1, poll2, poll3);
 			when(pollService.getAllPolls()).thenReturn(polls);
 

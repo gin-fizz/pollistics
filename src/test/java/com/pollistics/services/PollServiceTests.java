@@ -43,7 +43,7 @@ public class PollServiceTests {
 		assertThat(id instanceof String);
 
 		Poll pollById = pollService.getPoll(id);
-		assertThat(id.equals(pollById.getId()));
+		assertThat(poll.equals(pollById));
 	}
 
 	@Test

@@ -27,7 +27,8 @@ public class Poll {
 	}
 
 	private String createSlug() {
-		return this.getId(); // todo: short slug
+		// random three-word combo
+		return "meme-meme-meme";
 	}
 
 	public Poll(ObjectId id, String name, HashMap<String, Integer> options) {

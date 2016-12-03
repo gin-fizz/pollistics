@@ -1,12 +1,15 @@
 package com.pollistics.controllers;
 
 import com.pollistics.models.Poll;
+import com.pollistics.models.validators.PollValidator;
 import com.pollistics.services.PollService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -14,6 +17,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+
 import java.text.MessageFormat;
 import java.util.HashMap;
 
@@ -42,17 +47,27 @@ public class PollController {
 	}
 
 	@PostMapping(value = "/polls/create")
-	public String createPoll(HttpServletRequest request) {
-		String title = request.getParameter("title");
-		String option1 = request.getParameter("option1");
-		String option2 = request.getParameter("option2");
-		String option3 = request.getParameter("option3");
+	public String createPoll(HttpServletRequest request, @Valid @ModelAttribute("poll") Poll poll, BindingResult result, Model model) {
 		HashMap<String, Integer> options = new HashMap<>();
-		options.put(option1, 0);
-		options.put(option2, 0);
-		options.put(option3, 0);
-		String id = pollService.createPoll(title, options);
-		return "redirect:/" + id;
+		int i = 0;
+		while (!request.getParameter("option" + i).trim().isEmpty()) {
+			String option = request.getParameter("option" + i);
+			options.put(option, 0);
+			i++;
+		}
+		poll.setOptions(options);
+		
+		PollValidator pollValidator = new PollValidator();
+		pollValidator.validate(poll, result);
+
+		if(result.hasErrors()) {
+			model.addAttribute("errors", result);
+			return "index";
+		}
+		else {
+			String id = pollService.createPoll(poll.getTitle(), options);
+			return "redirect:/" + id;
+		}		
 	}
 
 	@PostMapping(value = "/polls/delete/{pollId}")
@@ -71,7 +86,7 @@ public class PollController {
 	public String voteOptions(@CookieValue(value = "id", defaultValue = "") String cookieIdValue, @PathVariable String pollId, HttpServletRequest request, HttpServletResponse response, Model model) {
 		if (cookie.getValue().contains(pollId)) {
 			Poll p = pollService.getPoll(pollId);
-			model.addAttribute("msg", MessageFormat.format("You already voted for poll: {0}", p.getName()));
+			model.addAttribute("msg", MessageFormat.format("You already voted for poll: {0}", p.getTitle()));
 			model.addAttribute("previous", MessageFormat.format("/{0}/", pollId));
 			response.setStatus(403);
 			return "error/403";

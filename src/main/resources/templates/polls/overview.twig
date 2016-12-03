@@ -6,7 +6,7 @@
 	<ul>
 		{% for poll in polls %}
 			<li>
-				<a href="/polls/{{ poll.id }}">{{ poll.name }} {{ poll.options }}</a>
+				<a href="/polls/{{ poll.id }}">{{ poll.title }} {{ poll.options }}</a>
 			</li>
 		{% endfor %}
 	</ul>

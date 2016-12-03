@@ -61,7 +61,7 @@ public class AccountController {
 		UserValidator userValidator = new UserValidator();
 		userValidator.validate(user, result);
 
-		if (result.hasErrors()){
+		if(result.hasErrors()) {
 			model.addAttribute("errors", result);
 			return "account/register";
 		}

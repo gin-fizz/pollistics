@@ -53,7 +53,7 @@ public class PollController {
 		options.put(option3, 0);
 		String slugParam = request.getParameter("slug");
 		String slug;
-		if (slugParam != null && slugParam.length() > 0) {
+		if (slugParam != null) {
 			slug = pollService.createPoll(title, options, slugParam);
 		} else {
 			slug = pollService.createPoll(title, options);

@@ -49,7 +49,7 @@ public class APIControllerTests {
 			this.mockMvc.perform(get("/api/1/polls"))
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(content().json("[{\"id\": \"5830364e1c27ea512eea301c\", \"name\":\"Mooi kleur\",\"options\":{\"Rood\":12,\"Blauw\":1}},{\"id\": \"5830364e1c27ea512eea301a\", \"name\":\"Vies kleur\",\"options\":{\"Rood\":12,\"Blauw\":1}}]"));
+				.andExpect(content().json("[{\"id\": \"5830364e1c27ea512eea301c\", \"title\":\"Mooi kleur\",\"options\":{\"Rood\":12,\"Blauw\":1}},{\"id\": \"5830364e1c27ea512eea301a\", \"title\":\"Vies kleur\",\"options\":{\"Rood\":12,\"Blauw\":1}}]"));
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}
@@ -67,7 +67,7 @@ public class APIControllerTests {
 			this.mockMvc.perform(get("/api/1/polls/5830364e1c27ea512eea301a"))
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(content().json("{\"id\": \"5830364e1c27ea512eea301a\", \"name\":\"Mooi kleur\",\"options\":{\"Rood\":12,\"Blauw\":1}}"));
+				.andExpect(content().json("{\"id\": \"5830364e1c27ea512eea301a\", \"title\":\"Mooi kleur\",\"options\":{\"Rood\":12,\"Blauw\":1}}"));
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}
@@ -86,7 +86,7 @@ public class APIControllerTests {
 
 			this.mockMvc.perform(post("/api/1/polls/create")
 				.contentType(APPLICATION_JSON_UTF8)
-				.content("{ \"name\": \"Welk kleur kies je?\", \"options\": { \"Blauw\": 0, \"Rood\": 0 } }"))
+				.content("{ \"title\": \"Welk kleur kies je?\", \"options\": { \"Blauw\": 0, \"Rood\": 0 } }"))
 				.andDo(print())
 				.andExpect(status().isOk());
 		} catch (Exception e) {

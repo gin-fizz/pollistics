@@ -1,10 +1,10 @@
 {% extends "../layouts/main.twig" %}
 
-{% block pageTitle %}{{ poll.name }}{% endblock %}
-{% block description %}{{ poll.name }} {{ poll.options }}{% endblock %}
+{% block pageTitle %}{{ poll.title }}{% endblock %}
+{% block description %}{{ poll.title }} {{ poll.options }}{% endblock %}
 
 {% block content %}
-	<h1>{{ poll.name }} (id: {{ poll.id }})</h1>
+	<h1>{{ poll.title }} (id: {{ poll.id }})</h1>
 
 	<form method="post" action="/polls/vote/{{ poll.id }}" class="poll">
 		{%- for option, nVotes in poll.options %}

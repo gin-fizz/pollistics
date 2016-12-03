@@ -12,11 +12,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.junit.Assert.fail;
@@ -51,7 +53,7 @@ public class PollControllerTests {
 			this.mockMvc.perform(get("/polls/5830364e1c27ea512eea301c"))
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(model().attribute("poll", Matchers.<Poll>hasProperty("name", equalTo("Mooi kleur"))))
+				.andExpect(model().attribute("poll", Matchers.<Poll>hasProperty("title", equalTo("Mooi kleur"))))
 				.andExpect(model().attribute("poll", Matchers.<Poll>hasProperty("options", Matchers.hasEntry("Blauw", 1))))
 				.andExpect(model().attribute("poll", Matchers.<Poll>hasProperty("options", Matchers.hasEntry("Rood", 12))));
 			this.mockMvc.perform(get("/polls/someImpossibleId"))
@@ -62,31 +64,56 @@ public class PollControllerTests {
 	}
 
 	@Test
-	public void createPollTest() {
+	public void createValidPollTest() {
+
 		try {
 			HashMap<String, Integer> options = new HashMap<>();
 			String title = "Poll title";
+			String option0 = "option0";
 			String option1 = "option1";
 			String option2 = "option2";
-			String option3 = "option3";
+			options.put(option0, 0);
 			options.put(option1, 0);
 			options.put(option2, 0);
-			options.put(option3, 0);
 			when(pollService.createPoll(title, options)).thenReturn("5830364e1c27ea512eea301a");
 
-			this.mockMvc.perform(post("/polls/create")
+			MvcResult result = this.mockMvc.perform(post("/polls/create")
 				.with(csrf())
 				.param("title", title)
-				.param("option1",option1)
+				.param("option0", option0)
+				.param("option1", option1)
 				.param("option2", option2)
-				.param("option3", option3))
+				.param("option3", " "))
 				.andDo(print())
 				.andExpect(status().is3xxRedirection())
-				.andExpect(redirectedUrl("/5830364e1c27ea512eea301a"));
-		} catch (Exception e) {
+				.andExpect(redirectedUrl("/5830364e1c27ea512eea301a"))
+				.andReturn();
+			assertThat(result.getResponse().getContentAsString().contains(option2));
+		} catch(Exception e) {
 			fail(e.getMessage());
 		}
 	}
+
+	/*@Test
+	public void createInvalidPollTest() {
+		try {
+			HashMap<String, Integer> options = new HashMap<>();
+			String title = "Poll title";
+			String option0 = "option0";
+			options.put(option0, 0);
+			when(pollService.createPoll(title, options)).thenReturn("someId123");
+
+			MvcResult result = this.mockMvc.perform(post("/polls/create")
+				.with(csrf())
+				.param("title", title)
+				.param("option0",option0))
+				.andReturn();
+			assertThat(result.getResponse().getContentAsString().contains("A poll has at least 2 options"));
+
+		} catch(Exception e) {
+			fail(e.getMessage());
+		}
+	}*/
 
 	@Test
 	public void deletePollTest() {
@@ -139,9 +166,9 @@ public class PollControllerTests {
 
 			this.mockMvc.perform(get("/polls/")).andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(model().attribute("polls", hasItem(Matchers.<Poll>hasProperty("name", equalTo("Mooi kleur")))))
-				.andExpect(model().attribute("polls", hasItem(Matchers.<Poll>hasProperty("name", equalTo("Vies kleur")))))
-				.andExpect(model().attribute("polls", hasItem(Matchers.<Poll>hasProperty("name", equalTo("Raar kleur")))))
+				.andExpect(model().attribute("polls", hasItem(Matchers.<Poll>hasProperty("title", equalTo("Mooi kleur")))))
+				.andExpect(model().attribute("polls", hasItem(Matchers.<Poll>hasProperty("title", equalTo("Vies kleur")))))
+				.andExpect(model().attribute("polls", hasItem(Matchers.<Poll>hasProperty("title", equalTo("Raar kleur")))))
 				.andExpect(model().attribute("polls", hasItem(Matchers.<Poll>hasProperty("options", Matchers.hasEntry("Blauw", 1)))))
 				.andExpect(model().attribute("polls", hasItem(Matchers.<Poll>hasProperty("options", Matchers.hasEntry("Rood", 12)))));
 		} catch (Exception e) {

@@ -21,13 +21,13 @@ public class PollService {
 		return pollRepo.findAll();
 	}
 
-	public String createPoll(String name, HashMap<String, Integer> options) {
-		Poll poll = pollRepo.insert(new Poll(name, options));
+	public String createPoll(String title, HashMap<String, Integer> options) {
+		Poll poll = pollRepo.insert(new Poll(title, options));
 		return poll.getSlug();
 	}
 
-	public String createPoll(String name, HashMap<String, Integer> options, String slug) {
-		Poll poll = pollRepo.insert(new Poll(name, options, slug));
+	public String createPoll(String title, HashMap<String, Integer> options, String slug) {
+		Poll poll = pollRepo.insert(new Poll(title, options, slug));
 		return poll.getSlug();
 	}
 

@@ -3,22 +3,28 @@
 {% block pageTitle %}Pollistics Home{% endblock %}
 
 {% block content %}
-<form method="post" action="/polls/create" class="poll">
+<form method="post" action="/polls/create" class="poll" id="createPollForm">
 	<div class="poll--option poll--title">
 		<label for="title">Title</label>
-		<input type="text" name="title" id="title" />
+		<input type="text" name="title" id="title" required/>
+		{% if errors.getFieldError("title") %}
+			<p>{{ errors.getFieldError("title").getDefaultMessage() }}</p>
+		{% endif %}
 	</div>
 	<div class="poll--option">
-		<label for="option1">Option 1</label>
-		<input type="text" name="option1" id="option1" />
+		<label for="option0">Option 1</label>
+		<input type="text" name="option0" id="option1" required/>
 	</div>
 	<div class="poll--option">
 		<label for="option1">Option 2</label>
-		<input type="text" name="option2" id="option2" />
+		<input type="text" name="option1" id="option2" required/>
+		{% if errors.getFieldError("options") %}
+			<p>{{ errors.getFieldError("options").getDefaultMessage() }}</p>
+		{% endif %}
 	</div>
 	<div class="poll--option">
-		<label for="option1">Option 3</label>
-		<input type="text" name="option3" id="option3" />
+		<label for="option2">Option 3</label>
+		<input type="text" name="option2" id="option3" />
 	</div>
 	<div class="poll--option">
 		<input type="submit" value="create" />
@@ -34,4 +40,7 @@
 	</details>
 	<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}"/>
 </form>
+{% endblock %}
+{% block scripts %}
+	<script src="js/NewPollInput.js"></script>
 {% endblock %}

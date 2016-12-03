@@ -48,11 +48,11 @@ public class PollisticsApplicationTests {
 
 		ResponseEntity<String> response = restTemplate.getForEntity("/polls/" + poll.getId(), String.class);
 		assertEquals(200, response.getStatusCodeValue());
-		assertThat(response.getBody(), containsString(poll.getName()));
+		assertThat(response.getBody(), containsString(poll.getTitle()));
 
 		ResponseEntity<String> resp = restTemplate.getForEntity("/" + poll.getId(), String.class);
 		assertEquals(200, resp.getStatusCodeValue());
-		assertThat(resp.getBody(), containsString(poll.getName()));
+		assertThat(resp.getBody(), containsString(poll.getTitle()));
 
 		//ResponseEntity<String> res = restTemplate.getForEntity("/" + poll.getSlug(), String.class);
 		//assertEquals(200, res.getStatusCodeValue());

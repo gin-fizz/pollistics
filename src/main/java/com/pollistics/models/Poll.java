@@ -2,6 +2,7 @@ package com.pollistics.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.bson.types.ObjectId;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -13,15 +14,16 @@ public class Poll {
 	@Id
 	private ObjectId id;
 
-	private String name;
+	@Length(min=3, max=500, message="Poll title must be be between 3 and 500 characters")
+	private String title;
 	private HashMap<String,Integer> options;
 	private User user;
 	private String slug;
 
 	// todo: orden these constructors with `this(...arg)`
 
-	public Poll(String name, HashMap<String,Integer> options) {
-		this.name = name;
+	public Poll(String title, HashMap<String,Integer> options) {
+		this.title = title;
 		this.options = options;
 		this.slug = createSlug();
 	}
@@ -31,28 +33,28 @@ public class Poll {
 		return "meme-meme-meme";
 	}
 
-	public Poll(ObjectId id, String name, HashMap<String, Integer> options) {
+	public Poll(ObjectId id, String title, HashMap<String, Integer> options) {
 		this.id = id;
-		this.name = name;
+		this.title = title;
 		this.options = options;
 		this.slug = createSlug();
 	}
 
-	public Poll(String name, HashMap<String,Integer> options, String slug) {
-		this.name = name;
+	public Poll(String title, HashMap<String,Integer> options, String slug) {
+		this.title = title;
 		this.options = options;
 		this.slug = slug;
 	}
 
-	public Poll(String name, HashMap<String,Integer> options, User user, String slug) {
-		this.name = name;
+	public Poll(String title, HashMap<String,Integer> options, User user, String slug) {
+		this.title = title;
 		this.options = options;
 		this.user = user;
 		this.slug = slug;
 	}
 
-	public Poll(String name, HashMap<String,Integer> options, User user) {
-		this.name = name;
+	public Poll(String title, HashMap<String,Integer> options, User user) {
+		this.title = title;
 		this.options = options;
 		this.user = user;
 		this.slug = createSlug();
@@ -65,12 +67,12 @@ public class Poll {
 		return id.toHexString();
 	}
 
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String name) {
+		this.title = name;
 	}
 
 	public HashMap<String, Integer> getOptions() {

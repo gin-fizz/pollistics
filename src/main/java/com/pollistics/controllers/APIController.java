@@ -7,8 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/1/polls") // todo: this should have a subclass or something for all poll-things
@@ -27,8 +28,8 @@ public class APIController {
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public @ResponseBody ResponseEntity<Poll> createPoll(@RequestBody Poll poll) {
-		String title = poll.getName();
+	public @ResponseBody ResponseEntity<Poll> createPoll(@Valid @RequestBody Poll poll) {
+		String title = poll.getTitle();
 		HashMap<String, Integer> options = poll.getOptions();
 		String slug = poll.getSlug();
 		String id = pollService.createPoll(title, options, slug);

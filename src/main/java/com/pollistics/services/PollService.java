@@ -35,9 +35,14 @@ public class PollService {
 		Poll poll = pollRepo.insert(new Poll(title, options, slug));
 		return poll.getSlug();
 	}
-	
+
 	public String createPoll(String title, HashMap<String, Integer> options, User user) {
 		Poll poll = pollRepo.insert(new Poll(title, options, user));
+		return poll.getId();
+	}
+
+	public String createPoll(String title, HashMap<String, Integer> options, String slug, User user) {
+		Poll poll = pollRepo.insert(new Poll(title, options, slug, user));
 		return poll.getId();
 	}
 
@@ -58,7 +63,7 @@ public class PollService {
 		pollRepo.save(p); // todo false when not works
 		return true;
 	}
-	
+
 	public List<Poll> getPolls(User user) {
 		return pollRepo.findByUser(user);
 	}

@@ -50,7 +50,7 @@ public class Poll {
 		this.slug = slug;
 	}
 
-	public Poll(String title, HashMap<String,Integer> options, User user, String slug) {
+	public Poll(String title, HashMap<String,Integer> options, String slug, User user) {
 		this.title = title;
 		this.options = options;
 		this.user = user;

@@ -90,7 +90,7 @@ public class PollControllerTests {
 		}
 	}
 	
-	/*@Test
+	@Test
 	public void createInvalidPollTest() {
 		try {
 			HashMap<String, Integer> options = new HashMap<>();
@@ -109,7 +109,7 @@ public class PollControllerTests {
 		} catch(Exception e) {
 			fail(e.getMessage());
 		}
-	}*/
+	}
 
 	@Test
 	public void deletePollTest() {

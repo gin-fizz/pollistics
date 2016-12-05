@@ -23,6 +23,7 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.text.MessageFormat;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 
 @Controller
 public class PollController {
@@ -50,13 +51,12 @@ public class PollController {
 
 	@PostMapping(value = "/polls/create")
 	public String createPoll(HttpServletRequest request, @Valid @ModelAttribute("poll") Poll poll, BindingResult result, Principal principal, Model model) {
-		HashMap<String, Integer> options = new HashMap<>();
-		int i = 0;
-		while (!request.getParameter("option" + i).trim().isEmpty()) {
-			String option = request.getParameter("option" + i);
-			options.put(option, 0);
-			i++;
-		}
+		HashMap<String, Integer> options = 
+			(HashMap<String, Integer>)request.getParameterMap().entrySet().stream()
+				.filter((param) -> param.getKey().startsWith("option") && !param.getValue()[0].trim().isEmpty())
+				.map((param) -> param.getValue()[0])
+				.collect(Collectors.<String,String,Integer>toMap((option) -> option, (option) -> 0));
+
 		poll.setOptions(options);
 
 		PollValidator pollValidator = new PollValidator();

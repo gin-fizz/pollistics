@@ -56,7 +56,7 @@ public class PollController {
 			i++;
 		}
 		poll.setOptions(options);
-		
+
 		PollValidator pollValidator = new PollValidator();
 		pollValidator.validate(poll, result);
 
@@ -67,7 +67,7 @@ public class PollController {
 		else {
 			String id = pollService.createPoll(poll.getTitle(), options);
 			return "redirect:/" + id;
-		}		
+		}
 	}
 
 	@PostMapping(value = "/polls/delete/{pollId}")
@@ -75,6 +75,7 @@ public class PollController {
 		boolean result = pollService.deletePoll(pollId);
 		if (result) {
 			redirectAttrs.addFlashAttribute("message", "The poll has deleted successfully!");
+			redirectAttrs.addFlashAttribute("message-type", "success");
 			return "redirect:/";
 		} else {
 			response.setStatus(404);

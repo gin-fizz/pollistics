@@ -1,4 +1,4 @@
-{% set mainColor = "\#000000" %}
+{% set mainColor = "\#FFFFFF" %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,21 +15,20 @@
 	<meta name="description" content="{% block description %}Pollistics makes polls easy.{% endblock %}">
 	<meta name="author" content="Pollistics">
 	<meta name="robots" content="index, follow">
-	{# TODO: favicon, ogp, twiter, css #}
+	{# TODO: favicon, ogp, twitter, css #}
 	<link rel="stylesheet" href="https://gin-fizz.github.io/styleguide/src/main.css">
 </head>
 <body>
 	<header>
 		<a href="/"><img src="/img/logo.svg" alt="home"></a>
 		<div class="user">
-			{# <a href="/me"><img src="/src/img/user.svg" alt="me"></a> #}
-			{% if user %}
+		{% if user %}
 			<a href="/account" class="cta">{{ user.getUsername() }}</a>
 			<a href="/logout" class="cta">logout</a>
-			{% else %}
+		{% else %}
 			<a href="/login" class="cta">login</a>
 			<a href="/register" class="cta">register</a>
-			{% endif %}
+		{% endif %}
 		</div>
 	</header>
 	{% if message %}

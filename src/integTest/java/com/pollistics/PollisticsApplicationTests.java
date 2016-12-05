@@ -37,15 +37,26 @@ public class PollisticsApplicationTests {
 	}
 
 	/**
-	 * Test that /polls/{id} fetches the right poll
+	 * Test that the following fetches the right poll
+	 * /polls/{id}
+	 * /{id}
+	 * /{slug}
 	 */
 	@Test
 	public void pollByIdTest() {
 		Poll poll = pollService.getAllPolls().get(0);
 
 		ResponseEntity<String> response = restTemplate.getForEntity("/polls/" + poll.getId(), String.class);
-		assertEquals(response.getStatusCodeValue(), 200);
+		assertEquals(200, response.getStatusCodeValue());
 		assertThat(response.getBody(), containsString(poll.getTitle()));
+
+		ResponseEntity<String> resp = restTemplate.getForEntity("/" + poll.getId(), String.class);
+		assertEquals(200, resp.getStatusCodeValue());
+		assertThat(resp.getBody(), containsString(poll.getTitle()));
+
+		//ResponseEntity<String> res = restTemplate.getForEntity("/" + poll.getSlug(), String.class);
+		//assertEquals(200, res.getStatusCodeValue());
+		//assertThat(res.getBody(), containsString(poll.getName()));
 	}
 
 	/**

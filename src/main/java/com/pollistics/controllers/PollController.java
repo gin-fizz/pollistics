@@ -65,8 +65,13 @@ public class PollController {
 			return "index";
 		}
 		else {
-			String id = pollService.createPoll(poll.getTitle(), options);
-			return "redirect:/" + id;
+			String slug;
+			if (request.getParameter("slug") != null) {
+				slug = pollService.createPoll(poll.getTitle(), options, request.getParameter("slug"));
+			} else {
+				slug = pollService.createPoll(poll.getTitle(), options);
+			}
+			return "redirect:/" + slug;
 		}
 	}
 

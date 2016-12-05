@@ -23,7 +23,12 @@ public class PollService {
 
 	public String createPoll(String title, HashMap<String, Integer> options) {
 		Poll poll = pollRepo.insert(new Poll(title, options));
-		return poll.getId();
+		return poll.getSlug();
+	}
+
+	public String createPoll(String title, HashMap<String, Integer> options, String slug) {
+		Poll poll = pollRepo.insert(new Poll(title, options, slug));
+		return poll.getSlug();
 	}
 
 	public boolean deletePoll(String id) {

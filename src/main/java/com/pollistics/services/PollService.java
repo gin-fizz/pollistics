@@ -13,8 +13,12 @@ public class PollService {
 	@Autowired
 	private PollRepository pollRepo;
 
-	public Poll getPoll(String id) {
-		return pollRepo.findOne(id);
+	public Poll getPoll(String query) {
+		Poll poll = pollRepo.findBySlug(query);
+		if(poll == null) {
+			return pollRepo.findOne(query);
+		}
+		return poll;
 	}
 
 	public List<Poll> getAllPolls() {

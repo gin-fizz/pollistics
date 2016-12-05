@@ -1,6 +1,7 @@
 package com.pollistics.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.pollistics.utils.MemeSlugs;
 import org.bson.types.ObjectId;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
@@ -32,9 +33,9 @@ public class Poll {
 	}
 
 	private String createSlug() {
-		// random three-word combo
-		return "meme-meme-meme";
+		return MemeSlugs.getCombo();
 	}
+
 
 	public Poll(ObjectId id, String title, HashMap<String, Integer> options) {
 		this.id = id;

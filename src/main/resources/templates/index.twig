@@ -11,16 +11,18 @@
 			<p class="error">{{ errors.getFieldError("title").getDefaultMessage() }}</p>
 		{% endif %}
 	</div>
-	<div class="poll--option">
-		<label for="option0">Option 1</label>
-		<input type="text" name="option0" id="option0" required/>
-	</div>
-	<div class="poll--option">
-		<label for="option1">Option 2</label>
-		<input type="text" name="option1" id="option1" required/>
-		{% if errors.getFieldError("options") %}
-			<p class="error">{{ errors.getFieldError("options").getDefaultMessage() }}</p>
-		{% endif %}
+	<div class="options">
+		<div class="poll--option">
+			<label for="option0">Option 1</label>
+			<input type="text" name="option0" id="option0" required/>
+		</div>
+		<div class="poll--option">
+			<label for="option1">Option 2</label>
+			<input type="text" name="option1" id="option1" required/>
+			{% if errors.getFieldError("options") %}
+				<p class="error">{{ errors.getFieldError("options").getDefaultMessage() }}</p>
+			{% endif %}
+		</div>
 	</div>
 	<div class="poll--option">
 		<input type="submit" value="create" />

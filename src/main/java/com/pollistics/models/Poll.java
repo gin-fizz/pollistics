@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.bson.types.ObjectId;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.HashMap;
@@ -18,6 +19,8 @@ public class Poll {
 	private String title;
 	private HashMap<String,Integer> options;
 	private User user;
+
+	@Indexed(unique = true)
 	private String slug;
 
 	// todo: orden these constructors with `this(...arg)`

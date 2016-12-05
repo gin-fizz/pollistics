@@ -2,6 +2,7 @@ package com.pollistics.controllers;
 
 import com.pollistics.models.User;
 import com.pollistics.models.validators.UserValidator;
+import com.pollistics.services.PollService;
 import com.pollistics.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -23,6 +24,9 @@ import javax.validation.Valid;
 public class AccountController {
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private PollService pollService;
 
 	@GetMapping(value = "/account")
 	public String account(Model model) {
@@ -72,7 +76,10 @@ public class AccountController {
 	}
 	
 	@GetMapping(value = "/account/polls")
-	public String polls() {
+	public String polls(Model model) {
+		model.addAttribute("polls", pollService.getPolls((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()));
 		return "account/polls";
 	}
+	
+	
 }

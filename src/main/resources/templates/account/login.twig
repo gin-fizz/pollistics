@@ -6,23 +6,21 @@
 {% block content %}
 <h1>Login</h1>
 
-<form method="post" action="/login">
-	<div>
+<form method="post" action="/login" class="poll">
+	<div class="poll--option">
 		<label for="username">Username</label>
 		<input type="text" name="username" id="username" placeholder="Username" required />
 		<p class="error">{{ errors.getFieldError("username").getDefaultMessage() }}</p>
 	</div>
-	<div>
+	<div class="poll--option">
 		<label for="password">Password</label>
 		<input type="password" name="password" id="password" placeholder="Password" required />
 		<p class="error">{{ errors.getFieldError("password").getDefaultMessage() }}</p>
 	</div>
-	<div>
-		<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}" />
-	</div>
-	<div>
+	<div class="poll--option">
 		<input type="submit" value="Login" />
 	</div>
-	<p class="error">{% if request.getParameter('error') %}username or password is not correct{% endif %}</p>
+	<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}" />
+	{% if request.getParameter('error') %}<p class="error">username or password is not correct</p>{% endif %}
 </form>
 {% endblock %}

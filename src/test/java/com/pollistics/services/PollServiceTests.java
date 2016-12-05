@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
@@ -85,14 +86,29 @@ public class PollServiceTests {
 		assertThat(id instanceof String);
 		assertThat(((String)id).equals(p.getId()));
 	}
+	
+	@Test
+	public void createPollWithUserTest() {
+		User u = new User("name", "password");
+		HashMap<String, Integer> options = new HashMap<>();
+		options.put("Blauw", 1);
+		options.put("Rood", 12);
+		Poll p = new Poll(ObjectId.get(), "my Poll Title", options);
+		p.setUser(u);
+		when(pollRepo.insert(any(Poll.class))).thenReturn(p);
+		Object id = pollService.createPoll("my Poll Title", options, u);		
+		
+		assertThat(id instanceof String);
+		assertThat(((String)id).equals(p.getId()));
+	}
 
 	@Test
 	public void deletePollTest() {
 		String id = ObjectId.get().toString();
-		doNothing().when(pollRepo).delete(any(Poll.class));
+		doNothing().when(pollRepo).delete(anyString());
 		assertThat(pollService.deletePoll(id));
-		doThrow(new IllegalArgumentException()).when(pollRepo).delete(any(Poll.class));
-		assertThat(!pollService.deletePoll(id));
+		doThrow(new IllegalArgumentException()).when(pollRepo).delete(anyString());
+		assertFalse(pollService.deletePoll(id));
 	}
 
 	@Test
@@ -104,6 +120,6 @@ public class PollServiceTests {
 
 		assertThat(pollService.voteOption(p,"Blauw"));
 		assertThat(p.getOptions().get("Blauw").equals(2));
-		assertThat(!pollService.voteOption(p, "somerandomstring"));
+		assertFalse(pollService.voteOption(p, "somerandomstring"));
 	}
 }

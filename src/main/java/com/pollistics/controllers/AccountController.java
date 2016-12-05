@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.security.Principal;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -76,8 +78,8 @@ public class AccountController {
 	}
 	
 	@GetMapping(value = "/account/polls")
-	public String polls(Model model) {
-		model.addAttribute("polls", pollService.getPolls((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()));
+	public String polls(Model model, Principal principal) {
+		model.addAttribute("polls", pollService.getPolls((User)principal));
 		return "account/polls";
 	}
 	

@@ -5,8 +5,6 @@ import com.pollistics.models.User;
 import com.pollistics.models.validators.PollValidator;
 import com.pollistics.services.PollService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import java.security.Principal;
 import java.text.MessageFormat;
 import java.util.HashMap;
 
@@ -50,7 +49,7 @@ public class PollController {
 	}
 
 	@PostMapping(value = "/polls/create")
-	public String createPoll(HttpServletRequest request, @Valid @ModelAttribute("poll") Poll poll, BindingResult result, Model model) {
+	public String createPoll(HttpServletRequest request, @Valid @ModelAttribute("poll") Poll poll, BindingResult result, Principal principal, Model model) {
 		HashMap<String, Integer> options = new HashMap<>();
 		int i = 0;
 		while (!request.getParameter("option" + i).trim().isEmpty()) {
@@ -68,10 +67,9 @@ public class PollController {
 			return "index";
 		}
 		else {
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			String id;
-			if (auth != null) {
-				id = pollService.createPoll(poll.getTitle(), options, (User)auth.getPrincipal());
+			if (principal != null) {
+				id = pollService.createPoll(poll.getTitle(), options, (User)principal);
 				
 			} else {
 				id = pollService.createPoll(poll.getTitle(), options);

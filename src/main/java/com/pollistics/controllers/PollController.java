@@ -1,9 +1,12 @@
 package com.pollistics.controllers;
 
 import com.pollistics.models.Poll;
+import com.pollistics.models.User;
 import com.pollistics.models.validators.PollValidator;
 import com.pollistics.services.PollService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -65,7 +68,14 @@ public class PollController {
 			return "index";
 		}
 		else {
-			String id = pollService.createPoll(poll.getTitle(), options);
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			String id;
+			if (auth != null) {
+				id = pollService.createPoll(poll.getTitle(), options, (User)auth.getPrincipal());
+				
+			} else {
+				id = pollService.createPoll(poll.getTitle(), options);
+			}
 			return "redirect:/" + id;
 		}
 	}

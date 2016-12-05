@@ -10,12 +10,12 @@
 	<div>
 		<label for="username">Username</label>
 		<input type="text" name="username" id="username" placeholder="Username" required />
-		<p>{{ errors.getFieldError("username").getDefaultMessage() }}</p>
+		<p class="error">{{ errors.getFieldError("username").getDefaultMessage() }}</p>
 	</div>
 	<div>
 		<label for="password">Password</label>
 		<input type="password" name="password" id="password" placeholder="Password" required />
-		<p>{{ errors.getFieldError("password").getDefaultMessage() }}</p>
+		<p class="error">{{ errors.getFieldError("password").getDefaultMessage() }}</p>
 	</div>
 	<div>
 		<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}" />
@@ -23,6 +23,6 @@
 	<div>
 		<input type="submit" value="Login" />
 	</div>
-	<p>{% if request.getParameter('error') %}username or password is not correct{% endif %}</p>
+	<p class="error">{% if request.getParameter('error') %}username or password is not correct{% endif %}</p>
 </form>
 {% endblock %}

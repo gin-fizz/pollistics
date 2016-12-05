@@ -8,18 +8,18 @@
 		<label for="title">Title</label>
 		<input type="text" name="title" id="title" required/>
 		{% if errors.getFieldError("title") %}
-			<p>{{ errors.getFieldError("title").getDefaultMessage() }}</p>
+			<p class="error">{{ errors.getFieldError("title").getDefaultMessage() }}</p>
 		{% endif %}
 	</div>
 	<div class="poll--option">
 		<label for="option0">Option 1</label>
-		<input type="text" name="option0" id="option1" required/>
+		<input type="text" name="option0" id="option0" required/>
 	</div>
 	<div class="poll--option">
 		<label for="option1">Option 2</label>
-		<input type="text" name="option1" id="option2" required/>
+		<input type="text" name="option1" id="option1" required/>
 		{% if errors.getFieldError("options") %}
-			<p>{{ errors.getFieldError("options").getDefaultMessage() }}</p>
+			<p class="error">{{ errors.getFieldError("options").getDefaultMessage() }}</p>
 		{% endif %}
 	</div>
 	<div class="poll--option">

@@ -20,7 +20,7 @@ public class Poll {
 	private HashMap<String,Integer> options;
 	private User user;
 
-	@Indexed(unique = true)
+	@Indexed(unique = true, sparse = true)
 	private String slug;
 
 	// todo: orden these constructors with `this(...arg)`

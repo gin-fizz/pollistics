@@ -1,6 +1,7 @@
 package com.pollistics.controllers;
 
 import com.pollistics.models.Poll;
+import com.pollistics.models.User;
 import com.pollistics.models.validators.PollValidator;
 import com.pollistics.services.PollService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import java.security.Principal;
 import java.text.MessageFormat;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 
 @Controller
 public class PollController {
@@ -47,14 +50,13 @@ public class PollController {
 	}
 
 	@PostMapping(value = "/polls/create")
-	public String createPoll(HttpServletRequest request, @Valid @ModelAttribute("poll") Poll poll, BindingResult result, Model model) {
-		HashMap<String, Integer> options = new HashMap<>();
-		int i = 0;
-		while (!request.getParameter("option" + i).trim().isEmpty()) {
-			String option = request.getParameter("option" + i);
-			options.put(option, 0);
-			i++;
-		}
+	public String createPoll(HttpServletRequest request, @Valid @ModelAttribute("poll") Poll poll, BindingResult result, Principal principal, Model model) {
+		HashMap<String, Integer> options =
+			(HashMap<String, Integer>)request.getParameterMap().entrySet().stream()
+				.filter((param) -> param.getKey().startsWith("option") && !param.getValue()[0].trim().isEmpty())
+				.map((param) -> param.getValue()[0])
+				.collect(Collectors.<String,String,Integer>toMap((option) -> option, (option) -> 0));
+
 		poll.setOptions(options);
 
 		PollValidator pollValidator = new PollValidator();
@@ -66,10 +68,19 @@ public class PollController {
 		}
 		else {
 			String slug;
+			// todo: figure out casing here
 			if (request.getParameter("slug") != null) {
-				slug = pollService.createPoll(poll.getTitle(), options, request.getParameter("slug"));
+				if (principal != null) {
+					slug = pollService.createPoll(poll.getTitle(), options, request.getParameter("slug"), (User)principal);
+				} else {
+					slug = pollService.createPoll(poll.getTitle(), options, request.getParameter("slug"));
+				}
 			} else {
-				slug = pollService.createPoll(poll.getTitle(), options);
+				if (principal != null) {
+					slug = pollService.createPoll(poll.getTitle(), options, (User)principal);
+				} else {
+					slug = pollService.createPoll(poll.getTitle(), options);
+				}
 			}
 			return "redirect:/" + slug;
 		}

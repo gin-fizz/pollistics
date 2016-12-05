@@ -80,6 +80,7 @@ public class PollController {
 		boolean result = pollService.deletePoll(pollId);
 		if (result) {
 			redirectAttrs.addFlashAttribute("message", "The poll has deleted successfully!");
+			redirectAttrs.addFlashAttribute("message-type", "success");
 			return "redirect:/";
 		} else {
 			response.setStatus(404);

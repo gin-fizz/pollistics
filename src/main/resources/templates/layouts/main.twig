@@ -32,7 +32,7 @@
 		</div>
 	</header>
 	{% if message %}
-		<div class="message">{{ message }}</div>
+		<div class="message {{message-type}}">{{ message }}</div>
 	{% endif %}
 	<main>{% block content %}{% endblock %}</main>
 	{% block scripts %}{% endblock %}

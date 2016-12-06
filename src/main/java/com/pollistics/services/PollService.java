@@ -38,12 +38,12 @@ public class PollService {
 
 	public String createPoll(String title, HashMap<String, Integer> options, User user) {
 		Poll poll = pollRepo.insert(new Poll(title, options, user));
-		return poll.getId();
+		return poll.getSlug();
 	}
 
 	public String createPoll(String title, HashMap<String, Integer> options, String slug, User user) {
 		Poll poll = pollRepo.insert(new Poll(title, options, slug, user));
-		return poll.getId();
+		return poll.getSlug();
 	}
 
 	public boolean deletePoll(String id) {

@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -57,8 +58,16 @@ public class PollController {
 
 		poll.setOptions(options);
 
+		if (request.getParameter("slug") != null) {
+			poll.setSlug(request.getParameter("slug"));
+		}
+
 		PollValidator pollValidator = new PollValidator();
 		pollValidator.validate(poll, result);
+
+		if (pollService.getPoll(poll.getSlug()) != null) {
+			result.addError(new FieldError("slug", "errors.slug", "This url is already taken"));
+		}
 
 		if(result.hasErrors()) {
 			model.addAttribute("errors", result);

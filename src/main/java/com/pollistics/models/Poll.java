@@ -1,9 +1,11 @@
 package com.pollistics.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.pollistics.utils.MemeSlugs;
 import org.bson.types.ObjectId;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.HashMap;
@@ -19,21 +21,42 @@ public class Poll {
 	private HashMap<String,Integer> options;
 	private User user;
 
+	@Indexed(unique = true, sparse = true)
+	private String slug;
+
+	// todo: orden these constructors with `this(...arg)`
+
 	public Poll(String title, HashMap<String,Integer> options) {
 		this.title = title;
 		this.options = options;
+		this.slug = createSlug();
+	}
+
+	public Poll(ObjectId id, String title, HashMap<String, Integer> options) {
+		this.id = id;
+		this.title = title;
+		this.options = options;
+		this.slug = createSlug();
+	}
+
+	public Poll(String title, HashMap<String,Integer> options, String slug) {
+		this.title = title;
+		this.options = options;
+		this.slug = slug;
+	}
+
+	public Poll(String title, HashMap<String,Integer> options, String slug, User user) {
+		this.title = title;
+		this.options = options;
+		this.user = user;
+		this.slug = slug;
 	}
 
 	public Poll(String title, HashMap<String,Integer> options, User user) {
 		this.title = title;
 		this.options = options;
 		this.user = user;
-	}
-
-	public Poll(ObjectId id, String name, HashMap<String, Integer> options) {
-		this.id = id;
-		this.title = name;
-		this.options = options;
+		this.slug = createSlug();
 	}
 
 	public Poll() {
@@ -59,6 +82,10 @@ public class Poll {
 		this.options = options;
 	}
 
+	private String createSlug() {
+		return MemeSlugs.getCombo();
+	}
+
 	@JsonIgnore
 	public User getUser() {
 		return user;
@@ -66,6 +93,14 @@ public class Poll {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public void setSlug(String slug) {
+		this.slug = slug;
+	}
+
+	public String getSlug() {
+		return slug;
 	}
 
 	public boolean vote(String option) {

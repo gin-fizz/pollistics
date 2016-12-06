@@ -11,25 +11,38 @@
 			<p class="error">{{ errors.getFieldError("title").getDefaultMessage() }}</p>
 		{% endif %}
 	</div>
-	<div class="poll--option">
-		<label for="option0">Option 1</label>
-		<input type="text" name="option0" id="option0" required/>
-	</div>
-	<div class="poll--option">
-		<label for="option1">Option 2</label>
-		<input type="text" name="option1" id="option1" required/>
-		{% if errors.getFieldError("options") %}
-			<p class="error">{{ errors.getFieldError("options").getDefaultMessage() }}</p>
-		{% endif %}
+	<div class="options">
+		<div class="poll--option">
+			<label for="option0">Option 1</label>
+			<input type="text" name="option0" id="option0" required/>
+		</div>
+		<div class="poll--option">
+			<label for="option1">Option 2</label>
+			<input type="text" name="option1" id="option1" required/>
+			{% if errors.getFieldError("options") %}
+				<p class="error">{{ errors.getFieldError("options").getDefaultMessage() }}</p>
+			{% endif %}
+		</div>
 	</div>
 	<div class="poll--option">
 		<input type="submit" value="create" />
 	</div>
-	<div>
-		<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}"/>
-	</div>
+	<details class="poll--advanced" {% if errors.getFieldError("slug") %}open{% endif %}>
+		<summary>advanced options</summary>
+		<div class="poll--option">
+			<label for="slug">Short link</label>
+			<div>
+				<span>https://pollistics.com/</span><input type="text" name="slug" id="slug" />
+			</div>
+			{% if errors.getFieldError("slug") %}
+				<p class="error">{{ errors.getFieldError("slug").getDefaultMessage() }}</p>
+			{% endif %}
+		</div>
+	</details>
+	<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}"/>
 </form>
 {% endblock %}
 {% block scripts %}
 	<script src="/js/poll-inputs.js"></script>
+	<script src="/js/meme-words.js"></script>
 {% endblock %}

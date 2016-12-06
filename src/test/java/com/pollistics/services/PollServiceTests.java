@@ -46,6 +46,17 @@ public class PollServiceTests {
 	}
 
 	@Test
+	public void getPollBySlugTest() {
+		HashMap<String, Integer> options = new HashMap<>();
+		options.put("Blauw", 1);
+		options.put("Rood", 12);
+		Poll p = new Poll("Mooi kleur", options, "nice-meme-poll");
+		when(pollRepo.findBySlug("nice-meme-poll")).thenReturn(p);
+
+		assertThat(pollService.getPoll("nice-meme-poll").equals(p));
+	}
+
+	@Test
 	public void getAllPollsTest() {
 		HashMap<String, Integer> options = new HashMap<>();
 		options.put("Blauw", 1);

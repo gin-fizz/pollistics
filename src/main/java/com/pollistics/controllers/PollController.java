@@ -8,18 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-
 import java.security.Principal;
 import java.text.MessageFormat;
 import java.util.HashMap;
@@ -39,7 +35,7 @@ public class PollController {
 	}
 
 	@GetMapping(value = {"/polls/{pollId}", "/{pollId}"})
-	public String pollDetail(@PathVariable String pollId, Model model, HttpServletResponse response) {
+	public String pollDetail(@PathVariable("pollId") String pollId, Model model, HttpServletResponse response) {
 		Poll poll = pollService.getPoll(pollId);
 		if(poll == null) {
 			response.setStatus(404);
@@ -59,28 +55,26 @@ public class PollController {
 
 		poll.setOptions(options);
 
+		if (request.getParameter("slug") != null) {
+			poll.setSlug(request.getParameter("slug"));
+		}
+
+		if (pollService.getPoll(poll.getSlug()) != null) {
+			result.addError(new FieldError("slug", "invalid.slug", "Slug was already taken"));
+		}
+
 		PollValidator pollValidator = new PollValidator();
 		pollValidator.validate(poll, result);
 
 		if(result.hasErrors()) {
 			model.addAttribute("errors", result);
 			return "index";
-		}
-		else {
+		} else {
 			String slug;
-			// todo: figure out casing here
-			if (request.getParameter("slug") != null) {
-				if (principal != null) {
-					slug = pollService.createPoll(poll.getTitle(), options, request.getParameter("slug"), (User)principal);
-				} else {
-					slug = pollService.createPoll(poll.getTitle(), options, request.getParameter("slug"));
-				}
+			if (principal != null) {
+				slug = pollService.createPoll(poll.getTitle(), options, poll.getSlug(), (User)principal);
 			} else {
-				if (principal != null) {
-					slug = pollService.createPoll(poll.getTitle(), options, (User)principal);
-				} else {
-					slug = pollService.createPoll(poll.getTitle(), options);
-				}
+				slug = pollService.createPoll(poll.getTitle(), options, poll.getSlug());
 			}
 			return "redirect:/" + slug;
 		}

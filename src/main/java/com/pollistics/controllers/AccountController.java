@@ -16,17 +16,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.security.Principal;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 public class AccountController {
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private PollService pollService;
 
@@ -76,12 +75,12 @@ public class AccountController {
 			return "redirect:/";
 		}
 	}
-	
+
 	@GetMapping(value = "/account/polls")
 	public String polls(Model model, Principal principal) {
-		model.addAttribute("polls", pollService.getPolls((User)principal));
+		model.addAttribute("polls", pollService.getPolls((User) ((Authentication) principal).getPrincipal()));
 		return "account/polls";
 	}
-	
-	
+
+
 }

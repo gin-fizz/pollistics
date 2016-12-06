@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -17,11 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.security.Principal;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.stream.Collectors;
-import java.net.URLEncoder;
 
 @Controller
 public class PollController {
@@ -37,7 +36,7 @@ public class PollController {
 	}
 
 	@GetMapping(value = {"/polls/{pollId}", "/{pollId}"})
-	public String pollDetail(@PathVariable("pollId") String pollId, Model model, HttpServletResponse response) {
+	public String pollDetail(@PathVariable String pollId, Model model, HttpServletResponse response) {
 		Poll poll = pollService.getPoll(pollId);
 		if(poll == null) {
 			response.setStatus(404);
@@ -56,14 +55,6 @@ public class PollController {
 				.collect(Collectors.<String,String,Integer>toMap((option) -> option, (option) -> 0));
 
 		poll.setOptions(options);
-
-		if (request.getParameter("slug") != null) {
-			poll.setSlug(request.getParameter("slug"));
-		}
-
-		if (pollService.getPoll(poll.getSlug()) != null) {
-			result.addError(new FieldError("slug", "invalid.slug", "Slug was already taken"));
-		}
 
 		PollValidator pollValidator = new PollValidator();
 		pollValidator.validate(poll, result);

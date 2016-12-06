@@ -95,7 +95,7 @@ public class PollServiceTests {
 		Object id = pollService.createPoll("my Poll Title", options);
 
 		assertThat(id instanceof String);
-		assertThat(((String)id).equals(p.getId()));
+		assertThat(id.equals(p.getId()));
 	}
 
 	@Test

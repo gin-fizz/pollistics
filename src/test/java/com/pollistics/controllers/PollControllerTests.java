@@ -65,7 +65,6 @@ public class PollControllerTests {
 
 	@Test
 	public void createValidPollTest() {
-
 		try {
 			HashMap<String, Integer> options = new HashMap<>();
 			String title = "Poll title";
@@ -93,6 +92,39 @@ public class PollControllerTests {
 			fail(e.getMessage());
 		}
 	}
+
+	@Test
+	public void createSlugPollTest() {
+		try {
+			HashMap<String, Integer> options = new HashMap<>();
+			String title = "Poll title";
+			String option0 = "option0";
+			String option1 = "option1";
+			String option2 = "option2";
+			String slug = "nice-slug-youve-got-there";
+			options.put(option0, 0);
+			options.put(option1, 0);
+			options.put(option2, 0);
+			when(pollService.createPoll(title, options, slug)).thenReturn(slug);
+
+			MvcResult result = this.mockMvc.perform(post("/polls/create")
+				.with(csrf())
+				.param("title", title)
+				.param("option0", option0)
+				.param("option1", option1)
+				.param("option2", option2)
+				.param("option3", " ")
+				.param("slug", slug))
+				.andDo(print())
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/nice-slug-youve-got-there"))
+				.andReturn();
+			assertThat(result.getResponse().getContentAsString().contains(option2));
+		} catch(Exception e) {
+			fail(e.getMessage());
+		}
+	}
+
 	@Test
 	public void createInvalidPollTest() {
 		try {
@@ -108,7 +140,6 @@ public class PollControllerTests {
 				.param("option0",option0))
 				.andReturn();
 			assertThat(result.getResponse().getContentAsString().contains("A poll has at least 2 options"));
-
 		} catch(Exception e) {
 			fail(e.getMessage());
 		}

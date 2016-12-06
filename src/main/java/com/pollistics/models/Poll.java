@@ -36,7 +36,6 @@ public class Poll {
 		return MemeSlugs.getCombo();
 	}
 
-
 	public Poll(ObjectId id, String title, HashMap<String, Integer> options) {
 		this.id = id;
 		this.title = title;
@@ -94,6 +93,10 @@ public class Poll {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public void setSlug(String slug) {
+		this.slug = slug;
 	}
 
 	public String getSlug() {

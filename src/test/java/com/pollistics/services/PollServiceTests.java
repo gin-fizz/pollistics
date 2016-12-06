@@ -88,7 +88,43 @@ public class PollServiceTests {
 	}
 
 	@Test
+	public void createPollWithSlugTest() {
+		String slug = "nice-meme-poll";
+		HashMap<String, Integer> options = new HashMap<>();
+		options.put("Blauw", 1);
+		options.put("Rood", 12);
+		options.put("Grun", 5);
+		options.put("Oronje", 8);
+		Poll p = new Poll(ObjectId.get(), "welk kleur?", options);
+		p.setSlug(slug);
+		when(pollRepo.insert(any(Poll.class))).thenReturn(p);
+
+		Object answer = pollService.createPoll("welk kleur?", options, slug);
+
+		assertThat(answer instanceof String);
+		assertThat(answer.equals(slug));
+	}
+
+	@Test
 	public void createPollWithUserTest() {
+		String slug = "leuke-funny-poll";
+		User u = new User("name", "password");
+		HashMap<String, Integer> options = new HashMap<>();
+		options.put("Blauw", 1);
+		options.put("Rood", 12);
+		Poll p = new Poll(ObjectId.get(), "my Poll Title", options);
+		p.setUser(u);
+		p.setSlug(slug);
+		when(pollRepo.insert(any(Poll.class))).thenReturn(p);
+
+		Object id = pollService.createPoll("my Poll Title", options, slug, u);
+
+		assertThat(id instanceof String);
+		assertThat(id.equals(slug));
+	}
+
+	@Test
+	public void createPollWithUserAndSlugTest() {
 		User u = new User("name", "password");
 		HashMap<String, Integer> options = new HashMap<>();
 		options.put("Blauw", 1);
@@ -96,10 +132,11 @@ public class PollServiceTests {
 		Poll p = new Poll(ObjectId.get(), "my Poll Title", options);
 		p.setUser(u);
 		when(pollRepo.insert(any(Poll.class))).thenReturn(p);
+
 		Object id = pollService.createPoll("my Poll Title", options, u);
 
 		assertThat(id instanceof String);
-		assertThat(((String)id).equals(p.getId()));
+		assertThat(id.equals(p.getId()));
 	}
 
 	@Test

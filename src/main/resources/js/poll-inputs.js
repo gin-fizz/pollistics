@@ -21,3 +21,11 @@ function addNewPollInput() {
 }
 
 addNewPollInput();
+
+function setSlug(ev) {
+	var raw = ev.target.value;
+	document.getElementById('slug').value = raw.replace(/\s/g, '-');
+}
+
+var titleInput = document.querySelector('.poll--title input');
+titleInput.addEventListener('input', setSlug);

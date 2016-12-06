@@ -24,7 +24,7 @@ addNewPollInput();
 
 function setSlug(ev) {
 	var raw = ev.target.value;
-	document.getElementById('slug').value = raw.replace(/\s/g, '-');
+	document.getElementById('slug').value = raw.replace(/\s/g, '-').toLocaleLowerCase();
 }
 
 var titleInput = document.querySelector('.poll--title input');

@@ -66,7 +66,7 @@ public class PollController {
 		pollValidator.validate(poll, result);
 
 		if (pollService.getPoll(poll.getSlug()) != null) {
-			result.addError(new FieldError("slug", "errors.slug", "This url is already taken"));
+			result.addError(new FieldError("poll", "slug", "This url is already taken"));
 		}
 
 		if(result.hasErrors()) {

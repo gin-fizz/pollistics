@@ -3,7 +3,6 @@
 {% block pageTitle %}Pollistics Home{% endblock %}
 
 {% block content %}
-{{ errors.getFieldErrors() }}
 <form method="post" action="/polls/create" class="poll" id="createPollForm">
 	<div class="poll--option poll--title">
 		<label for="title">Title</label>

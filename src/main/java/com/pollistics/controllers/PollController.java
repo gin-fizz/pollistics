@@ -5,6 +5,7 @@ import com.pollistics.models.User;
 import com.pollistics.models.validators.PollValidator;
 import com.pollistics.services.PollService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -67,13 +68,13 @@ public class PollController {
 			// todo: figure out casting here
 			if (request.getParameter("slug") != null) {
 				if (principal != null) {
-					slug = pollService.createPoll(poll.getTitle(), options, request.getParameter("slug"), (User)principal);
+					slug = pollService.createPoll(poll.getTitle(), options, request.getParameter("slug"), (User) ((Authentication) principal).getPrincipal());
 				} else {
 					slug = pollService.createPoll(poll.getTitle(), options, request.getParameter("slug"));
 				}
 			} else {
 				if (principal != null) {
-					slug = pollService.createPoll(poll.getTitle(), options, (User)principal);
+					slug = pollService.createPoll(poll.getTitle(), options, (User) ((Authentication) principal).getPrincipal());
 				} else {
 					slug = pollService.createPoll(poll.getTitle(), options);
 				}

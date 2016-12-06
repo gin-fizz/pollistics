@@ -3,7 +3,7 @@ package com.pollistics.utils;
 import java.text.MessageFormat;
 
 public class MemeSlugs {
-	final static String[] words = new String[]{
+	private final static String[] words = new String[]{
 		"meme",
 		"bullgit",
 		"yolo",

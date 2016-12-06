@@ -34,13 +34,13 @@ import com.pollistics.services.UserService;
 public class AccountControllerTests {
 	@MockBean
 	private UserService userService;
-	
-	@MockBean
-	private PollService pollService;
+
+	/*@MockBean
+	private PollService pollService;*/
 
 	@Autowired
 	private MockMvc mockMvc;
-	
+
 	@Test
 	public void getAccountTest() {
 		try {
@@ -133,7 +133,7 @@ public class AccountControllerTests {
 			fail(e.getMessage());
 		}
 	}
-	
+
 	@Test
 	public void getLoginTest() {
 		try {
@@ -146,11 +146,11 @@ public class AccountControllerTests {
 			fail(e.getMessage());
 		}
 	}
-	
+
 	@Test
 	@WithMockUser
 	public void logoutTest() {
-		
+
 		try {
 			this.mockMvc.perform(get("/"))
 				.andExpect(authenticated());
@@ -163,7 +163,7 @@ public class AccountControllerTests {
 			fail(e.getMessage());
 		}
 	}
-	
+
 	/*
 	@Test
 	@WithUserDetails
@@ -177,7 +177,7 @@ public class AccountControllerTests {
 		polls.add(p);
 		polls.add(p2);
 		User u = new User("testuser", "paswoordje");
-		
+
 		when(pollService.getPolls(u)).thenReturn(polls);
 		try {
 			this.mockMvc.perform(get("/account/polls"))

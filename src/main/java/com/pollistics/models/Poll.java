@@ -32,10 +32,6 @@ public class Poll {
 		this.slug = createSlug();
 	}
 
-	private String createSlug() {
-		return MemeSlugs.getCombo();
-	}
-
 	public Poll(ObjectId id, String title, HashMap<String, Integer> options) {
 		this.id = id;
 		this.title = title;
@@ -84,6 +80,10 @@ public class Poll {
 
 	public void setOptions(HashMap<String, Integer> options) {
 		this.options = options;
+	}
+
+	private String createSlug() {
+		return MemeSlugs.getCombo();
 	}
 
 	@JsonIgnore

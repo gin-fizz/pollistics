@@ -73,10 +73,19 @@ public class PollController {
 			return "index";
 		} else {
 			String slug;
-			if (principal != null) {
-				slug = pollService.createPoll(poll.getTitle(), options, poll.getSlug(), (User)principal);
+			// todo: figure out casting here
+			if (request.getParameter("slug") != null) {
+				if (principal != null) {
+					slug = pollService.createPoll(poll.getTitle(), options, request.getParameter("slug"), (User)principal);
+				} else {
+					slug = pollService.createPoll(poll.getTitle(), options, request.getParameter("slug"));
+				}
 			} else {
-				slug = pollService.createPoll(poll.getTitle(), options, poll.getSlug());
+				if (principal != null) {
+					slug = pollService.createPoll(poll.getTitle(), options, (User)principal);
+				} else {
+					slug = pollService.createPoll(poll.getTitle(), options);
+				}
 			}
 			String encodedSlug = URLEncoder.encode(slug, "UTF-8");
 			return "redirect:/" + encodedSlug;

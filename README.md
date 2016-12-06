@@ -10,7 +10,7 @@ Pollistics will make it easy to hold trusted polls.
 ## Run Locally
 
 ### Install frontend dependencies
-`npm install` in the `/src/main/resources/` folder
+`npm install` in the `src/main/resources/` folder
 
 This also needs to be bundled all together. You can do that with `npm run build`.
 

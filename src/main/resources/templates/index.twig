@@ -27,13 +27,16 @@
 	<div class="poll--option">
 		<input type="submit" value="create" />
 	</div>
-	<details class="poll--advanced">
+	<details class="poll--advanced" {% if errors.getFieldError("slug") %}open{% endif %}>
 		<summary>advanced options</summary>
 		<div class="poll--option">
 			<label for="slug">Short link</label>
 			<div>
 				<span>https://pollistics.com/</span><input type="text" name="slug" id="slug" />
 			</div>
+			{% if errors.getFieldError("slug") %}
+				<p class="error">{{ errors.getFieldError("slug").getDefaultMessage() }}</p>
+			{% endif %}
 		</div>
 	</details>
 	<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}"/>

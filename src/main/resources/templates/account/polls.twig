@@ -7,7 +7,7 @@
 <h1>Polls from {{ user.getUsername() }}</h1>
 {% for poll in polls %}
 	<div>
-		<a href="/{{ poll.getId() }}">{{ poll.getTitle() }}</a>
+		<a href="/{{ poll.getSlug() }}">{{ poll.getTitle() }}</a>
 	</div>
 {% endfor %}
 

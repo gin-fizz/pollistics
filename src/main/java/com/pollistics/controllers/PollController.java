@@ -20,10 +20,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.stream.Collectors;
+import java.net.URLEncoder;
 
 @Controller
 public class PollController {
@@ -39,7 +41,7 @@ public class PollController {
 	}
 
 	@GetMapping(value = {"/polls/{pollId}", "/{pollId}"})
-	public String pollDetail(@PathVariable String pollId, Model model, HttpServletResponse response) {
+	public String pollDetail(@PathVariable("pollId") String pollId, Model model, HttpServletResponse response) {
 		Poll poll = pollService.getPoll(pollId);
 		if(poll == null) {
 			response.setStatus(404);
@@ -50,7 +52,7 @@ public class PollController {
 	}
 
 	@PostMapping(value = "/polls/create")
-	public String createPoll(HttpServletRequest request, @Valid @ModelAttribute("poll") Poll poll, BindingResult result, Principal principal, Model model) {
+	public String createPoll(HttpServletRequest request, @Valid @ModelAttribute("poll") Poll poll, BindingResult result, Principal principal, Model model) throws UnsupportedEncodingException {
 		HashMap<String, Integer> options =
 			(HashMap<String, Integer>)request.getParameterMap().entrySet().stream()
 				.filter((param) -> param.getKey().startsWith("option") && !param.getValue()[0].trim().isEmpty())
@@ -82,7 +84,8 @@ public class PollController {
 					slug = pollService.createPoll(poll.getTitle(), options);
 				}
 			}
-			return "redirect:/" + slug;
+			String encodedSlug = URLEncoder.encode(slug, "UTF-8");
+			return "redirect:/" + encodedSlug;
 		}
 	}
 

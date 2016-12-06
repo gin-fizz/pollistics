@@ -1,9 +1,11 @@
 package com.pollistics.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.pollistics.utils.MemeSlugs;
 import org.bson.types.ObjectId;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.HashMap;
@@ -18,6 +20,8 @@ public class Poll {
 	private String title;
 	private HashMap<String,Integer> options;
 	private User user;
+
+	@Indexed(unique = true, sparse = true)
 	private String slug;
 
 	// todo: orden these constructors with `this(...arg)`
@@ -29,8 +33,7 @@ public class Poll {
 	}
 
 	private String createSlug() {
-		// random three-word combo
-		return "meme-meme-meme";
+		return MemeSlugs.getCombo();
 	}
 
 	public Poll(ObjectId id, String title, HashMap<String, Integer> options) {
@@ -46,7 +49,7 @@ public class Poll {
 		this.slug = slug;
 	}
 
-	public Poll(String title, HashMap<String,Integer> options, User user, String slug) {
+	public Poll(String title, HashMap<String,Integer> options, String slug, User user) {
 		this.title = title;
 		this.options = options;
 		this.user = user;
@@ -90,6 +93,10 @@ public class Poll {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public void setSlug(String slug) {
+		this.slug = slug;
 	}
 
 	public String getSlug() {

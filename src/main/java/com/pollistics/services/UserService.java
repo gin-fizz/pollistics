@@ -11,7 +11,7 @@ import com.pollistics.models.User;
 import com.pollistics.repositories.UserRepository;
 
 @Service
-public class UserService implements UserDetailsService{
+public class UserService implements UserDetailsService {
 
 	@Autowired
 	private UserRepository userRepository;

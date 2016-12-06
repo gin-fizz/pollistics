@@ -107,7 +107,7 @@ public class PollController {
 	}
 
 	@PostMapping(value = "/polls/vote/{pollId}")
-	public String voteOptions(@CookieValue(value = "id", defaultValue = "") String cookieIdValue, @PathVariable String pollId, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String voteOptions(@CookieValue(value = "id", defaultValue = "") String cookieIdValue, @PathVariable String pollId, HttpServletRequest request, HttpServletResponse response, Model model) throws UnsupportedEncodingException {
 		if (cookie.getValue().contains(pollId)) {
 			Poll p = pollService.getPoll(pollId);
 			model.addAttribute("msg", MessageFormat.format("You already voted for poll: {0}", p.getTitle()));
@@ -130,7 +130,8 @@ public class PollController {
 			String option = request.getParameter("option");
 			Poll p = pollService.getPoll(pollId);
 			pollService.voteOption(p, option);
-			return "redirect:/" + pollId;
+			String encodedSlug = URLEncoder.encode(pollId, "UTF-8");
+			return "redirect:/" + encodedSlug;
 		}
 	}
 }

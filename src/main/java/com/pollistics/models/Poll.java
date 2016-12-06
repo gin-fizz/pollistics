@@ -16,7 +16,7 @@ public class Poll {
 	@Id
 	private ObjectId id;
 
-	@Length(min=3, max=500, message="Poll title must be be between 3 and 500 characters")
+	@Length(min=1, max=500, message="Poll title must be be between 1 and 500 characters")
 	private String title;
 	private HashMap<String,Integer> options;
 	private User user;

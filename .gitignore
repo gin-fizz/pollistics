@@ -69,6 +69,7 @@ fabric.properties
 # *.ipr
 
 .idea/dictionaries
-bundle.js
 lib
 .idea/artifacts/
+gis
+src/main/resources/js/dist/

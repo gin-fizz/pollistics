@@ -25,6 +25,12 @@
 		<input type="submit" value="delete">
 		<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}"/>
 	</form>
+	<div class="social">
+		<a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fpollistics.com%2F{% if poll.slug is empty %}{{ poll.id }}{% else %}{{ poll.slug }}{% endif %}&quote={{poll.title|url_encode}}" target="_blank" rel="noopener" class="cta">share on facebook</a>
+		<a href="https://twitter.com/intent/tweet?text={{ poll.title ~ "\n\n" ~ "via Pollistics — https://pollistics.com/" | url_encode }}{% if poll.slug is empty %}{{ poll.id }}{% else %}{{ poll.slug }}{% endif %}" target="_blank" rel="noopener" class="cta">share on twitter</a>
+		<input type="text" disabled id="share-url" value="https://pollistics.com/{% if poll.slug is empty %}{{ poll.id }}{% else %}{{ poll.slug }}{% endif %}">
+		<button role="button" id="copy">🔗</button>
+	</div>
 	<div id="results"></div>
 {% endblock %}
 
@@ -40,6 +46,40 @@
 			data: {
 				content: options
 			}
+		});
+	</script>
+	<!-- sharing -->
+	<script>
+		// https://developers.google.com/web/updates/2015/04/cut-and-copy-commands?hl=en
+		const copyBtn = document.getElementById('copy');
+		copyBtn.disabled = !document.queryCommandSupported('copy');
+
+		copyBtn.addEventListener('click', () => {
+			// Select the email link anchor text
+			const output = document.getElementById('share-url');
+			let range = document.createRange();
+			range.selectNode(output);
+			window.getSelection().addRange(range);
+
+			try {
+				// Now that we've selected the anchor text, execute the copy command
+				var copy = document.execCommand('copy');
+				log((copy ? '✅' : '❌'));
+			} catch (err) {
+				log('❌');
+			}
+
+			function log(text) {
+				const old = copyBtn.textContent;
+				copyBtn.textContent = text;
+				setTimeout(() => {
+					copyBtn.textContent = old;
+				}, 2000);
+			}
+
+			// Remove the selections - NOTE: Should use
+			// removeRange(range) when it is supported
+			window.getSelection().removeAllRanges();
 		});
 	</script>
 {% endblock %}

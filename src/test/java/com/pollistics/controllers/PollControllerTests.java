@@ -175,7 +175,7 @@ public class PollControllerTests {
 				.param("option", "Rood"))
 				.andDo(print())
 				.andExpect(status().is3xxRedirection())
-				.andExpect(redirectedUrl("/5830364e1c27ea512eea301a"))
+				.andExpect(redirectedUrl("/5830364e1c27ea512eea301a/results"))
 				.andExpect(cookie().exists("id"));
 		} catch (Exception e) {
 			fail(e.getMessage());

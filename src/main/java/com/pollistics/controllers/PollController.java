@@ -48,6 +48,17 @@ public class PollController {
 		return "polls/detail";
 	}
 
+	@GetMapping(value = {"/polls/{pollId}/results", "/{pollId}/results"})
+	public String pollResults(@PathVariable String pollId, Model model, HttpServletResponse response) {
+		Poll poll = pollService.getPoll(pollId);
+		if(poll == null) {
+			response.setStatus(404);
+			return "error/404";
+		}
+		model.addAttribute("poll", pollService.getPoll(pollId));
+		return "polls/results";
+	}
+
 	@PostMapping(value = "/polls/create")
 	public String createPoll(HttpServletRequest request, @Valid @ModelAttribute("poll") Poll poll, BindingResult result, Principal principal, Model model) throws UnsupportedEncodingException {
 		HashMap<String, Integer> options =

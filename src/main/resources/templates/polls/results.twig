@@ -1,0 +1,29 @@
+{% extends "../layouts/main.twig" %}
+
+{% block pageTitle %}{{ poll.title }}{% endblock %}
+{% block description %}{{ poll.title }} {{ poll.options }}{% endblock %}
+
+{% block content %}
+	<h1>{{ poll.title }} (id: {{ poll.id }})</h1>
+	{% if poll.slug %}
+		<p>{{ poll.slug }}</p>
+	{% endif %}
+
+	<div id="results"></div>
+{% endblock %}
+
+{% block scripts %}
+	<script src="{{ asset('node_modules/d3/d3.min.js') }}"></script>
+	<script src="{{ asset('node_modules/d3pie/d3pie/d3pie.min.js') }}"></script>
+	<script>
+		var options = []; // todo: do this with jsonify stuff
+		{% for option, nVotes in poll.options -%}
+		options.push({label: "{{option}}", value: {{ nVotes }}});
+		{% endfor %}
+		new d3pie('results', {
+			data: {
+				content: options
+			}
+		});
+	</script>
+{% endblock %}

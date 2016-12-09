@@ -31,22 +31,8 @@
 		<input type="text" disabled id="share-url" value="https://pollistics.com/{% if poll.slug is empty %}{{ poll.id }}{% else %}{{ poll.slug }}{% endif %}">
 		<button role="button" id="copy">🔗</button>
 	</div>
-	<div id="results"></div>
 {% endblock %}
 
 {% block scripts %}
-	<script src="{{ asset('node_modules/d3/d3.min.js') }}"></script>
-	<script src="{{ asset('node_modules/d3pie/d3pie/d3pie.min.js') }}"></script>
-	<script>
-		var options = []; // todo: do this with jsonify stuff
-		{% for option, nVotes in poll.options -%}
-		options.push({label: "{{option}}", value: {{ nVotes }}});
-		{% endfor %}
-		new d3pie('results', {
-			data: {
-				content: options
-			}
-		});
-	</script>
 	<script src="/js/dist/vote.js"></script>
 {% endblock %}

@@ -131,7 +131,7 @@ public class PollController {
 			Poll p = pollService.getPoll(pollId);
 			pollService.voteOption(p, option);
 			String encodedSlug = URLEncoder.encode(pollId, "UTF-8");
-			return "redirect:/" + encodedSlug;
+			return "redirect:/" + encodedSlug + "/results";
 		}
 	}
 }

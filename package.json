@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "postinstall": "cd src/main/resources && npm install && npm run build"
+  }
+}

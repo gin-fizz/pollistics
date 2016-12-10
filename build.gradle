@@ -19,18 +19,6 @@ apply plugin: 'jacoco'
 apply plugin: 'com.moowork.node'
 apply from: "$rootDir/gradle/integTest.gradle"
 
-task appNpmInstall(type: NpmTask) {
-    description = "Installs dependencies from package.json"
-    workingDir = file("${project.projectDir}/src/main/resources")
-    args = ['install']
-}
-
-task appNpmBuild(type: NpmTask) {
-    description = "Builds packages from package.json"
-    workingDir = file("${project.projectDir}/src/main/resources")
-    args = ['run', 'build']
-}
-
 jar {
 	baseName = 'pollistics'
 	version =  '0.0.1'
@@ -57,11 +45,9 @@ dependencies {
 	testCompile("junit:junit")
 	testCompile(group: 'nl.jqno.equalsverifier', name: 'equalsverifier', version: '2.1.6')
 }
-build.dependsOn appNpmInstall
-build.dependsOn appNpmBuild
 
-bootRun.dependsOn appNpmInstall
-bootRun.dependsOn appNpmBuild
+build.dependsOn npmInstall
+bootRun.dependsOn npmInstall
 
 test {
 	testLogging {

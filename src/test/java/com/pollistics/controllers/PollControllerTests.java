@@ -230,25 +230,36 @@ public class PollControllerTests {
 			fail(e.getMessage());
 		}
 	}
-
+	*/
+	/*
 	@Test
-	public void voteAgainTest() {
+	public void voteAgainTest() throws Exception {
 		try {
 			HashMap<String, Integer> options = new HashMap<>();
 			options.put("Blauw", 1);
 			options.put("Rood", 12);
-			Poll p = new Poll("Welk kleur?", options);
+			Poll p = new Poll(new ObjectId("5830364e1c27ea512eea301a"), "Welk kleur?", options);
 			when(pollService.voteOption(p, "Rood")).thenReturn(true);
 
-			Cookie c = new Cookie("id", "someId123");
-			this.mockMvc.perform(post("/polls/vote/someId123")
+			MvcResult result = this.mockMvc.perform(post("/polls/vote/5830364e1c27ea512eea301a")
+				.with(csrf())
+				.param("option", "Rood"))
+				.andDo(print())
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/5830364e1c27ea512eea301a/results"))
+				.andExpect(cookie().exists("pollistics-voted"))
+				.andReturn();
+
+			Cookie c = result.getResponse().getCookie("pollistics-voted");
+
+			this.mockMvc.perform(post("/polls/vote/5830364e1c27ea512eea301a")
 				.cookie(c)
 				.with(csrf())
 				.param("option", "Rood"))
 				.andDo(print())
 				.andExpect(status().is4xxClientError())
-				.andExpect(cookie().exists("id"))
-				.andExpect(cookie().value("id", "someId123"));
+				.andExpect(cookie().exists("pollistics-voted"));
+
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}

@@ -28,8 +28,6 @@
 	<div class="social" id="social">
 		<a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fpollistics.com%2F{% if poll.slug is empty %}{{ poll.id }}{% else %}{{ poll.slug }}{% endif %}&quote={{poll.title|url_encode}}" target="_blank" rel="noopener" class="cta">share on facebook</a>
 		<a href="https://twitter.com/intent/tweet?text={{ poll.title ~ "\n\n" ~ "via Pollistics — https://pollistics.com/" | url_encode }}{% if poll.slug is empty %}{{ poll.id }}{% else %}{{ poll.slug }}{% endif %}" target="_blank" rel="noopener" class="cta">share on twitter</a>
-		<input type="text" disabled id="share-url" value="https://pollistics.com/{% if poll.slug is empty %}{{ poll.id }}{% else %}{{ poll.slug }}{% endif %}">
-		<button role="button" id="copy">🔗</button>
 	</div>
 {% endblock %}
 

@@ -37,6 +37,7 @@ export function addCopy(content, selector) {
 
 	textInput.value = content;
 	textInput.disabled = true;
+	copyBtn.textContent = '🔗';
 
 	copyBtn.disabled = !document.queryCommandSupported('copy');
 	copyBtn.addEventListener('click', () => {

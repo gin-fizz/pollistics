@@ -29,7 +29,6 @@ public class PollController {
 
 	@Autowired
 	private PollService pollService;
-	private Cookie cookie = new Cookie("id", "");
 
 	@GetMapping(value = "/polls")
 	public String allPolls(Model model) {
@@ -118,29 +117,36 @@ public class PollController {
 	}
 
 	@PostMapping(value = "/polls/vote/{pollId}")
-	public String voteOptions(@CookieValue(value = "id", defaultValue = "") String cookieIdValue, @PathVariable String pollId, HttpServletRequest request, HttpServletResponse response, Model model) throws UnsupportedEncodingException {
-		if (cookie.getValue().contains(pollId)) {
+	public String voteOptions(@CookieValue(value = "pollistics-voted", defaultValue = "") String originalCookie, @PathVariable String pollId, HttpServletRequest request, HttpServletResponse response, Model model) throws UnsupportedEncodingException {
+		// already voted
+		if (originalCookie.contains(pollId)) {
 			Poll p = pollService.getPoll(pollId);
 			model.addAttribute("msg", MessageFormat.format("You already voted for poll: {0}", p.getTitle()));
 			model.addAttribute("previous", MessageFormat.format("/{0}/", pollId));
 			response.setStatus(403);
 			return "error/403";
 		} else {
+			Cookie cookie = new Cookie("pollistics-voted", originalCookie);
 			String value;
+
 			if (cookie.getValue().equals("")) {
 				value = pollId;
 			} else {
-				value = MessageFormat.format("{0}-{1}", pollId, cookieIdValue);
+				value = MessageFormat.format("{0}-{1}", pollId, originalCookie);
 			}
+
 			final int expiryTimeCookie = 2147483647; // maximum of int
 			final String cookiePath = "/";
+
 			cookie.setValue(value);
 			cookie.setMaxAge(expiryTimeCookie);
 			cookie.setPath(cookiePath);
 			response.addCookie(cookie);
+
 			String option = request.getParameter("option");
 			Poll p = pollService.getPoll(pollId);
 			pollService.voteOption(p, option);
+
 			String encodedSlug = URLEncoder.encode(pollId, "UTF-8");
 			return "redirect:/" + encodedSlug + "/results";
 		}

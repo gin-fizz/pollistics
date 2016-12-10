@@ -57,6 +57,8 @@ dependencies {
 	testCompile("junit:junit")
 	testCompile(group: 'nl.jqno.equalsverifier', name: 'equalsverifier', version: '2.1.6')
 }
+build.dependsOn appNpmInstall
+build.dependsOn appNpmBuild
 
 bootRun.dependsOn appNpmInstall
 bootRun.dependsOn appNpmBuild

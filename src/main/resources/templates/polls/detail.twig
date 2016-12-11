@@ -4,44 +4,32 @@
 {% block description %}{{ poll.title }} {{ poll.options }}{% endblock %}
 
 {% block content %}
-	<form method="post" action="/polls/create" class="poll" id="createPollForm">
-		<div class="poll--option poll--title">
-			<label for="title">Title</label>
-			<input type="text" name="title" id="title" required/>
-			{% if errors.getFieldError("title") %}
-				<p class="error">{{ errors.getFieldError("title").getDefaultMessage() }}</p>
-			{% endif %}
-		</div>
-		<div class="options">
-			<div class="poll--option">
-				<label for="option0">Option 1</label>
-				<input type="text" name="option0" id="option0" required/>
+	<h1>{{ poll.title }}</h1>
+
+	<div class="poll">
+	<form method="post" action="/polls/vote/{% if poll.slug is empty %}{{ poll.id }}{% else %}{{ poll.slug }}{% endif %}">
+		<div class="poll--vote">
+			{%- for option, nVotes in poll.options %}
+			<label for="{{ option }}"><input type="radio" name="option" id="{{ option }}" value="{{ option }}">{{ option }} <span>{{ nVotes }} votes</span></label>
+			<div>
+				<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}"/>
 			</div>
-			<div class="poll--option">
-				<label for="option1">Option 2</label>
-				<input type="text" name="option1" id="option1" required/>
-				{% if errors.getFieldError("options") %}
-					<p class="error">{{ errors.getFieldError("options").getDefaultMessage() }}</p>
-				{% endif %}
-			</div>
+			{%- endfor %}
+			<button type="submit">Vote</button>
 		</div>
-		<div class="poll--option">
-			<input type="submit" value="create" />
-		</div>
-		<details class="poll--advanced" {% if errors.getFieldError("slug") %}open{% endif %}>
-			<summary>advanced options</summary>
-			<div class="poll--option">
-				<label for="slug">Short link</label>
-				<div>
-					<span>https://pollistics.com/</span><input type="text" name="slug" id="slug" />
-				</div>
-				{% if errors.getFieldError("slug") %}
-					<p class="error">{{ errors.getFieldError("slug").getDefaultMessage() }}</p>
-				{% endif %}
-			</div>
-		</details>
-		<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}"/>
 	</form>
+	<form method="post" action="/polls/delete/{{ poll.id }}">
+		<div class="poll--delete">
+			<input type="submit" value="delete">
+			<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}"/>
+		</div>
+	</form>
+	<div class="poll--social">
+		<a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fpollistics.com%2F{% if poll.slug is empty %}{{ poll.id }}{% else %}{{ poll.slug }}{% endif %}&quote={{poll.title|url_encode}}" target="_blank" rel="noopener" class="cta">share on facebook</a>
+		<a href="https://twitter.com/intent/tweet?text={{ poll.title ~ "\n\n" ~ "via Pollistics — https://pollistics.com/" | url_encode }}{% if poll.slug is empty %}{{ poll.id }}{% else %}{{ poll.slug }}{% endif %}" target="_blank" rel="noopener" class="cta">share on twitter</a>
+	</div>
+	<div class="poll--link" id="social"></div>
+	</div>
 {% endblock %}
 
 {% block scripts %}

@@ -4,10 +4,7 @@
 {% block description %}{{ poll.title }} {{ poll.options }}{% endblock %}
 
 {% block content %}
-	<h1>{{ poll.title }} (id: {{ poll.id }})</h1>
-	{% if poll.slug %}
-		<p>{{ poll.slug }}</p>
-	{% endif %}
+	<h1>{{ poll.name }}</h1>
 
 	<form method="post" action="/polls/vote/{% if poll.slug is empty %}{{ poll.id }}{% else %}{{ poll.slug }}{% endif %}" class="poll">
 		{%- for option, nVotes in poll.options %}

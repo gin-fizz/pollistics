@@ -5,11 +5,12 @@
 
 {% block content %}
 <h1>Polls from {{ user.getUsername() }}</h1>
+<ul class="cta-list">
 {% for poll in polls %}
-	<div>
+	<li>
 		<a href="/{{ poll.getSlug() }}">{{ poll.getTitle() }}</a>
-	</div>
+	</li>
 {% endfor %}
-
+</ul>
 <a href="/account" class="cta"> Go back to my account</a>
 {% endblock %}

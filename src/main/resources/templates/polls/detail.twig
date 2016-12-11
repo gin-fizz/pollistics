@@ -10,7 +10,7 @@
 	<form method="post" action="/polls/vote/{% if poll.slug is empty %}{{ poll.id }}{% else %}{{ poll.slug }}{% endif %}">
 		<div class="poll--vote">
 			{%- for option, nVotes in poll.options %}
-			<label for="{{ option }}"><input type="radio" name="option" id="{{ option }}" value="{{ option }}">{{ option }} <span>{{ nVotes }} votes</span></label>
+			<label for="{{ option }}"><input type="radio" name="option" id="{{ option }}" value="{{ option }}">{{ option }}</label>
 			<div>
 				<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}"/>
 			</div>

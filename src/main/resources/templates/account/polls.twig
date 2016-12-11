@@ -6,7 +6,9 @@
 {% block content %}
 <h1>Polls from {{ user.getUsername() }}</h1>
 {% for poll in user.getUser().getPolls() %}
-	<a href="/{{ poll.getId() }}">{{ poll.getTitle() }}</a>
+	<div class="poll-by-user">
+		<a href="/{{ poll.getId() }}">{{ poll.getTitle() }}</a>
+	</div>
 {% endfor %}
 
 <a href="/account" class="cta"> Go back to my account</a>

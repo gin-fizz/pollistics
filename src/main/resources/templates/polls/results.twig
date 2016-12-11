@@ -4,24 +4,13 @@
 {% block description %}{{ poll.title }} {{ poll.options }}{% endblock %}
 
 {% block content %}
-	<h1>{{ poll.name }}</h1>
+	<h1>{{ poll.title }} (id: {{ poll.id }})</h1>
+	{% if poll.slug %}
+		<p>{{ poll.slug }}</p>
+	{% endif %}
 
-	<form method="post" action="/polls/vote/{% if poll.slug is empty %}{{ poll.id }}{% else %}{{ poll.slug }}{% endif %}" class="poll">
-		{%- for option, nVotes in poll.options %}
-		<div class="poll--vote">
-			<label for="{{ option }}">{{ option }}: {{ nVotes }}</label>
-			<input type="radio" name="option" id="{{ option }}" value="{{ option }}">
-		</div>
-		<div>
-		<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}"/>
-	</div>
-		{%- endfor %}
-		<button type="submit">Vote</button>
-	</form>
-	<form method="post" action="/polls/delete/{{ poll.id }}">
-		<input type="submit" value="delete">
-		<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}"/>
-	</form>
+	<div id="results"></div>
+
 	<div class="social" id="social">
 		<a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fpollistics.com%2F{% if poll.slug is empty %}{{ poll.id }}{% else %}{{ poll.slug }}{% endif %}&quote={{poll.title|url_encode}}" target="_blank" rel="noopener" class="cta">share on facebook</a>
 		<a href="https://twitter.com/intent/tweet?text={{ poll.title ~ "\n\n" ~ "via Pollistics — https://pollistics.com/" | url_encode }}{% if poll.slug is empty %}{{ poll.id }}{% else %}{{ poll.slug }}{% endif %}" target="_blank" rel="noopener" class="cta">share on twitter</a>
@@ -29,5 +18,19 @@
 {% endblock %}
 
 {% block scripts %}
-	<script src="/js/dist/vote.js"></script>
+	<script src="{{ asset('node_modules/d3/d3.min.js') }}"></script>
+	<script src="{{ asset('node_modules/d3pie/d3pie/d3pie.min.js') }}"></script>
+	<script>
+		var options = []; // todo: do this with jsonify stuff
+		{% for option, nVotes in poll.options -%}
+		options.push({label: "{{option}}", value: {{ nVotes }}});
+		{% endfor %}
+		new d3pie('results', {
+			data: {
+				content: options
+			}
+		});
+	</script>
+
+	<script src="/js/dist/results.js"></script>
 {% endblock %}

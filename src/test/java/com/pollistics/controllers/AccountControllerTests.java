@@ -19,17 +19,24 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+
+//import com.pollistics.services.PollService;
 import com.pollistics.services.UserService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@ContextConfiguration
 public class AccountControllerTests {
 	@MockBean
 	private UserService userService;
+
+	/*@MockBean
+	private PollService pollService;*/
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -126,7 +133,7 @@ public class AccountControllerTests {
 			fail(e.getMessage());
 		}
 	}
-	
+
 	@Test
 	public void getLoginTest() {
 		try {
@@ -139,11 +146,11 @@ public class AccountControllerTests {
 			fail(e.getMessage());
 		}
 	}
-	
+
 	@Test
 	@WithMockUser
 	public void logoutTest() {
-		
+
 		try {
 			this.mockMvc.perform(get("/"))
 				.andExpect(authenticated());
@@ -156,5 +163,32 @@ public class AccountControllerTests {
 			fail(e.getMessage());
 		}
 	}
+
+	/*
+	@Test
+	@WithUserDetails
+	public void pollsByUserTest() {
+		HashMap<String, Integer> options = new HashMap<>();
+		options.put("Blauw", 1);
+		options.put("Rood", 12);
+		Poll p = new Poll("Favoriet kleur", options);
+		Poll p2 = new Poll("Lelijkste kleur", options);
+		List<Poll> polls = new ArrayList<Poll>();
+		polls.add(p);
+		polls.add(p2);
+		User u = new User("testuser", "paswoordje");
+
+		when(pollService.getPolls(u)).thenReturn(polls);
+		try {
+			this.mockMvc.perform(get("/account/polls"))
+				.andExpect(model().attribute("polls", hasItem(Matchers.<Poll>hasProperty("title", equalTo("Favoriet kleur")))))
+				.andExpect(model().attribute("polls", hasItem(Matchers.<Poll>hasProperty("title", equalTo("Lelijkste kleur")))))
+				.andExpect(model().attribute("polls", hasItem(Matchers.<Poll>hasProperty("options", Matchers.hasEntry("Blauw", 1)))))
+				.andExpect(model().attribute("polls", hasItem(Matchers.<Poll>hasProperty("options", Matchers.hasEntry("Rood", 12)))));
+		} catch(Exception e) {
+			fail(e.getMessage());
+		}
+	}
+	*/
 }
 

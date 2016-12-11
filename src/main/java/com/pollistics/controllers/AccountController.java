@@ -2,6 +2,7 @@ package com.pollistics.controllers;
 
 import com.pollistics.models.User;
 import com.pollistics.models.validators.UserValidator;
+import com.pollistics.services.PollService;
 import com.pollistics.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -18,11 +19,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 public class AccountController {
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private PollService pollService;
 
 	@GetMapping(value = "/account")
 	public String account(Model model) {
@@ -61,7 +66,7 @@ public class AccountController {
 		UserValidator userValidator = new UserValidator();
 		userValidator.validate(user, result);
 
-		if (result.hasErrors()){
+		if(result.hasErrors()) {
 			model.addAttribute("errors", result);
 			return "account/register";
 		}
@@ -70,9 +75,12 @@ public class AccountController {
 			return "redirect:/";
 		}
 	}
-	
+
 	@GetMapping(value = "/account/polls")
-	public String polls() {
+	public String polls(Model model, Principal principal) {
+		model.addAttribute("polls", pollService.getPolls((User) ((Authentication) principal).getPrincipal()));
 		return "account/polls";
 	}
+
+
 }

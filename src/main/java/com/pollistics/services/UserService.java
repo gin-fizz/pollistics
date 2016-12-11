@@ -7,12 +7,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.pollistics.models.SecUserDetails;
 import com.pollistics.models.User;
 import com.pollistics.repositories.UserRepository;
 
 @Service
-public class UserService implements UserDetailsService{
+public class UserService implements UserDetailsService {
 
 	@Autowired
 	private UserRepository userRepository;
@@ -34,8 +33,7 @@ public class UserService implements UserDetailsService{
 		if(user == null){
 			throw new UsernameNotFoundException(username);
 		} else{
-			UserDetails details = new SecUserDetails(user);
-			return details;
+			return user;
 		}
 	}
 }

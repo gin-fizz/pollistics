@@ -1,9 +1,13 @@
 buildscript {
 	repositories {
 		mavenCentral()
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.2.RELEASE")
+    classpath("com.moowork.gradle:gradle-node-plugin:1.0.1")
 	}
 }
 
@@ -12,6 +16,7 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'jacoco'
+apply plugin: 'com.moowork.node'
 apply from: "$rootDir/gradle/integTest.gradle"
 
 jar {
@@ -40,6 +45,9 @@ dependencies {
 	testCompile("junit:junit")
 	testCompile(group: 'nl.jqno.equalsverifier', name: 'equalsverifier', version: '2.1.6')
 }
+
+build.dependsOn npmInstall
+bootRun.dependsOn npmInstall
 
 test {
 	testLogging {

@@ -2,21 +2,32 @@ package com.pollistics.services;
 
 import com.pollistics.PollisticsApplication;
 import com.pollistics.models.Poll;
+import com.pollistics.models.User;
 import com.pollistics.repositories.PollRepository;
+
+import org.bson.types.ObjectId;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertFalse;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = PollisticsApplication.class)
 public class PollServiceTests {
-	@Autowired
+	@MockBean
 	private PollRepository pollRepo;
 
 	@Autowired
@@ -24,43 +35,139 @@ public class PollServiceTests {
 
 	@Test
 	public void getPollByIdTest() {
-		Poll poll = pollRepo.findAll().get(0);
-		Poll pollById = pollService.getPoll(poll.getId());
-		assertThat(poll.equals(pollById));
+		HashMap<String, Integer> options = new HashMap<>();
+		options.put("Blauw", 1);
+		options.put("Rood", 12);
+		ObjectId id = ObjectId.get();
+		Poll p = new Poll(id, "Mooi kleur", options);
+		when(pollRepo.findOne(id.toString())).thenReturn(p);
+
+		assertThat(pollService.getPoll(id.toString()).equals(p));
+	}
+
+	@Test
+	public void getPollBySlugTest() {
+		HashMap<String, Integer> options = new HashMap<>();
+		options.put("Blauw", 1);
+		options.put("Rood", 12);
+		Poll p = new Poll("Mooi kleur", options, "nice-meme-poll");
+		when(pollRepo.findBySlug("nice-meme-poll")).thenReturn(p);
+
+		assertThat(pollService.getPoll("nice-meme-poll").equals(p));
 	}
 
 	@Test
 	public void getAllPollsTest() {
-		assertThat(pollService.getAllPolls() != null);
-		assertThat(pollService.getAllPolls().get(0) != null);
-		assertThat(pollService.getAllPolls().equals(pollRepo.findAll()));
+		HashMap<String, Integer> options = new HashMap<>();
+		options.put("Blauw", 1);
+		options.put("Rood", 12);
+		Poll p = new Poll("Mooi kleur", options);
+		Poll p2 = new Poll("Vies kleur", options);
+		List<Poll> polls = new ArrayList<Poll>();
+		polls.add(p);
+		polls.add(p2);
+		when(pollRepo.findAll()).thenReturn(polls);
+
+		assertThat(pollService.getAllPolls().equals(polls));
+	}
+
+	@Test
+	public void getPollsByUserTest() {
+		User u = new User("name","password");
+		HashMap<String, Integer> options = new HashMap<>();
+		options.put("Blauw", 1);
+		options.put("Rood", 12);
+		Poll p = new Poll("Mooi kleur", options, u);
+		List<Poll> polls = new ArrayList<Poll>();
+		polls.add(p);
+		when(pollRepo.findByUser(u)).thenReturn(polls);
+
+		assertThat(pollService.getPolls(u).equals(polls));
 	}
 
 	@Test
 	public void createPollTest() {
-		Poll poll = pollRepo.findAll().get(0);
-		String id = pollService.createPoll(poll.getName(), poll.getOptions());
-		assertThat(id instanceof String);
+		HashMap<String, Integer> options = new HashMap<>();
+		options.put("Blauw", 1);
+		options.put("Rood", 12);
+		Poll p = new Poll(ObjectId.get(), "my Poll Title", options);
+		when(pollRepo.insert(any(Poll.class))).thenReturn(p);
+		Object id = pollService.createPoll("my Poll Title", options);
 
-		Poll pollById = pollService.getPoll(id);
-		assertThat(id.equals(pollById.getId()));
+		assertThat(id instanceof String);
+		assertThat(id.equals(p.getId()));
+	}
+
+	@Test
+	public void createPollWithSlugTest() {
+		String slug = "nice-meme-poll";
+		HashMap<String, Integer> options = new HashMap<>();
+		options.put("Blauw", 1);
+		options.put("Rood", 12);
+		options.put("Grun", 5);
+		options.put("Oronje", 8);
+		Poll p = new Poll(ObjectId.get(), "welk kleur?", options);
+		p.setSlug(slug);
+		when(pollRepo.insert(any(Poll.class))).thenReturn(p);
+
+		Object answer = pollService.createPoll("welk kleur?", options, slug);
+
+		assertThat(answer instanceof String);
+		assertThat(answer.equals(slug));
+	}
+
+	@Test
+	public void createPollWithUserTest() {
+		String slug = "leuke-funny-poll";
+		User u = new User("name", "password");
+		HashMap<String, Integer> options = new HashMap<>();
+		options.put("Blauw", 1);
+		options.put("Rood", 12);
+		Poll p = new Poll(ObjectId.get(), "my Poll Title", options);
+		p.setUser(u);
+		p.setSlug(slug);
+		when(pollRepo.insert(any(Poll.class))).thenReturn(p);
+
+		Object id = pollService.createPoll("my Poll Title", options, slug, u);
+
+		assertThat(id instanceof String);
+		assertThat(id.equals(slug));
+	}
+
+	@Test
+	public void createPollWithUserAndSlugTest() {
+		User u = new User("name", "password");
+		HashMap<String, Integer> options = new HashMap<>();
+		options.put("Blauw", 1);
+		options.put("Rood", 12);
+		Poll p = new Poll(ObjectId.get(), "my Poll Title", options);
+		p.setUser(u);
+		when(pollRepo.insert(any(Poll.class))).thenReturn(p);
+
+		Object id = pollService.createPoll("my Poll Title", options, u);
+
+		assertThat(id instanceof String);
+		assertThat(id.equals(p.getId()));
+	}
+
+	@Test
+	public void deletePollTest() {
+		String id = ObjectId.get().toString();
+		doNothing().when(pollRepo).delete(anyString());
+		assertThat(pollService.deletePoll(id));
+		doThrow(new IllegalArgumentException()).when(pollRepo).delete(anyString());
+		assertFalse(pollService.deletePoll(id));
 	}
 
 	@Test
 	public void voteOptionTest() {
-		Poll poll = pollRepo.findAll().get(0);
-		HashMap<String, Integer> opts = poll.getOptions();
-		String[] keys = opts.keySet().toArray(new String[0]);
-		String first = keys[0];
+		HashMap<String, Integer> options = new HashMap<>();
+		options.put("Blauw", 1);
+		options.put("Rood", 12);
+		Poll p = new Poll(ObjectId.get(), "my Poll Title", options);
 
-		int firstVal = opts.get(first);
-
-		boolean result = pollService.voteOption(poll, first);
-		assert result;
-
-		assertThat(opts.get(first).equals(firstVal + 1));
-
-		boolean res = pollService.voteOption(poll, "somerandomstring");
-		assert !res;
+		assertThat(pollService.voteOption(p,"Blauw"));
+		assertThat(p.getOptions().get("Blauw").equals(2));
+		assertFalse(pollService.voteOption(p, "somerandomstring"));
 	}
 }

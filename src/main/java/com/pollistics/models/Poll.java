@@ -1,8 +1,11 @@
 package com.pollistics.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.pollistics.utils.MemeSlugs;
 import org.bson.types.ObjectId;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.HashMap;
@@ -13,25 +16,47 @@ public class Poll {
 	@Id
 	private ObjectId id;
 
-	private String name;
+	@Length(min=1, max=500, message="Poll title must be be between 1 and 500 characters")
+	private String title;
 	private HashMap<String,Integer> options;
 	private User user;
 
-	public Poll(String name, HashMap<String,Integer> options) {
-		this.name = name;
+	@Indexed(unique = true, sparse = true)
+	private String slug;
+
+	// todo: orden these constructors with `this(...arg)`
+
+	public Poll(String title, HashMap<String,Integer> options) {
+		this.title = title;
 		this.options = options;
+		this.slug = createSlug();
 	}
 
-	public Poll(String name, HashMap<String,Integer> options, User user) {
-		this.name = name;
+	public Poll(ObjectId id, String title, HashMap<String, Integer> options) {
+		this.id = id;
+		this.title = title;
+		this.options = options;
+		this.slug = createSlug();
+	}
+
+	public Poll(String title, HashMap<String,Integer> options, String slug) {
+		this.title = title;
+		this.options = options;
+		this.slug = slug;
+	}
+
+	public Poll(String title, HashMap<String,Integer> options, String slug, User user) {
+		this.title = title;
 		this.options = options;
 		this.user = user;
+		this.slug = slug;
 	}
 
-	public Poll(ObjectId id, String name, HashMap<String, Integer> options) {
-		this.id = id;
-		this.name = name;
+	public Poll(String title, HashMap<String,Integer> options, User user) {
+		this.title = title;
 		this.options = options;
+		this.user = user;
+		this.slug = createSlug();
 	}
 
 	public Poll() {
@@ -41,12 +66,12 @@ public class Poll {
 		return id.toHexString();
 	}
 
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String name) {
+		this.title = name;
 	}
 
 	public HashMap<String, Integer> getOptions() {
@@ -57,6 +82,10 @@ public class Poll {
 		this.options = options;
 	}
 
+	private String createSlug() {
+		return MemeSlugs.getCombo();
+	}
+
 	@JsonIgnore
 	public User getUser() {
 		return user;
@@ -64,6 +93,14 @@ public class Poll {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public void setSlug(String slug) {
+		this.slug = slug;
+	}
+
+	public String getSlug() {
+		return slug;
 	}
 
 	public boolean vote(String option) {

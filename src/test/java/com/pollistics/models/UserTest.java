@@ -21,6 +21,11 @@ public class UserTest {
 		assertThat(u.getUsername().equals("testusername"));
 		u.setEmail("e@a.com");
 		assertThat(u.getEmail().equals("e@a.com"));
+		assertThat(u.getAuthorities() == null);
+		assertThat(u.isAccountNonExpired());
+		assertThat(u.isAccountNonLocked());
+		assertThat(u.isCredentialsNonExpired());
+		assertThat(u.isEnabled());
 		
 		Poll p = new Poll();
 		u.addPoll(p);

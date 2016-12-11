@@ -2,6 +2,7 @@ package com.pollistics.controllers;
 
 import com.pollistics.models.Poll;
 import com.pollistics.services.PollService;
+import org.bson.types.ObjectId;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,11 +12,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.junit.Assert.fail;
@@ -43,12 +46,14 @@ public class PollControllerTests {
 			HashMap<String, Integer> options = new HashMap<>();
 			options.put("Blauw", 1);
 			options.put("Rood", 12);
-			when(pollService.getPoll("someId123")).thenReturn(new Poll("Mooi kleur", options));
+			Poll poll = new Poll(new ObjectId("5830364e1c27ea512eea301c"), "Mooi kleur", options);
+			when(pollService.getPoll("5830364e1c27ea512eea301c")).thenReturn(poll);
 			when(pollService.getPoll("NotARealId")).thenReturn(null);
 
-			this.mockMvc.perform(get("/polls/someId123")).andDo(print())
+			this.mockMvc.perform(get("/polls/5830364e1c27ea512eea301c"))
+				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(model().attribute("poll", Matchers.<Poll>hasProperty("name", equalTo("Mooi kleur"))))
+				.andExpect(model().attribute("poll", Matchers.<Poll>hasProperty("title", equalTo("Mooi kleur"))))
 				.andExpect(model().attribute("poll", Matchers.<Poll>hasProperty("options", Matchers.hasEntry("Blauw", 1))))
 				.andExpect(model().attribute("poll", Matchers.<Poll>hasProperty("options", Matchers.hasEntry("Rood", 12))));
 			this.mockMvc.perform(get("/polls/someImpossibleId"))
@@ -59,46 +64,99 @@ public class PollControllerTests {
 	}
 
 	@Test
-	public void createPollTest() {
+	public void createValidPollTest() {
 		try {
 			HashMap<String, Integer> options = new HashMap<>();
 			String title = "Poll title";
+			String option0 = "option0";
 			String option1 = "option1";
 			String option2 = "option2";
-			String option3 = "option3";
+			options.put(option0, 0);
 			options.put(option1, 0);
 			options.put(option2, 0);
-			options.put(option3, 0);
-			when(pollService.createPoll(title, options)).thenReturn("someId123");
+			when(pollService.createPoll(title, options)).thenReturn("5830364e1c27ea512eea301a");
 
-			this.mockMvc.perform(post("/polls/create").with(csrf())
+			MvcResult result = this.mockMvc.perform(post("/polls/create")
+				.with(csrf())
 				.param("title", title)
-				.param("option1",option1)
+				.param("option0", option0)
+				.param("option1", option1)
 				.param("option2", option2)
-				.param("option3", option3))
+				.param("option3", " "))
 				.andDo(print())
 				.andExpect(status().is3xxRedirection())
-				.andExpect(redirectedUrl("/someId123"));
-		} catch (Exception e) {
+				.andExpect(redirectedUrl("/5830364e1c27ea512eea301a"))
+				.andReturn();
+			assertThat(result.getResponse().getContentAsString().contains(option2));
+		} catch(Exception e) {
 			fail(e.getMessage());
 		}
 	}
 
 	@Test
-	public void voteTest() {
+	public void createSlugPollTest() {
 		try {
 			HashMap<String, Integer> options = new HashMap<>();
-			options.put("Blauw", 1);
-			options.put("Rood", 12);
-			Poll p = new Poll("Welk kleur?", options);
-			when(pollService.voteOption(p, "Rood")).thenReturn(true);
+			String title = "Poll title";
+			String option0 = "option0";
+			String option1 = "option1";
+			String option2 = "option2";
+			String slug = "nice-slug-youve-got-there";
+			options.put(option0, 0);
+			options.put(option1, 0);
+			options.put(option2, 0);
+			when(pollService.createPoll(title, options, slug)).thenReturn(slug);
 
-			this.mockMvc.perform(post("/polls/vote/someId123").with(csrf())
-				.param("option", "Rood"))
+			MvcResult result = this.mockMvc.perform(post("/polls/create")
+				.with(csrf())
+				.param("title", title)
+				.param("option0", option0)
+				.param("option1", option1)
+				.param("option2", option2)
+				.param("option3", " ")
+				.param("slug", slug))
 				.andDo(print())
 				.andExpect(status().is3xxRedirection())
-				.andExpect(redirectedUrl("/someId123"))
-				.andExpect(cookie().exists("id"));
+				.andExpect(redirectedUrl("/nice-slug-youve-got-there"))
+				.andReturn();
+			assertThat(result.getResponse().getContentAsString().contains(option2));
+		} catch(Exception e) {
+			fail(e.getMessage());
+		}
+	}
+
+	@Test
+	public void createInvalidPollTest() {
+		try {
+			HashMap<String, Integer> options = new HashMap<>();
+			String title = "Poll title";
+			String option0 = "option0";
+			options.put(option0, 0);
+			when(pollService.createPoll(title, options)).thenReturn("someId123");
+
+			MvcResult result = this.mockMvc.perform(post("/polls/create")
+				.with(csrf())
+				.param("title", title)
+				.param("option0",option0))
+				.andReturn();
+			assertThat(result.getResponse().getContentAsString().contains("A poll has at least 2 options"));
+		} catch(Exception e) {
+			fail(e.getMessage());
+		}
+	}
+
+	@Test
+	public void deletePollTest() {
+		try {
+			when(pollService.deletePoll("someId123")).thenReturn(true);
+			when(pollService.deletePoll("someFakeId")).thenReturn(false);
+
+			this.mockMvc.perform(post("/polls/delete/someId123").with(csrf()))
+				.andExpect(flash().attribute("message", "The poll has deleted successfully!"))
+				.andExpect(redirectedUrl("/"));
+
+			this.mockMvc.perform(post("/polls/delete/someFakeId").with(csrf()))
+				.andExpect(status().is4xxClientError());
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}
@@ -110,19 +168,39 @@ public class PollControllerTests {
 			HashMap<String, Integer> options = new HashMap<>();
 			options.put("Blauw", 1);
 			options.put("Rood", 12);
-			Poll poll1 = new Poll("Mooi kleur", options);
-			Poll poll2 = new Poll("Vies kleur", options);
-			Poll poll3 = new Poll("Raar kleur", options);
+			Poll poll1 = new Poll(new ObjectId("5830364e1c27ea512eea301a"), "Mooi kleur", options);
+			Poll poll2 = new Poll(new ObjectId("5830364e1c27ea512eea301b"), "Vies kleur", options);
+			Poll poll3 = new Poll(new ObjectId("5830364e1c27ea512eea301c"), "Raar kleur", options);
 			List<Poll> polls = Arrays.asList(poll1, poll2, poll3);
 			when(pollService.getAllPolls()).thenReturn(polls);
 
 			this.mockMvc.perform(get("/polls/")).andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(model().attribute("polls", hasItem(Matchers.<Poll>hasProperty("name", equalTo("Mooi kleur")))))
-				.andExpect(model().attribute("polls", hasItem(Matchers.<Poll>hasProperty("name", equalTo("Vies kleur")))))
-				.andExpect(model().attribute("polls", hasItem(Matchers.<Poll>hasProperty("name", equalTo("Raar kleur")))))
+				.andExpect(model().attribute("polls", hasItem(Matchers.<Poll>hasProperty("title", equalTo("Mooi kleur")))))
+				.andExpect(model().attribute("polls", hasItem(Matchers.<Poll>hasProperty("title", equalTo("Vies kleur")))))
+				.andExpect(model().attribute("polls", hasItem(Matchers.<Poll>hasProperty("title", equalTo("Raar kleur")))))
 				.andExpect(model().attribute("polls", hasItem(Matchers.<Poll>hasProperty("options", Matchers.hasEntry("Blauw", 1)))))
 				.andExpect(model().attribute("polls", hasItem(Matchers.<Poll>hasProperty("options", Matchers.hasEntry("Rood", 12)))));
+		} catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
+
+	@Test
+	public void voteTest() {
+		try {
+			HashMap<String, Integer> options = new HashMap<>();
+			options.put("Blauw", 1);
+			options.put("Rood", 12);
+			Poll p = new Poll(new ObjectId("5830364e1c27ea512eea301a"), "Welk kleur?", options);
+			when(pollService.voteOption(p, "Rood")).thenReturn(true);
+
+			this.mockMvc.perform(post("/polls/vote/5830364e1c27ea512eea301a").with(csrf())
+				.param("option", "Rood"))
+				.andDo(print())
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/5830364e1c27ea512eea301a/results"))
+				.andExpect(cookie().exists("pollistics-voted"));
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}
@@ -152,25 +230,36 @@ public class PollControllerTests {
 			fail(e.getMessage());
 		}
 	}
-
+	*/
+	/*
 	@Test
-	public void voteAgainTest() {
+	public void voteAgainTest() throws Exception {
 		try {
 			HashMap<String, Integer> options = new HashMap<>();
 			options.put("Blauw", 1);
 			options.put("Rood", 12);
-			Poll p = new Poll("Welk kleur?", options);
+			Poll p = new Poll(new ObjectId("5830364e1c27ea512eea301a"), "Welk kleur?", options);
 			when(pollService.voteOption(p, "Rood")).thenReturn(true);
 
-			Cookie c = new Cookie("id", "someId123");
-			this.mockMvc.perform(post("/polls/vote/someId123")
+			MvcResult result = this.mockMvc.perform(post("/polls/vote/5830364e1c27ea512eea301a")
+				.with(csrf())
+				.param("option", "Rood"))
+				.andDo(print())
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/5830364e1c27ea512eea301a/results"))
+				.andExpect(cookie().exists("pollistics-voted"))
+				.andReturn();
+
+			Cookie c = result.getResponse().getCookie("pollistics-voted");
+
+			this.mockMvc.perform(post("/polls/vote/5830364e1c27ea512eea301a")
 				.cookie(c)
 				.with(csrf())
 				.param("option", "Rood"))
 				.andDo(print())
 				.andExpect(status().is4xxClientError())
-				.andExpect(cookie().exists("id"))
-				.andExpect(cookie().value("id", "someId123"));
+				.andExpect(cookie().exists("pollistics-voted"));
+
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}

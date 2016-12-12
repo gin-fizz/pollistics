@@ -8,13 +8,11 @@
 <ul class="cta-list">
 {% for poll in polls %}
 	<li>
-		<div>
-			<a href="/{{ poll.slug }}">{{ poll.title }}</a>
-			<form method="post" action="/polls/delete/{{ poll.id }}">
-        		<input type="submit" value="delete">
-        		<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}"/>
-        	</form>
-		</div>		
+		<a href="/{{ poll.slug }}">{{ poll.title }}</a>
+		<form method="post" action="/polls/delete/{{ poll.id }}">
+    		<input type="submit" value="delete">
+    		<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}"/>
+    	</form>		
 	</li>
 {% endfor %}
 </ul>

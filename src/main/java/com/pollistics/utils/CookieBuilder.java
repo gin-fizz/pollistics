@@ -10,7 +10,7 @@ public abstract class CookieBuilder {
 	
 	public static Cookie getVotedCookie(String oldValue, String newValue) {
 		Cookie cookie;
-		if (oldValue.equals("")) {
+		if ("".equals(oldValue)) {
 			cookie = new Cookie(COOKIE_VOTED_NAME, newValue);
 		} else {
 			cookie = new Cookie(COOKIE_VOTED_NAME, MessageFormat.format("{0}-{1}", newValue, oldValue));

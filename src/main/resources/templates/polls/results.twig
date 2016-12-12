@@ -4,9 +4,9 @@
 {% block description %}{{ poll.title }} {{ poll.options }}{% endblock %}
 
 {% block content %}
-	<h1>{{ poll.title }} (id: {{ poll.id }})</h1>
-	{% if poll.slug %}
-		<p>{{ poll.slug }}</p>
+	<h1>{{ poll.title }}</h1>
+	{% if message %}
+		<div class="message error">You did something wrong</div>
 	{% endif %}
 
 	<div id="results"></div>

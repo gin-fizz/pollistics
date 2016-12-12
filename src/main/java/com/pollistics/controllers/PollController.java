@@ -1,10 +1,14 @@
 package com.pollistics.controllers;
 
-import com.pollistics.models.Poll;
-import com.pollistics.models.User;
-import com.pollistics.models.validators.PollValidator;
-import com.pollistics.services.PollService;
-import com.pollistics.utils.CookieBuilder;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.security.Principal;
+import java.util.HashMap;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -12,19 +16,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.security.Principal;
-import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.stream.Collectors;
+import com.pollistics.models.Poll;
+import com.pollistics.models.User;
+import com.pollistics.models.validators.PollValidator;
+import com.pollistics.services.PollService;
+import com.pollistics.utils.CookieBuilder;
 
 @Controller
 public class PollController {

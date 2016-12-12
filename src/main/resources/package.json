@@ -18,8 +18,7 @@
   },
   "homepage": "https://github.com/gin-fizz/pollistics#readme",
   "dependencies": {
-    "d3": "^3.4.4",
-    "d3pie": "^0.1.9"
+    "d3": "^4.4.0"
   },
   "devDependencies": {
     "babel-plugin-external-helpers": "^6.18.0",

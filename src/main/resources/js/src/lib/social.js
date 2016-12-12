@@ -39,6 +39,8 @@ export function addCopy(content, selector) {
 	textInput.disabled = true;
 	copyBtn.textContent = '🔗';
 
+	copyBtn.className = 'social--copy';
+
 	copyBtn.disabled = !document.queryCommandSupported('copy');
 	copyBtn.addEventListener('click', () => {
 		copyStuff(copyBtn, textInput);

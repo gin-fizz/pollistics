@@ -3,7 +3,7 @@
 {% block pageTitle %}Pollistics{% endblock %}
 
 {% block content %}
-	<ul>
+	<ul class="cta-list">
 		{% for poll in polls %}
 			<li>
 				<a href="/{% if poll.slug is empty %}{{ poll.id }}{% else %}{{ poll.slug }}{% endif %}">{{ poll.title }} {{ poll.options }}</a>

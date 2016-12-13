@@ -5,7 +5,7 @@
 
 {% block content %}
 <h1>Polls from {{ user.username }}</h1>
-<ul class="cta-list">
+<ul class="poll-list">
 {% for poll in polls %}
     <li>
         <p class="list-title">{{ poll.title }}</p>

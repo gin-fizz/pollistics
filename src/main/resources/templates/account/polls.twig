@@ -14,7 +14,7 @@
             <a href="/{{ poll.slug }}/results" class="cta">results</a>
             <form method="post" action="/polls/delete/{{ poll.slug }}">
                 <input type="submit" value="delete">
-                <input type="hidden" name="csrf" value="csrf_token"/>
+                <input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}"/>
             </form>
         </div>    
     </li>

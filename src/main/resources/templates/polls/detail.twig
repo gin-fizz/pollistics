@@ -14,10 +14,8 @@
 						<input type="radio" name="option" id="{{ option }}" value="{{ option }}">
 						<label for="{{ option }}">{{ option }}</label>
 					</div>
-					<div>
-						<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}"/>
-					</div>
 				{% endfor %}
+				<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}"/>
 				<button type="submit">Vote</button>
 			</div>
 		</form>

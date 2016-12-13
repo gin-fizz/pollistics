@@ -4,11 +4,7 @@
 {% block description %}{{ poll.title }} {{ poll.options }}{% endblock %}
 
 {% block content %}
-	<h1>{{ poll.title }} (id: {{ poll.id }})</h1>
-	{% if poll.slug %}
-		<p>{{ poll.slug }}</p>
-	{% endif %}
-
+	<h1>{{ poll.title }}</h1>
 	<div id="results"></div>
 
 	<div class="social">

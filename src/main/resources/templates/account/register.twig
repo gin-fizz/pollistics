@@ -10,22 +10,30 @@
 	<div class="poll--option">
 		<label for="username">Username</label>
 		<input type="text" name="username" id="username" placeholder="Username" required />
+		{% if errors.getFieldError("username") %}
 		<p>{{ errors.getFieldError("username").getDefaultMessage() }}</p>
+		{% endif %}
 	</div>
 	<div class="poll--option">
 		<label for="email">Email</label>
 		<input type="email" name="email" id="email" placeholder="Email" required />
+		{% if errors.getFieldError("email") %}
 		<p>{{ errors.getFieldError("email").getDefaultMessage() }}</p>
+		{% endif %}
 	</div>
 	<div class="poll--option">
 		<label for="password">Password</label>
 		<input type="password" name="password" id="password" placeholder="Password" required />
+		{% if errors.getFieldError("password") %}
 		<p>{{ errors.getFieldError("password").getDefaultMessage() }}</p>
+		{% endif %}
 	</div>
 	<div class="poll--option">
 		<label for="password1">Confirm password</label>
 		<input type="password" name="password1" id="password1" placeholder="Confirm password" required />
+		{% if errors.getFieldError("password1") %}
 		<p>{{ errors.getFieldError("password1").getDefaultMessage() }}</p>
+		{% endif %}
 	</div>
 	<div class="poll--option">
 		<input type="submit" value="Register" />

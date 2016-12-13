@@ -4,24 +4,23 @@
 {% block description %}{{ poll.title }} {{ poll.options }}{% endblock %}
 
 {% block content %}
-	<h1>{{ poll.name }}</h1>
+	<h1>{{ poll.title }}</h1>
 
-	<form method="post" action="/polls/vote/{% if poll.slug is empty %}{{ poll.id }}{% else %}{{ poll.slug }}{% endif %}" class="poll">
-		{%- for option, nVotes in poll.options %}
-		<div class="poll--vote">
-			<label for="{{ option }}">{{ option }}: {{ nVotes }}</label>
-			<input type="radio" name="option" id="{{ option }}" value="{{ option }}">
-		</div>
-		<div>
-		<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}"/>
+	<div class="vote">
+		<form method="post" action="/polls/vote/{% if poll.slug is empty %}{{ poll.id }}{% else %}{{ poll.slug }}{% endif %}">
+			<div class="vote--container">
+				{%- for option, nVotes in poll.options %}
+					<div class="vote--container--item">
+						<input type="radio" name="option" id="{{ option }}" value="{{ option }}">
+						<label for="{{ option }}">{{ option }}</label>
+					</div>
+				{% endfor %}
+				<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}"/>
+				<button type="submit">Vote</button>
+			</div>
+		</form>
 	</div>
-		{%- endfor %}
-		<button type="submit">Vote</button>
-	</form>
-	<form method="post" action="/polls/delete/{{ poll.id }}">
-		<input type="submit" value="delete">
-		<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}"/>
-	</form>
+
 	<div class="social">
 		<div class="social--item">
 			<a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fpollistics.com%2F{% if poll.slug is empty %}{{ poll.id }}{% else %}{{ poll.slug }}{% endif %}&quote={{poll.title|url_encode}}" target="_blank" rel="noopener" class="cta">share on facebook</a>

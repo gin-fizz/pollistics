@@ -7,17 +7,20 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = PollisticsApplication.class)
 public class UserServiceTests {
-	@Autowired
+	@MockBean
 	private UserRepository userRepo;
 
 	@Autowired
@@ -35,21 +38,25 @@ public class UserServiceTests {
 
 	@Test
 	public void userExistsTest() {
-		User u = userRepo.findAll().get(0);
-		boolean result = userService.userExists(u.getUsername());
-		assert(result);
+		User u = new User("username","password");
+		when(userRepo.findByUsername(u.getUsername())).thenReturn(u);
+		assert(userService.userExists(u.getUsername()));
+		
+		when(userRepo.findByUsername(anyString())).thenReturn(null);		
 		assert(!userService.userExists("stupid fake username"));
 	}
 
 	@Test
 	public void loadUserByUsernameTest() {
-		User u = userRepo.findAll().get(0);
-		UserDetails det = userService.loadUserByUsername(u.getUsername());
-		assertThat(det.equals(u));
+		User u = new User("username","password");
+		when(userRepo.findByUsername(u.getUsername())).thenReturn(u);
+		UserDetails u2 = userService.loadUserByUsername(u.getUsername());
+		assertThat(u2.equals(u));
 	}
 
 	@Test(expected = UsernameNotFoundException.class)
 	public void loadUserByUsernameTestFailing() {
+		when(userRepo.findByUsername(anyString())).thenReturn(null);
 		userService.loadUserByUsername("stupid fake username that doesn't exist");
 	}
 }

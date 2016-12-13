@@ -1,0 +1,11 @@
+spring:
+    data:
+        mongodb:
+            database: pollistics
+            host: localhost
+            port: 27017
+    http:
+        encoding:
+            charset: UTF-8
+            enabled: true
+            force: true

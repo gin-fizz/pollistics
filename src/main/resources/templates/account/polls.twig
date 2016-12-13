@@ -5,15 +5,19 @@
 
 {% block content %}
 <h1>Polls from {{ user.username }}</h1>
-<ul class="cta-list">
+<ul class="poll-list">
 {% for poll in polls %}
-	<li>
-		<a href="/{{ poll.slug }}">{{ poll.title }}</a>
-		<form method="post" action="/polls/delete/{{ poll.id }}">
-    		<input type="submit" value="delete">
-    		<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}"/>
-    	</form>		
-	</li>
+    <li>
+        <p class="list-title">{{ poll.title }}</p>
+        <div>
+            <a href="/{{ poll.slug }}" class="cta">view</a>
+            <a href="/{{ poll.slug }}/results" class="cta">results</a>
+            <form method="post" action="/polls/delete/{{ poll.id }}">
+                <input type="submit" value="delete">
+                <input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}"/>
+            </form>
+        </div>    
+    </li>
 {% endfor %}
 </ul>
 <a href="/account" class="cta"> Go back to my account</a>

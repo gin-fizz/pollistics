@@ -8,13 +8,16 @@
 
 	<div class="vote">
 		<form method="post" action="/polls/vote/{% if poll.slug is empty %}{{ poll.id }}{% else %}{{ poll.slug }}{% endif %}">
-			<div class="vote--options">
+			<div class="vote--container">
 				{%- for option, nVotes in poll.options %}
-				<label for="{{ option }}"><input type="radio" name="option" id="{{ option }}" value="{{ option }}">{{ option }}</label>
-				<div>
-					<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}"/>
-				</div>
-				{%- endfor %}
+					<div class="vote--container--item">
+						<input type="radio" name="option" id="{{ option }}" value="{{ option }}">
+						<label for="{{ option }}">{{ option }}</label>
+					</div>
+					<div>
+						<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}"/>
+					</div>
+				{% endfor %}
 				<button type="submit">Vote</button>
 			</div>
 		</form>

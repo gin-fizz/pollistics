@@ -114,7 +114,7 @@ public class PollController {
 		if (result) {
 			redirectAttrs.addFlashAttribute("message", "The poll has deleted successfully!");
 			redirectAttrs.addFlashAttribute("message_type", "success");
-			return "redirect:/";
+			return "redirect:/account/polls";
 		} else {
 			response.setStatus(404);
 			return "error/404";

@@ -1,0 +1,39 @@
+{
+  "name": "pollistics",
+  "description": "a polling site made at Odisee",
+  "scripts": {},
+  "env": {
+    "NPM_CONFIG_PRODUCTION": {
+      "required": true
+    },
+    "SPRING_DATA_MONGODB_DATABASE": {
+      "required": true
+    },
+    "SPRING_DATA_MONGODB_HOST": {
+      "required": true
+    },
+    "SPRING_DATA_MONGODB_PASSWORD": {
+      "required": true
+    },
+    "SPRING_DATA_MONGODB_PORT": {
+      "required": true
+    },
+    "SPRING_DATA_MONGODB_USERNAME": {
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    },
+    {
+      "url": "heroku/gradle"
+    }
+  ]
+}

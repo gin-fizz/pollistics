@@ -6,10 +6,9 @@
 {% block content %}
 <h1>Account</h1>
 	<div class="account">
-		<p>Username: {{ user.getUsername() }}</p>
-		<p>Email: {{ user.getEmail() }}</p>
-		<p>Name: {% if user.getName() %}{{ user.getName() }}{% else %}No name set{% endif %}</p>
-
+    <p>Username: {{ user.username }}</p>
+    <p>Email: {{ user.email }}</p>
+    <p>Name: {% if user.name %}{{ user.name }}{% else %}No name set{% endif %}</p>
 		<a href="/account/polls" class="cta">Show my polls</a>
 	</div>
 {% endblock %}

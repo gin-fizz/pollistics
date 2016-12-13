@@ -153,7 +153,7 @@ public class PollControllerTests {
 
 			this.mockMvc.perform(post("/polls/delete/someId123").with(csrf()))
 				.andExpect(flash().attribute("message", "The poll has deleted successfully!"))
-				.andExpect(redirectedUrl("/"));
+				.andExpect(redirectedUrl("/account/polls"));
 
 			this.mockMvc.perform(post("/polls/delete/someFakeId").with(csrf()))
 				.andExpect(status().is4xxClientError());

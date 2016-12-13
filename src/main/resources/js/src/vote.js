@@ -1,3 +1,3 @@
 import {addCopy} from "./lib/social";
 
-addCopy(location.href, '#social');
+addCopy(decodeURIComponent(document.URL), '#social');

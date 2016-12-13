@@ -26,10 +26,6 @@ public class UserTest {
 		assertThat(u.isAccountNonLocked());
 		assertThat(u.isCredentialsNonExpired());
 		assertThat(u.isEnabled());
-		
-		Poll p = new Poll();
-		u.addPoll(p);
-		assertThat(u.getPolls().contains(p));
 	}
 
 	@Test

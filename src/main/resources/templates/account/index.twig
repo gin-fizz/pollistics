@@ -5,9 +5,10 @@
 
 {% block content %}
 <h1>Account</h1>
-<p>Username: {{ user.username }}</p>
-<p>Email: {{ user.email }}</p>
-<p>Name: {% if user.name %}{{ user.name }}{% else %}No name set{% endif %}</p>
-
-<a href="/account/polls" class="cta">Show my polls</a>
+<div class="account">
+	<p>Username: {{ user.username }}</p>
+	<p>Email: {{ user.email }}</p>
+	<p>Name: {% if user.name %}{{ user.name }}{% else %}No name set{% endif %}</p>
+	<a href="/account/polls" class="cta">Show my polls</a>
+</div>
 {% endblock %}

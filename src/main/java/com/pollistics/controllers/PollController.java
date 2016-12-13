@@ -1,28 +1,33 @@
 package com.pollistics.controllers;
 
-import com.pollistics.models.Poll;
-import com.pollistics.models.User;
-import com.pollistics.models.validators.PollValidator;
-import com.pollistics.services.PollService;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.security.Principal;
+import java.util.HashMap;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.security.Principal;
-import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.stream.Collectors;
+import com.pollistics.models.Poll;
+import com.pollistics.models.User;
+import com.pollistics.models.validators.PollValidator;
+import com.pollistics.services.PollService;
+import com.pollistics.utils.CookieBuilder;
 
 @Controller
 public class PollController {
@@ -36,25 +41,25 @@ public class PollController {
 		return "polls/overview";
 	}
 
-	@GetMapping(value = {"/polls/{pollId}", "/{pollId}"})
-	public String pollDetail(@PathVariable String pollId, Model model, HttpServletResponse response) {
-		Poll poll = pollService.getPoll(pollId);
+	@GetMapping(value = {"/polls/{slug}", "/{slug}"})
+	public String pollDetail(@PathVariable String slug, Model model, HttpServletResponse response) {
+		Poll poll = pollService.getPoll(slug);
 		if(poll == null) {
 			response.setStatus(404);
 			return "error/404";
 		}
-		model.addAttribute("poll", pollService.getPoll(pollId));
+		model.addAttribute("poll", pollService.getPoll(slug));
 		return "polls/detail";
 	}
 
-	@GetMapping(value = {"/polls/{pollId}/results", "/{pollId}/results"})
-	public String pollResults(@PathVariable String pollId, Model model, HttpServletResponse response) {
-		Poll poll = pollService.getPoll(pollId);
+	@GetMapping(value = {"/polls/{slug}/results", "/{slug}/results"})
+	public String pollResults(@PathVariable String slug, Model model, HttpServletResponse response) {
+		Poll poll = pollService.getPoll(slug);
 		if(poll == null) {
 			response.setStatus(404);
 			return "error/404";
 		}
-		model.addAttribute("poll", pollService.getPoll(pollId));
+		model.addAttribute("poll", pollService.getPoll(slug));
 		return "polls/results";
 	}
 
@@ -103,51 +108,35 @@ public class PollController {
 		}
 	}
 
-	@PostMapping(value = "/polls/delete/{pollId}")
-	public String deletePoll(@PathVariable String pollId, HttpServletResponse response, RedirectAttributes redirectAttrs) {
-		boolean result = pollService.deletePoll(pollId);
+	@PostMapping(value = "/polls/delete/{slug}")
+	public String deletePoll(@PathVariable String slug, HttpServletResponse response, RedirectAttributes redirectAttrs) {
+		boolean result = pollService.deletePoll(slug);
 		if (result) {
 			redirectAttrs.addFlashAttribute("message", "The poll has deleted successfully!");
 			redirectAttrs.addFlashAttribute("message_type", "success");
-			return "redirect:/";
+			return "redirect:/account/polls";
 		} else {
 			response.setStatus(404);
 			return "error/404";
 		}
 	}
 
-	@PostMapping(value = "/polls/vote/{pollId}")
-	public String voteOptions(@CookieValue(value = "pollistics-voted", defaultValue = "") String originalCookie, @PathVariable String pollId, HttpServletRequest request, HttpServletResponse response, Model model) throws UnsupportedEncodingException {
+	@PostMapping(value = "/polls/vote/{slug}")
+	public String voteOptions(@CookieValue(value = "pollistics-voted", defaultValue = "") String originalCookie, @PathVariable String slug, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttrs) throws UnsupportedEncodingException {
+		String encodedSlug = URLEncoder.encode(slug, "UTF-8");
+		Poll p = pollService.getPoll(slug);
 		// already voted
-		if (originalCookie.contains(pollId)) {
-			Poll p = pollService.getPoll(pollId);
-			model.addAttribute("msg", MessageFormat.format("You already voted for poll: {0}", p.getTitle()));
-			model.addAttribute("previous", MessageFormat.format("/{0}/", pollId));
+		if (originalCookie.contains(slug)) {
+			redirectAttrs.addFlashAttribute("message", "You already voted for this poll");
+			redirectAttrs.addFlashAttribute("message_type", "error");
 			response.setStatus(403);
-			return "error/403";
-		} else {
-			Cookie cookie = new Cookie("pollistics-voted", originalCookie);
-			String value;
-
-			if (cookie.getValue().equals("")) {
-				value = pollId;
-			} else {
-				value = MessageFormat.format("{0}-{1}", pollId, originalCookie);
-			}
-
-			final int expiryTimeCookie = 2147483647; // maximum of int
-			final String cookiePath = "/";
-
-			cookie.setValue(value);
-			cookie.setMaxAge(expiryTimeCookie);
-			cookie.setPath(cookiePath);
-			response.addCookie(cookie);
+			return "redirect:/" + encodedSlug + "/results";
+		} else {			
+			response.addCookie(CookieBuilder.getVotedCookie(originalCookie, slug));
 
 			String option = request.getParameter("option");
-			Poll p = pollService.getPoll(pollId);
 			pollService.voteOption(p, option);
-
-			String encodedSlug = URLEncoder.encode(pollId, "UTF-8");
+			
 			return "redirect:/" + encodedSlug + "/results";
 		}
 	}

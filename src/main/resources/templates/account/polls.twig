@@ -4,11 +4,15 @@
 {% block description %}Login on Pollistics{% endblock %}
 
 {% block content %}
-<h1>Polls from {{ user.getUsername() }}</h1>
+<h1>Polls from {{ user.username }}</h1>
 <ul class="cta-list">
 {% for poll in polls %}
 	<li>
-		<a href="/{{ poll.getSlug() }}">{{ poll.getTitle() }}</a>
+		<a href="/{{ poll.slug }}">{{ poll.title }}</a>
+		<form method="post" action="/polls/delete/{{ poll.id }}">
+    		<input type="submit" value="delete">
+    		<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}"/>
+    	</form>		
 	</li>
 {% endfor %}
 </ul>

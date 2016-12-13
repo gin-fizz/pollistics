@@ -10,12 +10,16 @@
 	<div class="poll--option">
 		<label for="username">Username</label>
 		<input type="text" name="username" id="username" placeholder="Username" required />
+		{% if errors.getFieldError("username") %}
 		<p class="error">{{ errors.getFieldError("username").getDefaultMessage() }}</p>
+		{% endif %}
 	</div>
 	<div class="poll--option">
 		<label for="password">Password</label>
 		<input type="password" name="password" id="password" placeholder="Password" required />
+		{% if errors.getFieldError("password") %}
 		<p class="error">{{ errors.getFieldError("password").getDefaultMessage() }}</p>
+		{% endif %}
 	</div>
 	<div class="poll--option">
 		<input type="submit" value="Login" />

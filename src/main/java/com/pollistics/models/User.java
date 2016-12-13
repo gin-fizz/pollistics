@@ -1,5 +1,8 @@
 package com.pollistics.models;
 
+import java.util.Collection;
+import java.util.Objects;
+
 import org.bson.types.ObjectId;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
@@ -7,11 +10,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 
 @Document(collection="users")
 public class User implements UserDetails {
@@ -24,21 +22,18 @@ public class User implements UserDetails {
 	@Email(message="Email is invalid")
 	private String email;
 	private String password;
-	private List<Poll> polls;
 
 	public User(String username, String email, String password) {
 		this.username = username;
 		this.email = email;
 		this.password = password;
 		id = ObjectId.get();
-		this.polls = new ArrayList<>();
 	}
 
 	public User(String username, String password) {
 		this.username = username;
 		this.password = password;
 		id = ObjectId.get();
-		this.polls = new ArrayList<>();
 	}
 
 	public User() {
@@ -64,10 +59,6 @@ public class User implements UserDetails {
 		this.password = password;
 	}
 
-	public List<Poll> getPolls() {
-		return polls;
-	}
-
 	public String getEmail() {
 		return email;
 	}
@@ -75,11 +66,6 @@ public class User implements UserDetails {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-	public void addPoll(Poll e) {
-		this.polls.add(e);
-	}
-
 
 	@Override
 	public int hashCode() {

@@ -19,10 +19,6 @@ function copyStuff(button, output) {
 			button.textContent = old;
 		}, 2000);
 	}
-
-	// Remove the selections - NOTE: Should use
-	// removeRange(range) when it is supported
-	window.getSelection().removeAllRanges();
 }
 
 /**
@@ -44,6 +40,10 @@ export function addCopy(content, selector) {
 	copyBtn.disabled = !document.queryCommandSupported('copy');
 	copyBtn.addEventListener('click', () => {
 		copyStuff(copyBtn, textInput);
+	});
+
+	textInput.addEventListener('click', (e) => {
+		e.target.select();
 	});
 
 	container.appendChild(textInput);

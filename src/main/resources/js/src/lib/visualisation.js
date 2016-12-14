@@ -1,15 +1,15 @@
 import d3 from 'd3';
 
-var pieDiv = d3.select('body').append('div').attr('class', 'toolTip');
+const pieDiv = d3.select('body').append('div').attr('class', 'toolTip');
 
 const pieWidth = 500;
 const pieHeight = 500;
 const pieRadius = Math.min(pieWidth, pieHeight) / 2;
 
 function getRandomColor() {
-	var letters = '0123456789ABCDEF';
-	var color = '#';
-	for (var i = 0; i < 6; i++ ) {
+	const letters = '0123456789ABCDEF';
+	let color = '#';
+	for (let i = 0; i < 6; i++ ) {
 		color += letters[Math.floor(Math.random() * 16)];
 	}
 	return color;
@@ -39,15 +39,15 @@ g.append('path')
 	.style('fill', d => getRandomColor(d.data.label));
 
 g
-	.on('mousemove', function(d){
-		pieDiv.style('left', d3.event.pageX+10+'px');
-		pieDiv.style('top', d3.event.pageY-25+'px');
+	.on('mousemove', d => {
+		pieDiv.style('left', `${d3.event.pageX+10}px`);
+		pieDiv.style('top', `${d3.event.pageY-25}px`);
 		pieDiv.style('display', 'inline-block');
-		pieDiv.html((d.data.label)+'<br>'+(d.value)+'Vote(s)');
+		pieDiv.html(`${d.data.label}<br>${d.value}Vote(s)`);
 	});
 
 g
-	.on('mouseout', function(d){
+	.on('mouseout', d => {
 		pieDiv.style('display', 'none');
 	});
 g.append('text')
@@ -59,20 +59,25 @@ g.append('text')
 	.text((d) => d.data.label)
 	.attr('class', 'value');
 
-var div = d3.select('body').append('div').attr('class', 'toolTip');
+const div = d3.select('body').append('div').attr('class', 'toolTip');
 
-var axisMargin = 20,
-	margin = 40,
-	valueMargin = 4,
-	width = parseInt(d3.select('body').style('width'), 10),
-	height = parseInt(d3.select('body').style('height'), 10),
-	barHeight = (height-axisMargin-margin*2)* 0.4/data.length,
-	barPadding = (height-axisMargin-margin*2)*0.4/data.length,
-	data, bar, svg, scale, xAxis, labelWidth = 0;
+const axisMargin = 20;
+const margin = 40;
+const valueMargin = 4;
+let width = parseInt(d3.select('body').style('width'), 10);
+let height = parseInt(d3.select('body').style('height'), 10);
+const barHeight = (height-axisMargin-margin*2)* 0.4/data.length;
+const barPadding = (height-axisMargin-margin*2)*0.4/data.length;
+var data;
+let bar;
+let svg;
+let scale;
+let xAxis;
+let labelWidth = 0;
 width *= .5;
 height *= .8;
 console.log(width);
-max = d3.max(data, function(d) { return d.value; });
+max = d3.max(data, d => d.value);
 
 svg = d3.select('body')
 	.append('svg')
@@ -87,17 +92,13 @@ bar = svg.selectAll('g')
 
 bar.attr('class', 'bar')
 	.attr('cx',0)
-	.attr('transform', function(d, i) {
-		return 'translate(' + margin + ',' + (i * (barHeight + barPadding) + barPadding) + ')';
-	});
+	.attr('transform', (d, i) => `translate(${margin},${i * (barHeight + barPadding) + barPadding})`);
 
 bar.append('text')
 	.attr('class', 'value2')
 	.attr('y', barHeight / 2)
 	.attr('dy', '.35em') //vertical align middle
-	.text(function(d){
-		return d.label;
-	}).each(function() {
+	.text(d => d.label).each(function() {
 	labelWidth = Math.ceil(Math.max(labelWidth, this.getBBox().width));
 });
 
@@ -110,11 +111,9 @@ xAxis = d3.axisBottom()
 	.tickSize(-height + 2*margin + axisMargin)
 
 bar.append('rect')
-	.attr('transform', 'translate('+labelWidth+', 0)')
+	.attr('transform', `translate(${labelWidth}, 0)`)
 	.attr('height', barHeight)
-	.attr('width', function(d){
-		return scale(d.value);
-	});
+	.attr('width', d => scale(d.value));
 
 bar.append('text')
 	.attr('class', 'value')
@@ -122,27 +121,26 @@ bar.append('text')
 	.attr('dx', -valueMargin + labelWidth) //margin right
 	.attr('dy', '.35em') //vertical align middle
 	.attr('text-anchor', 'end')
-	.text(function(d){
-		return (d.value+' Vote(s)');
-	})
+	.text(d => `${d.value} Vote(s)`)
 	.attr('x', function(d){
-		var width = this.getBBox().width;
+		const width = this.getBBox().width;
 		return Math.max(width + valueMargin, scale(d.value));
 	});
 
 bar
-	.on('mousemove', function(d){
-		div.style('left', d3.event.pageX+10+'px');
-		div.style('top', d3.event.pageY-25+'px');
+	.on('mousemove', d => {
+		div.style('left', `${d3.event.pageX+10}px`);
+		div.style('top', `${d3.event.pageY-25}px`);
 		div.style('display', 'inline-block');
-		div.html((d.label)+'<br>'+(d.value)+'Vote(s)');
+		div.html(`${d.label}<br>${d.value}Vote(s)`);
 	});
 bar
-	.on('mouseout', function(d){
+	.on('mouseout', d => {
 		div.style('display', 'none');
 	});
 
 svg.insert('g',':first-child')
 	.attr('class', 'axisHorizontal')
-	.attr('transform', 'translate(' + (margin + labelWidth) + ','+ (height - axisMargin - margin)+')')
+	.attr('transform', `translate(${margin + labelWidth},${height - axisMargin - margin})`)
 	.call(xAxis);
+

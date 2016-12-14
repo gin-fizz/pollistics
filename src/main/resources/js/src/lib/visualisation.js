@@ -1,8 +1,6 @@
-/**
- * Created by Maliek on 13/12/2016.
- */
+import d3 from 'd3';
 
-var pieDiv = d3.select("body").append("div").attr("class", "toolTip");
+var pieDiv = d3.select('body').append('div').attr('class', 'toolTip');
 
 const pieWidth = 500;
 const pieHeight = 500;
@@ -25,43 +23,43 @@ const pie = d3.pie()
 	.sort(null)
 	.value(d => d.value);
 
-const svgPie = d3.select("body").append("svg")
-	.attr("width", pieWidth)
-	.attr("height", pieHeight)
-	.append("g")
-	.attr("transform", `translate(${pieWidth / 2},${pieHeight / 2})`);
+const svgPie = d3.select('body').append('svg')
+	.attr('width', pieWidth)
+	.attr('height', pieHeight)
+	.append('g')
+	.attr('transform', `translate(${pieWidth / 2},${pieHeight / 2})`);
 
-const g = svgPie.selectAll(".arc")
+const g = svgPie.selectAll('.arc')
 	.data(pie(data))
-	.enter().append("g")
-	.attr("class", "arc");
+	.enter().append('g')
+	.attr('class', 'arc');
 
-g.append("path")
-	.attr("d", arc)
-	.style("fill", d => getRandomColor(d.data.label));
+g.append('path')
+	.attr('d', arc)
+	.style('fill', d => getRandomColor(d.data.label));
 
 g
-	.on("mousemove", function(d){
-		pieDiv.style("left", d3.event.pageX+10+"px");
-		pieDiv.style("top", d3.event.pageY-25+"px");
-		pieDiv.style("display", "inline-block");
-		pieDiv.html((d.data.label)+"<br>"+(d.value)+"Vote(s)");
+	.on('mousemove', function(d){
+		pieDiv.style('left', d3.event.pageX+10+'px');
+		pieDiv.style('top', d3.event.pageY-25+'px');
+		pieDiv.style('display', 'inline-block');
+		pieDiv.html((d.data.label)+'<br>'+(d.value)+'Vote(s)');
 	});
 
 g
-	.on("mouseout", function(d){
-		pieDiv.style("display", "none");
+	.on('mouseout', function(d){
+		pieDiv.style('display', 'none');
 	});
-g.append("text")
-	.attr("transform", (d) => {
+g.append('text')
+	.attr('transform', (d) => {
 		console.log(d);
 		return `translate(${arc.centroid(d)})`;
 	})
-	.attr("dy", ".35em")
+	.attr('dy', '.35em')
 	.text((d) => d.data.label)
-	.attr("class", "value");
+	.attr('class', 'value');
 
-var div = d3.select("body").append("div").attr("class", "toolTip");
+var div = d3.select('body').append('div').attr('class', 'toolTip');
 
 var axisMargin = 20,
 	margin = 40,
@@ -77,26 +75,26 @@ console.log(width);
 max = d3.max(data, function(d) { return d.value; });
 
 svg = d3.select('body')
-	.append("svg")
-	.attr("width", width)
-	.attr("height", height);
+	.append('svg')
+	.attr('width', width)
+	.attr('height', height);
 
 
-bar = svg.selectAll("g")
+bar = svg.selectAll('g')
 	.data(data)
 	.enter()
-	.append("g");
+	.append('g');
 
-bar.attr("class", "bar")
-	.attr("cx",0)
-	.attr("transform", function(d, i) {
-		return "translate(" + margin + "," + (i * (barHeight + barPadding) + barPadding) + ")";
+bar.attr('class', 'bar')
+	.attr('cx',0)
+	.attr('transform', function(d, i) {
+		return 'translate(' + margin + ',' + (i * (barHeight + barPadding) + barPadding) + ')';
 	});
 
-bar.append("text")
-	.attr("class", "value2")
-	.attr("y", barHeight / 2)
-	.attr("dy", ".35em") //vertical align middle
+bar.append('text')
+	.attr('class', 'value2')
+	.attr('y', barHeight / 2)
+	.attr('dy', '.35em') //vertical align middle
 	.text(function(d){
 		return d.label;
 	}).each(function() {
@@ -111,40 +109,40 @@ xAxis = d3.axisBottom()
 	.scale(scale)
 	.tickSize(-height + 2*margin + axisMargin)
 
-bar.append("rect")
-	.attr("transform", "translate("+labelWidth+", 0)")
-	.attr("height", barHeight)
-	.attr("width", function(d){
+bar.append('rect')
+	.attr('transform', 'translate('+labelWidth+', 0)')
+	.attr('height', barHeight)
+	.attr('width', function(d){
 		return scale(d.value);
 	});
 
-bar.append("text")
-	.attr("class", "value")
-	.attr("y", barHeight / 2)
-	.attr("dx", -valueMargin + labelWidth) //margin right
-	.attr("dy", ".35em") //vertical align middle
-	.attr("text-anchor", "end")
+bar.append('text')
+	.attr('class', 'value')
+	.attr('y', barHeight / 2)
+	.attr('dx', -valueMargin + labelWidth) //margin right
+	.attr('dy', '.35em') //vertical align middle
+	.attr('text-anchor', 'end')
 	.text(function(d){
-		return (d.value+" Vote(s)");
+		return (d.value+' Vote(s)');
 	})
-	.attr("x", function(d){
+	.attr('x', function(d){
 		var width = this.getBBox().width;
 		return Math.max(width + valueMargin, scale(d.value));
 	});
 
 bar
-	.on("mousemove", function(d){
-		div.style("left", d3.event.pageX+10+"px");
-		div.style("top", d3.event.pageY-25+"px");
-		div.style("display", "inline-block");
-		div.html((d.label)+"<br>"+(d.value)+"Vote(s)");
+	.on('mousemove', function(d){
+		div.style('left', d3.event.pageX+10+'px');
+		div.style('top', d3.event.pageY-25+'px');
+		div.style('display', 'inline-block');
+		div.html((d.label)+'<br>'+(d.value)+'Vote(s)');
 	});
 bar
-	.on("mouseout", function(d){
-		div.style("display", "none");
+	.on('mouseout', function(d){
+		div.style('display', 'none');
 	});
 
-svg.insert("g",":first-child")
-	.attr("class", "axisHorizontal")
-	.attr("transform", "translate(" + (margin + labelWidth) + ","+ (height - axisMargin - margin)+")")
+svg.insert('g',':first-child')
+	.attr('class', 'axisHorizontal')
+	.attr('transform', 'translate(' + (margin + labelWidth) + ','+ (height - axisMargin - margin)+')')
 	.call(xAxis);

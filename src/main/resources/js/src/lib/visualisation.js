@@ -7,13 +7,15 @@ export function visualise(data) {
 	const pieHeight = 500;
 	const pieRadius = Math.min(pieWidth, pieHeight) / 2;
 
-	function getRandomColor() {
-		const letters = '0123456789ABCDEF';
-		let color = '#';
-		for (let i = 0; i < 6; i++) {
-			color += letters[Math.floor(Math.random() * 16)];
-		}
-		return color;
+	function rand(min, max) {
+		return min + Math.random() * (max - min);
+	}
+
+	function get_random_color() {
+		var h = rand(1, 360);
+		var s = rand(0, 100);
+		var l = rand(0, 100);
+		return 'hsl(' + h + ',' + s + '%,' + l + '%)';
 	}
 
 	const arc = d3.arc()
@@ -21,7 +23,7 @@ export function visualise(data) {
 	.innerRadius(pieRadius - 70);
 
 	const pie = d3.pie()
-	.sort(null)te
+	.sort(null)
 	.value(d => d.value);
 
 	const svgPie = d3.select('body').append('svg')
@@ -37,7 +39,7 @@ export function visualise(data) {
 
 	g.append('path')
 	.attr('d', arc)
-	.style('fill', d => getRandomColor(d.data.label));
+	.style('fill', d => get_random_color(d.data.label));
 
 	g.on('mousemove', d => {
 		pieDiv.style('left', `${d3.event.pageX+10}px`);

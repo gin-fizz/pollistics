@@ -75,13 +75,12 @@
 		}
 
 	</style>
-	<script src="{{ asset('node_modules/d3/build/d3.min.js') }}"></script>
-	<script src="{{ asset('node_modules/d3-tip/index.js') }}"></script>
 	<script>
 		var data = []; // todo: do this with jsonify stuff
 		{% for option, nVotes in poll.options -%}
 		data.push({label: "{{option}}", value: {{ nVotes }}});
 		{% endfor %}
+		window.data = data;
 	</script>
 	<script src="/js/dist/results.js"></script>
 {% endblock %}

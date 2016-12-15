@@ -53,8 +53,11 @@ export function visualise(data) {
 	});
 
 	g.append('text').attr('transform', (d) => {
-		console.log(d);
-		return `translate(${arc.centroid(d)})`;
+		if (d.value == 0) {
+			return null;
+		} else {
+			return `translate(${arc.centroid(d)})`;
+		}
 	})
 	.attr('dy', '.35em')
 	.text((d) => d.data.label)
@@ -99,7 +102,11 @@ export function visualise(data) {
 	.attr('y', barHeight / 2)
 	.attr('dy', '.35em') //vertical align middle
 	.text(d => d.label).each(function() {
-		labelWidth = Math.ceil(Math.max(labelWidth, this.getBBox().width));
+		if (data.value == 0) {
+			return null;
+		} else {
+			labelWidth = Math.ceil(Math.max(labelWidth, this.getBBox().width));
+		}
 	});
 
 	scale = d3.scaleLinear()
@@ -121,7 +128,7 @@ export function visualise(data) {
 	.attr('dx', -valueMargin + labelWidth) //margin right
 	.attr('dy', '.35em') //vertical align middle
 	.attr('text-anchor', 'end')
-	.text(d => `${d.value} Vote(s)`)
+	.text(d => `${d.value} vote${d.value > 1 ? 's' : ''}`)
 	.attr('x', function(d) {
 		const width = this.getBBox().width;
 		return Math.max(width + valueMargin, scale(d.value));
@@ -129,10 +136,14 @@ export function visualise(data) {
 
 	bar
 	.on('mousemove', d => {
-		div.style('left', `${d3.event.pageX+10}px`);
-		div.style('top', `${d3.event.pageY-25}px`);
-		div.style('display', 'inline-block');
-		div.html(`${d.label}<br>${d.value}Vote(s)`);
+		if (d.value == 0) {
+			return null;
+		} else {
+			div.style('left', `${d3.event.pageX+10}px`);
+			div.style('top', `${d3.event.pageY-25}px`);
+			div.style('display', 'inline-block');
+			div.html(`${d.label}<br>${d.value}Vote(s)`);
+		}
 	});
 	bar
 	.on('mouseout', d => {

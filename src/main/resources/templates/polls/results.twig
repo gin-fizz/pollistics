@@ -23,6 +23,7 @@
 		data.push({label: "{{option}}", value: {{ nVotes }}});
 		{% endfor %}
 		window.data = data;
+		window.id = '{{ poll.id }}';
 	</script>
 	<script src="/js/dist/results.js"></script>
 {% endblock %}

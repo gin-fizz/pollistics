@@ -23,6 +23,14 @@ function chartsHorizontal() {
 	return window.innerWidth > 671
 }
 
+export function initVisualisation(container = '#results') {
+	window.pieSvg = d3.select(container).append('svg');
+	window.pieTooltip = d3.select(container).append('div').attr('class', 'toolTip');
+	window.barSvg = d3.select(container).append('svg');
+	window.barTooltip = d3.select(container).append('div').attr('class', 'toolTip');
+
+}
+
 /**
  * Visualise pollistics data
  * @param  {Array} data      Data which has object with value and label
@@ -38,7 +46,7 @@ export function visualise(data, container = '#results') {
 		return undefined;
 	}
 
-	function drawPie(data) {
+	function drawPie(data, svg, tooltip) {
 		const containerEl = document.querySelector(container);
 		let width = containerEl.getBoundingClientRect().width;
 		let height = (data.length + 1) * 100;
@@ -55,11 +63,13 @@ export function visualise(data, container = '#results') {
 			.sort(null)
 			.value(d => d.value);
 
-		const svg = d3.select(container).append('svg')
-			.attr('width', width)
-			.attr('height', height)
-			.append('g')
-			.attr('transform', `translate(${width / 2},${height / 2})`);
+		svg.attr('width', width)
+			.attr('height', height);
+
+		// todo: without removing xdd
+		svg.selectAll("*").remove();
+
+		svg.append('g').attr('transform', `translate(${width / 2},${height / 2})`);
 
 		const g = svg.selectAll('.arc')
 			.data(pie(data))
@@ -69,8 +79,6 @@ export function visualise(data, container = '#results') {
 		g.append('path')
 			.attr('d', arc)
 			.style('fill', d => get_random_color(d.data.label));
-
-		const tooltip = d3.select(container).append('div').attr('class', 'toolTip');
 
 		g.on('mousemove', d => {
 			tooltip.style('left', `${d3.event.pageX+10}px`);
@@ -96,8 +104,7 @@ export function visualise(data, container = '#results') {
 			.attr('class', 'value');
 	}
 
-	function drawBar(data) {
-		const div = d3.select(container).append('div').attr('class', 'toolTip');
+	function drawBar(data, svg, tooltip) {
 		const axisMargin = 20;
 		const margin = 40;
 		const valueMargin = 4;
@@ -112,17 +119,14 @@ export function visualise(data, container = '#results') {
 		const barHeight = (height - axisMargin - margin * 2) * 0.4 / data.length;
 		const barPadding = (height - axisMargin - margin * 2) * 0.4 / data.length;
 		let labelWidth = 0;
-		//width *= .5;
-		//height *= .8;
-		//console.log(width);
 
 		const max = d3.max(data, d => d.value);
 
-		const svg = d3.select(container)
-			.append('svg')
-			.attr('width', width)
+		svg.attr('width', width)
 			.attr('height', height);
 
+		// todo: without removing xdd
+		svg.selectAll("*").remove();
 
 		const bar = svg.selectAll('g')
 			.data(data)
@@ -151,7 +155,7 @@ export function visualise(data, container = '#results') {
 
 		const xAxis = d3.axisBottom()
 			.scale(scale)
-			.tickSize(-height + 2 * margin + axisMargin)
+			.tickSize(-height + 2 * margin + axisMargin);
 
 		bar.append('rect')
 			.attr('transform', `translate(${labelWidth}, 0)`)
@@ -174,15 +178,15 @@ export function visualise(data, container = '#results') {
 				if (d.value == 0) {
 					return null;
 				} else {
-					div.style('left', `${d3.event.pageX+10}px`);
-					div.style('top', `${d3.event.pageY-25}px`);
-					div.style('display', 'inline-block');
-					div.html(`${d.label}<br>${d.value} vote${d.value > 1 ? 's' : ''}`);
+					tooltip.style('left', `${d3.event.pageX + 10}px`);
+					tooltip.style('top', `${d3.event.pageY - 25}px`);
+					tooltip.style('display', 'inline-block');
+					tooltip.html(`${d.label}<br>${d.value} vote${d.value > 1 ? 's' : ''}`);
 				}
 			});
 
-		bar.on('mouseout', d => {
-				div.style('display', 'none');
+		bar.on('mouseout', () => {
+				tooltip.style('display', 'none');
 			});
 
 		svg.insert('g', ':first-child')
@@ -191,6 +195,6 @@ export function visualise(data, container = '#results') {
 			.call(xAxis);
 	}
 
-	drawPie(data);
-	drawBar(data);
+	drawPie(data, window.pieSvg, window.pieTooltip);
+	drawBar(data, window.barSvg, window.barTooltip);
 }

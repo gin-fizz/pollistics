@@ -1,13 +1,13 @@
 import {addCopy} from './lib/social';
-import {visualise} from './lib/visualisation';
+import {initVisualisation, visualise} from './lib/visualisation';
 
 addCopy(decodeURIComponent(document.URL), '#social');
 
+initVisualisation();
 visualise(window.data);
 
-// todo: make visualise a function that *replaces* the old vis
-//window.addEventListener('resize', function(){
-//	requestAnimationFrame(() => {
-//		visualise(window.data);
-//	});
-//});
+window.addEventListener('resize', function(){
+	requestAnimationFrame(() => {
+		visualise(window.data);
+	});
+});

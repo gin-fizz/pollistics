@@ -88,7 +88,7 @@ export function visualise(data, container = '#results') {
 			tooltip.style('left', `${d3.event.pageX+10}px`);
 			tooltip.style('top', `${d3.event.pageY-25}px`);
 			tooltip.style('display', 'inline-block');
-			tooltip.html(`${d.data.label}<br>${d.value} vote${d.data.value > 1 ? 's' : ''}`);
+			tooltip.html(`${d.data.label}<br>${d.value} vote${d.data.value === 1 ? '' : 's'}`);
 		});
 
 		g.on('mouseout', () => {
@@ -173,7 +173,7 @@ export function visualise(data, container = '#results') {
 			.attr('dx', -valueMargin + labelWidth) //margin right
 			.attr('dy', '.35em') //vertical align middle
 			.attr('text-anchor', 'end')
-			.text(d => `${d.value} vote${d.value > 1 ? 's' : ''}`)
+			.text(d => `${d.value} vote${d.value === 1 ? '' : 's'}`)
 			.attr('x', function(d) {
 				const width = this.getBBox().width;
 				return Math.max(width + valueMargin, scale(d.value));
@@ -186,7 +186,7 @@ export function visualise(data, container = '#results') {
 					tooltip.style('left', `${d3.event.pageX + 10}px`);
 					tooltip.style('top', `${d3.event.pageY - 25}px`);
 					tooltip.style('display', 'inline-block');
-					tooltip.html(`${d.label}<br>${d.value} vote${d.value > 1 ? 's' : ''}`);
+					tooltip.html(`${d.label}<br>${d.value} vote${d.value === 1 ? '' : 's'}`);
 				}
 			});
 

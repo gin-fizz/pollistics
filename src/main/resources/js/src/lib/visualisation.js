@@ -1,4 +1,4 @@
-import * as d3 from "d3";
+import * as d3 from 'd3';
 
 export function visualise(data) {
 	const pieDiv = d3.select('body').append('div').attr('class', 'toolTip');
@@ -12,10 +12,10 @@ export function visualise(data) {
 	}
 
 	function get_random_color() {
-		var h = rand(1, 360);
-		var s = rand(0, 100);
-		var l = rand(0, 100);
-		return 'hsl(' + h + ',' + s + '%,' + l + '%)';
+		const h = rand(1, 360);
+		const s = rand(0, 100);
+		const l = rand(0, 100);
+		return `hsl(${h},${s}%,${l}%)`;
 	}
 
 	const arc = d3.arc()

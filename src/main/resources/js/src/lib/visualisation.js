@@ -20,8 +20,8 @@ export function visualise(data, container = '#results') {
 	}
 	const pieDiv = d3.select(container).append('div').attr('class', 'toolTip');
 
-	const pieWidth = 500;
-	const pieHeight = 500;
+	const pieWidth = 400;
+	const pieHeight = 400;
 	const pieRadius = Math.min(pieWidth, pieHeight) / 2;
 
 	function rand(min, max) {

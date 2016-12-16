@@ -29,7 +29,7 @@ public class PollValidatorTest {
 		pollValidator.validate(poll, errors);
 		assertTrue(errors.hasFieldErrors("options"));
 
-		poll.setSlug("meme?");
+		poll.setSlug("meme?"); // slug with forbidden character
 		pollValidator.validate(poll, errors);
 		assertTrue(errors.hasFieldErrors("slug"));
 		poll.setSlug("meme");

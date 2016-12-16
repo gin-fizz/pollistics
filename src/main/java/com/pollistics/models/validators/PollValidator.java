@@ -1,5 +1,6 @@
 package com.pollistics.models.validators;
 
+import java.util.regex.Pattern;
 import com.pollistics.models.Poll;
 import com.pollistics.models.User;
 import org.springframework.validation.Errors;
@@ -16,7 +17,7 @@ public class PollValidator implements Validator {
 	public void validate(Object target, Errors errors) {
 		Poll poll = (Poll) target;
 
-		if (Pattern.matches("\?|\.|\s|#|\/|:", poll.slug)) {
+		if (Pattern.matches("\\?|\\.|\\s|#|\\/|:", poll.getSlug())) {
 			errors.rejectValue("slug", "invalid.slug", "A slug can't contain ?, -, ' ', #, : or .");
 		}
 

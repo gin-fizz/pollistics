@@ -6,7 +6,7 @@ addCopy(decodeURIComponent(document.URL), '#social');
 initVisualisation();
 visualise(window.data);
 
-window.addEventListener('resize', function(){
+window.addEventListener('resize', () => {
 	requestAnimationFrame(() => {
 		visualise(window.data);
 	});

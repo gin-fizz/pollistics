@@ -28,7 +28,6 @@ export function initVisualisation(container = '#results') {
 	window.pieTooltip = d3.select(container).append('div').attr('class', 'toolTip');
 	window.barSvg = d3.select(container).append('svg');
 	window.barTooltip = d3.select(container).append('div').attr('class', 'toolTip');
-
 }
 
 /**

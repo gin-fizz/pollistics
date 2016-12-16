@@ -111,7 +111,8 @@ export function visualise(data, container = '#results') {
 
 		const containerEl = document.querySelector(container);
 		let width = containerEl.getBoundingClientRect().width;
-		let height = parseInt(d3.select(container).style('height'), 10);
+		let height = (data.length + 1) * 100;
+
 		if (chartsHorizontal()) {
 			width = containerEl.getBoundingClientRect().width / 2;
 		}

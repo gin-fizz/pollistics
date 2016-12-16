@@ -32,7 +32,7 @@
 		<div class="poll--option">
 			<label for="slug">Short link</label>
 			<div>
-				<span>https://pollistics.com/</span><input type="text" name="slug" id="slug" pattern="[^(\?|\.|\s|#|\/|:)]*"/>
+				<span>https://pollistics.com/</span><input type="text" name="slug" id="slug" pattern="[^(\?|\.|\s|#|\/|:|,)]*"/>
 			</div>
 			{% if errors.getFieldError("slug") %}
 				<p class="error">{{ errors.getFieldError("slug").getDefaultMessage() }}</p>

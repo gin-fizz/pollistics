@@ -16,6 +16,10 @@ public class PollValidator implements Validator {
 	public void validate(Object target, Errors errors) {
 		Poll poll = (Poll) target;
 
+		if (Pattern.matches("\?|\.|\s|#|\/|:", poll.slug)) {
+			errors.rejectValue("slug", "invalid.slug", "A slug can't contain ?, -, ' ', #, : or .");
+		}
+
 		if(poll.getOptions().size() < 2) {
 			errors.rejectValue("options", "invalid.options", "A poll has at least 2 options");
 		}

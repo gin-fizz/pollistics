@@ -1,4 +1,5 @@
 import {addCopy} from './lib/social';
+import {initVisualisation, visualise} from './lib/visualisation';
 // import {poll} from './lib/long-polling.js';
 
 // put in this callback a method that will repaint the grap
@@ -9,3 +10,12 @@ import {addCopy} from './lib/social';
 // }, 1000);
 
 addCopy(decodeURIComponent(document.URL), '#social');
+
+initVisualisation();
+visualise(window.data);
+
+window.addEventListener('resize', () => {
+	requestAnimationFrame(() => {
+		visualise(window.data);
+	});
+});

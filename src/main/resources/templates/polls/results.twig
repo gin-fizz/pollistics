@@ -27,11 +27,22 @@
 		.arc path {
 			stroke: #fff;
 		}
-	</style>
-	<style>
+
+		svg {
+			max-width: 100vw;
+		}
+
+		#results {
+			display: flex;
+		}
+
+		#results svg {
+			flex: 1 1 20em;
+			flex-wrap: wrap;
+		}
 
 		.toolTip {
-			font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+			font-family: inherit;
 			position: absolute;
 			display: none;
 			width: auto;
@@ -41,22 +52,19 @@
 			border-radius: 8px 8px 8px 8px;
 			box-shadow: -3px 3px 15px #888888;
 			color: black;
-			font: 12px sans-serif;
 			padding: 5px;
 			text-align: center;
 		}
 
 		text {
-			font: 10px sans-serif;
 			color: white;
 		}
+
 		text.value {
-			font-size: 100%;
 			fill: white;
 		}
 
 		text.value2 {
-			font-size: 100%;
 			fill: #2660A4;
 		}
 

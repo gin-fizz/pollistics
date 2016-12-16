@@ -1,7 +1,24 @@
 import * as d3 from 'd3';
 
-export function visualise(data) {
-	const pieDiv = d3.select('body').append('div').attr('class', 'toolTip');
+function isEmpty(data) {
+	return data.every((item) => item.value === 0);
+}
+
+/**
+ * Visualise pollistics data
+ * @param  {Array} data      Data which has object with value and label
+ * @param  {String} container a d3 selector
+ */
+export function visualise(data, container = '#results') {
+	if (isEmpty(data)) {
+		const containerEl = document.querySelector(container);
+		const item = document.createElement('h2');
+		item.style.margin = '0 auto';
+		item.innerText = 'No data available';
+		containerEl.appendChild(item);
+		return undefined;
+	}
+	const pieDiv = d3.select(container).append('div').attr('class', 'toolTip');
 
 	const pieWidth = 500;
 	const pieHeight = 500;
@@ -26,7 +43,7 @@ export function visualise(data) {
 	.sort(null)
 	.value(d => d.value);
 
-	const svgPie = d3.select('body').append('svg')
+	const svgPie = d3.select(container).append('svg')
 	.attr('width', pieWidth)
 	.attr('height', pieHeight)
 	.append('g')
@@ -63,13 +80,13 @@ export function visualise(data) {
 	.text((d) => d.data.label)
 	.attr('class', 'value');
 
-	const div = d3.select('body').append('div').attr('class', 'toolTip');
+	const div = d3.select(container).append('div').attr('class', 'toolTip');
 
 	const axisMargin = 20;
 	const margin = 40;
 	const valueMargin = 4;
-	let width = parseInt(d3.select('body').style('width'), 10);
-	let height = parseInt(d3.select('body').style('height'), 10);
+	let width = parseInt(d3.select(container).style('width'), 10);
+	let height = parseInt(d3.select(container).style('height'), 10);
 	const barHeight = (height - axisMargin - margin * 2) * 0.4 / data.length;
 	const barPadding = (height - axisMargin - margin * 2) * 0.4 / data.length;
 	let bar;
@@ -82,7 +99,7 @@ export function visualise(data) {
 	console.log(width);
 	const max = d3.max(data, d => d.value);
 
-	svg = d3.select('body')
+	svg = d3.select(container)
 	.append('svg')
 	.attr('width', width)
 	.attr('height', height);
@@ -142,7 +159,7 @@ export function visualise(data) {
 			div.style('left', `${d3.event.pageX+10}px`);
 			div.style('top', `${d3.event.pageY-25}px`);
 			div.style('display', 'inline-block');
-			div.html(`${d.label}<br>${d.value}Vote(s)`);
+			div.html(`${d.label}<br>${d.value} vote${d.value > 1 ? 's' : ''}`);
 		}
 	});
 	bar

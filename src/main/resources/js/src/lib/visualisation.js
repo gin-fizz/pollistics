@@ -69,12 +69,11 @@ export function visualise(data, container = '#results') {
 		// todo: without removing xdd
 		svg.selectAll("*").remove();
 
-		svg.append('g').attr('transform', `translate(${width / 2},${height / 2})`);
-
 		const g = svg.selectAll('.arc')
 			.data(pie(data))
 			.enter().append('g')
-			.attr('class', 'arc');
+			.attr('class', 'arc')
+			.attr('transform', `translate(${width / 2},${height / 2})`);
 
 		g.append('path')
 			.attr('d', arc)

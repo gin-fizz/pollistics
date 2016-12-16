@@ -8,7 +8,7 @@ function rand(min, max) {
 	return min + Math.random() * (max - min);
 }
 
-function get_random_color() {
+function getRandomColor() {
 	const h = rand(1, 360);
 	const s = rand(0, 100);
 	const l = rand(0, 100);
@@ -75,9 +75,14 @@ export function visualise(data, container = '#results') {
 			.attr('class', 'arc')
 			.attr('transform', `translate(${width / 2},${height / 2})`);
 
-		g.append('path')
-			.attr('d', arc)
-			.style('fill', d => get_random_color(d.data.label));
+		if (window.disco) {
+			g.append('path')
+				.attr('d', arc)
+				.style('fill', d => getRandomColor(d.data.label));
+		} else {
+			g.append('path')
+				.attr('d', arc);
+		}
 
 		g.on('mousemove', d => {
 			tooltip.style('left', `${d3.event.pageX+10}px`);

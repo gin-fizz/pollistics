@@ -88,14 +88,14 @@ export function visualise(data, container = '#results') {
 	let width = parseInt(d3.select(container).style('width'), 10);
 	let height = parseInt(d3.select(container).style('height'), 10);
 	const barHeight = (height - axisMargin - margin * 2) * 0.4 / data.length;
-	const barPadding = (height - axisMargin - margin * 2) * 0.4 / data.length;
+	const barPadding = (height - axisMargin - margin * 2) * 0.7 / data.length;
 	let bar;
 	let svg;
 	let scale;
 	let xAxis;
 	let labelWidth = 0;
 	width *= .5;
-	height *= .8;
+	height *= 1;
 	console.log(width);
 	const max = d3.max(data, d => d.value);
 

@@ -1,7 +1,7 @@
 {% extends "../layouts/main.twig" %}
 
-{% block pageTitle %}Login - Pollistics{% endblock %}
-{% block description %}Login on Pollistics{% endblock %}
+{% block pageTitle %}Pollistics | My polls{% endblock %}
+{% block description %}My polls on Pollistics{% endblock %}
 
 {% block content %}
 <h1>Polls from {{ user.username }}</h1>
@@ -16,7 +16,7 @@
                 <input type="submit" value="delete">
                 <input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}"/>
             </form>
-        </div>    
+        </div>
     </li>
 {% endfor %}
 </ul>

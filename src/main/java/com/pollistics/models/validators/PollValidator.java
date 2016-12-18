@@ -1,10 +1,11 @@
 package com.pollistics.models.validators;
 
+import java.util.Arrays;
+
 import com.pollistics.models.Poll;
 import com.pollistics.models.User;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-
 
 public class PollValidator implements Validator {
 	public final static String[] FORBIDDEN_CHARS = {"?", ".", " ", "#", "/", ",", ":"};

@@ -7,7 +7,7 @@ import org.springframework.validation.Validator;
 
 
 public class PollValidator implements Validator {
-	public final static string[] FORBIDDEN_CHARS = ["?", ".", " ", "#", "/", ",", ":"];
+	public final static String[] FORBIDDEN_CHARS = {"?", ".", " ", "#", "/", ",", ":"};
 
 	public static boolean containsItemFromArray(String inputString, String[] items) {
 		// Convert the array of String items as a Stream

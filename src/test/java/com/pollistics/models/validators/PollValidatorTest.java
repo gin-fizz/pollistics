@@ -19,6 +19,7 @@ public class PollValidatorTest {
 		poll.setTitle("Question?");
 		options.put("option1", 0);
 		options.put("option2", 0);
+		poll.setSlug("normal-slug");
 
 		poll.setOptions(options);
 		pollValidator.validate(poll, errors);

@@ -5,9 +5,15 @@ import com.pollistics.models.User;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import java.util.regex.Pattern;
+public static boolean containsItemFromArray(String inputString, String[] items) {
+    // Convert the array of String items as a Stream
+    // For each element of the Stream call inputString.contains(element)
+    // If you have any match returns true, false otherwise
+    return Arrays.stream(items).anyMatch(inputString::contains);
+}
 
 public class PollValidator implements Validator {
+	public final static string[] FORBIDDEN_CHARS = ["?", ".", " ", "#", "/", ",", ":"];
 
 	@Override
 	public boolean supports(Class<?> clazz) {
@@ -18,8 +24,8 @@ public class PollValidator implements Validator {
 	public void validate(Object target, Errors errors) {
 		Poll poll = (Poll) target;
 
-		if (Pattern.matches("\\?|\\.|\\s|#|/|:|,", poll.getSlug())) {
-			errors.rejectValue("slug", "invalid.slug", "A slug can't contain ?, -, ' ', #, : or .");
+		if (containsItemFromArray(poll.getSlug(), FORBIDDEN_CHARS)) {
+			errors.rejectValue("slug", "invalid.slug", "A slug can't contain '?', '-', ' ', '#', ':', ',' or '.'");
 		}
 
 		if(poll.getOptions().size() < 2) {

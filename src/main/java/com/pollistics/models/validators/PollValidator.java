@@ -5,15 +5,16 @@ import com.pollistics.models.User;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-public static boolean containsItemFromArray(String inputString, String[] items) {
-    // Convert the array of String items as a Stream
-    // For each element of the Stream call inputString.contains(element)
-    // If you have any match returns true, false otherwise
-    return Arrays.stream(items).anyMatch(inputString::contains);
-}
 
 public class PollValidator implements Validator {
 	public final static string[] FORBIDDEN_CHARS = ["?", ".", " ", "#", "/", ",", ":"];
+
+	public static boolean containsItemFromArray(String inputString, String[] items) {
+		// Convert the array of String items as a Stream
+		// For each element of the Stream call inputString.contains(element)
+		// If you have any match returns true, false otherwise
+		return Arrays.stream(items).anyMatch(inputString::contains);
+	}
 
 	@Override
 	public boolean supports(Class<?> clazz) {

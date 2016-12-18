@@ -26,7 +26,7 @@ public class PollValidator implements Validator {
 	public void validate(Object target, Errors errors) {
 		Poll poll = (Poll) target;
 
-		if (containsItemFromArray(poll.getSlug(), FORBIDDEN_CHARS)) {
+		if (poll.getSlug() != null && containsItemFromArray(poll.getSlug(), FORBIDDEN_CHARS)) {
 			errors.rejectValue("slug", "invalid.slug", "A slug can't contain '?', '-', ' ', '#', ':', ',' or '.'");
 		}
 

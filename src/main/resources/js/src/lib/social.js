@@ -42,7 +42,7 @@ export function addCopy(content, selector) {
 		copyStuff(copyBtn, textInput);
 	});
 
-	textInput.addEventListener('click', function() {
+	textInput.addEventListener('click', () => {
 		let range = document.createRange();
 		range.selectNode(textInput);
 		window.getSelection().addRange(range);

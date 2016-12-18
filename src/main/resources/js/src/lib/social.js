@@ -28,13 +28,13 @@ function copyStuff(button, output) {
  */
 export function addCopy(content, selector) {
 	const copyBtn = document.createElement('button');
-	const textInput = document.createElement('input');
+	const textInput = document.createElement('div');
 	const container = document.querySelector(selector);
 
-	textInput.value = content;
-	textInput.disabled = true;
+	textInput.textContent = content;
 	copyBtn.textContent = '🔗';
 
+	textInput.className = 'social--url';
 	copyBtn.className = 'social--copy';
 
 	copyBtn.disabled = !document.queryCommandSupported('copy');
@@ -42,8 +42,10 @@ export function addCopy(content, selector) {
 		copyStuff(copyBtn, textInput);
 	});
 
-	textInput.addEventListener('click', (e) => {
-		e.target.select();
+	textInput.addEventListener('click', function() {
+		let range = document.createRange();
+		range.selectNode(textInput);
+		window.getSelection().addRange(range);
 	});
 
 	container.appendChild(textInput);

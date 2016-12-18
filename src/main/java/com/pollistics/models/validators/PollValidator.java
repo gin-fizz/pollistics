@@ -1,11 +1,21 @@
 package com.pollistics.models.validators;
 
+import java.util.Arrays;
+
 import com.pollistics.models.Poll;
 import com.pollistics.models.User;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 public class PollValidator implements Validator {
+	public final static String[] FORBIDDEN_CHARS = {"?", ".", " ", "#", "/", ",", ":"};
+
+	public static boolean containsItemFromArray(String inputString, String[] items) {
+		// Convert the array of String items as a Stream
+		// For each element of the Stream call inputString.contains(element)
+		// If you have any match returns true, false otherwise
+		return Arrays.stream(items).anyMatch(inputString::contains);
+	}
 
 	@Override
 	public boolean supports(Class<?> clazz) {
@@ -15,6 +25,10 @@ public class PollValidator implements Validator {
 	@Override
 	public void validate(Object target, Errors errors) {
 		Poll poll = (Poll) target;
+
+		if (poll.getSlug() != null && containsItemFromArray(poll.getSlug(), FORBIDDEN_CHARS)) {
+			errors.rejectValue("slug", "invalid.slug", "A slug can't contain '?', '-', ' ', '#', ':', ',' or '.'");
+		}
 
 		if(poll.getOptions().size() < 2) {
 			errors.rejectValue("options", "invalid.options", "A poll has at least 2 options");

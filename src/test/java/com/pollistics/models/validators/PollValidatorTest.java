@@ -1,18 +1,17 @@
 package com.pollistics.models.validators;
 
-import static org.junit.Assert.*;
+import com.pollistics.models.Poll;
+import org.junit.Test;
+import org.springframework.validation.DirectFieldBindingResult;
 
 import java.util.HashMap;
 
-import org.junit.Test;
-
-import com.pollistics.models.Poll;
-
-import org.springframework.validation.DirectFieldBindingResult;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class PollValidatorTest {
 	@Test
-	public void validateOptionsTest() {		
+	public void validateOptionsTest() {
 		Poll poll = new Poll();
 		DirectFieldBindingResult errors = new DirectFieldBindingResult(poll, "poll");
 		PollValidator pollValidator = new PollValidator();
@@ -20,16 +19,22 @@ public class PollValidatorTest {
 		poll.setTitle("Question?");
 		options.put("option1", 0);
 		options.put("option2", 0);
-		
+		poll.setSlug("normal-slug");
+
 		poll.setOptions(options);
 		pollValidator.validate(poll, errors);
 		assertFalse(errors.hasErrors());
-		
+
 		options.put("option3", 10);
-		poll.setOptions(options); // more than 0 votes on option	
+		poll.setOptions(options); // more than 0 votes on option
 		pollValidator.validate(poll, errors);
 		assertTrue(errors.hasFieldErrors("options"));
-		
+
+		poll.setSlug("meme?"); // slug with forbidden character
+		pollValidator.validate(poll, errors);
+		assertTrue(errors.hasFieldErrors("slug"));
+		poll.setSlug("meme");
+
 		errors =  new DirectFieldBindingResult(poll, "poll");
 		options.clear();
 		options.put("option1", 1); // only 1 option

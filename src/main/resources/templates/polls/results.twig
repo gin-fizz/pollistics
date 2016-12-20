@@ -2,6 +2,8 @@
 
 {% block pageTitle %}{{ poll.title }} | Pollistics{% endblock %}
 {% block description %}{{ poll.title }} {{ poll.options }}{% endblock %}
+{% block ogTitle %}{{ poll.title }}{% endblock %}
+{% block ogDescription %}{{ poll.options }}{% endblock %}
 
 {% block content %}
 	<h1>{{ poll.title }}</h1>

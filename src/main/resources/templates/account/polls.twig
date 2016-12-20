@@ -12,7 +12,7 @@
         <div>
             <a href="/{{ poll.slug }}" class="cta">view</a>
             <a href="/{{ poll.slug }}/results" class="cta">results</a>
-            <form method="post" action="/polls/delete/{{ poll.id }}">
+            <form method="post" action="/polls/delete/{{ poll.slug }}">
                 <input type="submit" value="delete">
                 <input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}"/>
             </form>

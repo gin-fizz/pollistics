@@ -152,11 +152,11 @@ public class PollServiceTests {
 
 	@Test
 	public void deletePollTest() {
-		String id = ObjectId.get().toString();
-		doNothing().when(pollRepo).delete(anyString());
-		assertThat(pollService.deletePoll(id));
-		doThrow(new IllegalArgumentException()).when(pollRepo).delete(anyString());
-		assertFalse(pollService.deletePoll(id));
+		String slug = "myslug";
+		doNothing().when(pollRepo).deleteBySlug(anyString());
+		assertThat(pollService.deletePoll(slug));
+		doThrow(new IllegalArgumentException()).when(pollRepo).deleteBySlug(anyString());
+		assertFalse(pollService.deletePoll(slug));
 	}
 
 	@Test

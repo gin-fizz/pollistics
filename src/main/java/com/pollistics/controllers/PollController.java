@@ -109,7 +109,12 @@ public class PollController {
 	}
 
 	@PostMapping(value = "/polls/delete/{slug}")
-	public String deletePoll(@PathVariable String slug, HttpServletResponse response, RedirectAttributes redirectAttrs) {
+	public String deletePoll(@PathVariable String slug, HttpServletResponse response, Principal principal, RedirectAttributes redirectAttrs) {
+		if(principal == null || !((User) ((Authentication) principal).getPrincipal()).equals(pollService.getPoll(slug).getUser())) {
+			response.setStatus(401);
+			return "error/401";
+		}
+		
 		boolean result = pollService.deletePoll(slug);
 		if (result) {
 			redirectAttrs.addFlashAttribute("message", "The poll has deleted successfully!");

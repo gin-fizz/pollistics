@@ -13,4 +13,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface PollRepository extends MongoRepository<Poll,String> {
 	Poll findBySlug(String slug);
 	List<Poll> findByUser(User user);
+	void deleteBySlug(String slug);
 }

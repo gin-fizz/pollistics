@@ -46,9 +46,9 @@ public class PollService {
 		return poll.getSlug();
 	}
 
-	public boolean deletePoll(String id) {
+	public boolean deletePoll(String slug) {
 		try {
-			pollRepo.delete(id);
+			pollRepo.deleteBySlug(slug);
 			return true;
 		} catch (Exception e) {
 			return false;

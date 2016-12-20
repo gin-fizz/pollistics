@@ -1,6 +1,8 @@
+import 'details-polyfill';
+
 import {setSlug} from './lib/set-slug';
 import {getCombo} from './lib/meme-words';
-import {addNewPollInput} from "./lib/poll-inputs";
+import {addNewPollInput} from './lib/poll-inputs';
 
 
 addNewPollInput();

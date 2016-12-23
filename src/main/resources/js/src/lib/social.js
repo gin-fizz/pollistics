@@ -2,6 +2,7 @@
 function copyStuff(button, output) {
 	let range = document.createRange();
 	range.selectNode(output);
+	window.getSelection().removeAllRanges();
 	window.getSelection().addRange(range);
 
 	try {

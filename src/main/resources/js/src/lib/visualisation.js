@@ -179,15 +179,12 @@ export function visualise(data, container = '#results') {
 			});
 
 		bar.on('mousemove', d => {
-				if (d.value == 0) {
-					return null;
-				} else {
-					tooltip.style('left', `${d3.event.pageX + 10}px`);
-					tooltip.style('top', `${d3.event.pageY - 25}px`);
-					tooltip.style('display', 'inline-block');
-					tooltip.html(`${d.label}<br>${d.value} vote${d.value === 1 ? '' : 's'}`);
-				}
-			});
+				tooltip.style('left', `${d3.event.pageX + 10}px`);
+				tooltip.style('top', `${d3.event.pageY - 25}px`);
+				tooltip.style('display', 'inline-block');
+				tooltip.html(`${d.label}<br>${d.value} vote${d.value === 1 ? '' : 's'}`);
+			}
+		});
 
 		bar.on('mouseout', () => {
 				tooltip.style('display', 'none');
@@ -199,6 +196,8 @@ export function visualise(data, container = '#results') {
 			.call(xAxis);
 	}
 
-	drawPie(data, window.pieSvg, window.pieTooltip);
-	drawBar(data, window.barSvg, window.barTooltip);
+	const dataFiltered = data.filter(d => d.value > 0);
+
+	drawPie(dataFiltered, window.pieSvg, window.pieTooltip);
+	drawBar(dataFiltered, window.barSvg, window.barTooltip);
 }

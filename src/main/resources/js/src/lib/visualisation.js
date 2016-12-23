@@ -179,16 +179,15 @@ export function visualise(data, container = '#results') {
 			});
 
 		bar.on('mousemove', d => {
-				tooltip.style('left', `${d3.event.pageX + 10}px`);
-				tooltip.style('top', `${d3.event.pageY - 25}px`);
-				tooltip.style('display', 'inline-block');
-				tooltip.html(`${d.label}<br>${d.value} vote${d.value === 1 ? '' : 's'}`);
-			}
+			tooltip.style('left', `${d3.event.pageX + 10}px`);
+			tooltip.style('top', `${d3.event.pageY - 25}px`);
+			tooltip.style('display', 'inline-block');
+			tooltip.html(`${d.label}<br>${d.value} vote${d.value === 1 ? '' : 's'}`);
 		});
 
 		bar.on('mouseout', () => {
-				tooltip.style('display', 'none');
-			});
+			tooltip.style('display', 'none');
+		});
 
 		svg.insert('g', ':first-child')
 			.attr('class', 'axisHorizontal')

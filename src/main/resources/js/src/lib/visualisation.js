@@ -196,6 +196,7 @@ export function visualise(data, container = '#results') {
 	}
 
 	const dataFiltered = data.filter(d => d.value > 0);
+	dataFiltered.sort((a,b) => b.value - a.value);
 
 	drawPie(dataFiltered, window.pieSvg, window.pieTooltip);
 	drawBar(dataFiltered, window.barSvg, window.barTooltip);
